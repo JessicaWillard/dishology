@@ -8,7 +8,7 @@ export default function Home() {
     <div className="font-sans min-h-screen p-8">
       <main className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-primary mb-4">
             Welcome to Dishology
           </h1>
           <Text as="h2" size="lg" align="center">
