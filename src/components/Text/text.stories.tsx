@@ -16,10 +16,18 @@ export const Body: Story = {};
 export const Variants: Story = {
   render: (args) => (
     <div className="space-y-2 w-[640px]">
-      <Text {...args} variant="body">Body</Text>
-      <Text {...args} variant="muted">Muted</Text>
-      <Text {...args} variant="danger">Danger</Text>
-      <Text {...args} variant="success">Success</Text>
+      <Text {...args} variant="body">
+        Body
+      </Text>
+      <Text {...args} variant="muted">
+        Muted
+      </Text>
+      <Text {...args} variant="danger">
+        Danger
+      </Text>
+      <Text {...args} variant="success">
+        Success
+      </Text>
     </div>
   ),
 };
@@ -27,16 +35,24 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: (args) => (
     <div className="space-y-2 w-[640px]">
-      <Text {...args} size="xs">XS</Text>
-      <Text {...args} size="sm">SM</Text>
-      <Text {...args} size="md">MD</Text>
-      <Text {...args} size="lg">LG</Text>
-      <Text {...args} size="xl">XL</Text>
-      <Text {...args} size="h1" as="h1">Heading 1</Text>
-      <Text {...args} size="h2" as="h2">Heading 2</Text>
-      <Text {...args} size="h3" as="h3">Heading 3</Text>
+      <Text {...args} size="xs">
+        Lorem ipsum dolor sit amet.
+      </Text>
+      <Text {...args} size="sm">
+        Lorem ipsum dolor sit amet.
+      </Text>
+      <Text {...args} size="md">
+        Lorem ipsum dolor sit amet.
+      </Text>
+      <Text {...args} size="lg" as="h3">
+        Lorem ipsum dolor sit amet.
+      </Text>
+      <Text {...args} size="xl" as="h2">
+        Lorem ipsum dolor sit amet.
+      </Text>
+      <Text {...args} size="2xl" as="h1">
+        Lorem ipsum dolor sit amet.
+      </Text>
     </div>
   ),
 };
-
-

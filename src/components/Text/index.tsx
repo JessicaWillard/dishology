@@ -10,18 +10,16 @@ const textStyles = tv(
       variant: {
         body: "leading-relaxed",
         muted: "text-foreground/70",
-        danger: "text-red-600",
-        success: "text-green-600",
+        danger: "!text-error",
+        success: "text-primary",
       },
       size: {
         xs: "text-xs",
         sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
-        xl: "text-xl",
-        h1: "text-4xl font-bold",
-        h2: "text-3xl font-semibold",
-        h3: "text-2xl font-semibold",
+        md: "text-base font-medium",
+        lg: "text-lg font-bold",
+        xl: "text-xl font-extrabold",
+        "2xl": "text-2xl font-extrabold",
       },
       align: {
         left: "text-left",
@@ -31,7 +29,7 @@ const textStyles = tv(
     },
     defaultVariants: {
       variant: "body",
-      size: "md",
+      size: "sm",
       align: "left",
     },
   },
