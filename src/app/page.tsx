@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/Button";
 import { SignedIn, SignedOut, UserProfile } from "@clerk/nextjs";
 
 export default function Home() {
@@ -12,6 +13,15 @@ export default function Home() {
           <p className="text-xl text-gray-600">
             Your culinary journey starts here
           </p>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <Button size="sm">Primary</Button>
+            <Button size="sm" variant="outline">
+              Outline
+            </Button>
+            <Button size="sm" variant="ghost">
+              Ghost
+            </Button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
