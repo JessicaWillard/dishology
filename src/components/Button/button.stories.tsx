@@ -70,7 +70,7 @@ export const Sizes: Story = {
         LG
       </Button>
       <Button {...args} size="icon" aria-label="icon">
-        <Icon name="Check" />
+        <Icon name="List" />
       </Button>
     </div>
   ),

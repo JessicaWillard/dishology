@@ -9,7 +9,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     fill="none"
   >
     <path
-      d="M20 6L9 17L4 12"
+      d="M3 12H3.01M3 18H3.01M3 6H3.01M8 12H21M8 18H21M8 6H21"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
@@ -18,5 +18,5 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const Check = memo(SvgComponent);
-export default Check;
+const List = memo(SvgComponent);
+export default List;

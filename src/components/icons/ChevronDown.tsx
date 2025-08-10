@@ -9,7 +9,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     fill="none"
   >
     <path
-      d="M20 6L9 17L4 12"
+      d="M6 9L12 15L18 9"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
@@ -18,5 +18,5 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const Check = memo(SvgComponent);
-export default Check;
+const ChevronDown = memo(SvgComponent);
+export default ChevronDown;

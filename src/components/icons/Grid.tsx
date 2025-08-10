@@ -9,7 +9,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     fill="none"
   >
     <path
-      d="M20 6L9 17L4 12"
+      d="M12 3V21M3 12H21M5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3Z"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
@@ -18,5 +18,5 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const Check = memo(SvgComponent);
-export default Check;
+const Grid = memo(SvgComponent);
+export default Grid;
