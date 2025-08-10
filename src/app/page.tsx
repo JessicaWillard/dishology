@@ -15,7 +15,7 @@ export default function Home() {
           </p>
           <div className="mt-6 flex items-center justify-center gap-3">
             <Button size="sm">Primary</Button>
-            <Button size="sm" variant="outline">
+            <Button size="lg" variant="outline">
               Outline
             </Button>
             <Button size="sm" variant="ghost">

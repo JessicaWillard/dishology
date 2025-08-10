@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Button } from ".";
+import { fn } from "storybook/test";
 
 const meta = {
   title: "Components/Button",
@@ -22,9 +23,7 @@ const meta = {
       options: ["md", "lg", "full"],
     },
   },
-  args: {
-    children: "Button",
-  },
+  args: { children: "Button", handlePress: fn() },
 } satisfies Meta<typeof Button>;
 
 export default meta;

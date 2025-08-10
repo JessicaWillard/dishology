@@ -5,9 +5,6 @@ import "../src/app/globals.css";
 const style = document.createElement("style");
 style.innerHTML = `
   :root { --background: #ffffff; --foreground: #171717; }
-  @media (prefers-color-scheme: dark) {
-    :root { --background: #0a0a0a; --foreground: #ededed; }
-  }
 `;
 document.head.appendChild(style);
 
