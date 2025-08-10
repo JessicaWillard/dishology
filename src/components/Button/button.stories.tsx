@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Button } from ".";
 import { fn } from "storybook/test";
+import { Icon } from "@/components/Icon";
 
 const meta = {
   title: "Components/Button",
@@ -69,7 +70,7 @@ export const Sizes: Story = {
         LG
       </Button>
       <Button {...args} size="icon" aria-label="icon">
-        ★
+        <Icon name="Check" />
       </Button>
     </div>
   ),

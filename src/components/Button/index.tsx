@@ -53,7 +53,7 @@ export const Button = forwardRef<
     children,
     handlePress,
     ...rest
-  } = props as any;
+  } = props as ButtonProps;
 
   const content = (
     <>
@@ -66,12 +66,16 @@ export const Button = forwardRef<
   const classes = clsx(buttonStyles({ variant, size, radius }), className);
 
   if ("href" in props && props.href) {
-    const anchorProps = rest as any;
+    const anchorProps = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
       <a
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLAnchorElement>}
         className={classes}
-        onClick={handlePress as any}
+        onClick={
+          handlePress as
+            | ((e: React.MouseEvent<HTMLAnchorElement>) => void)
+            | undefined
+        }
         {...anchorProps}
       >
         {content}
@@ -79,13 +83,20 @@ export const Button = forwardRef<
     );
   }
 
-  const buttonProps = rest as any;
+  const buttonProps = rest as React.ButtonHTMLAttributes<HTMLButtonElement>;
   return (
     <button
-      ref={ref as any}
+      ref={ref as React.Ref<HTMLButtonElement>}
       className={classes}
-      onClick={handlePress as any}
-      disabled={(props as any).disabled || (props as any).isDisabled}
+      onClick={
+        handlePress as
+          | ((e: React.MouseEvent<HTMLButtonElement>) => void)
+          | undefined
+      }
+      disabled={
+        ("disabled" in props && !!props.disabled) ||
+        ("isDisabled" in props && !!props.isDisabled)
+      }
       {...buttonProps}
     >
       {content}

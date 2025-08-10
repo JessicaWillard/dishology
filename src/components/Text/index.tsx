@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes, type ElementType } from "react";
 import type { JSX } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 import { clsx } from "clsx";
@@ -45,7 +45,7 @@ export type TextProps = HTMLAttributes<HTMLParagraphElement> &
 
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
   ({ as = "p", className, variant, size, align, ...rest }, ref) => {
-    const Comp = as as any;
+    const Comp = as as ElementType;
     return (
       <Comp
         ref={ref}
