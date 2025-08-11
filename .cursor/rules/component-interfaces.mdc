@@ -1,0 +1,29 @@
+---
+globs: src/**/*.ts,src/**/*.tsx
+description: Component interfaces and public types must live in a co-located interface.ts file
+---
+
+### Component interface/type placement
+
+- All public component prop interfaces and exported types MUST be defined in a co-located `interface.ts` file next to the component implementation.
+
+  - Example: `src/components/Button/interface.ts`, `src/components/Icon/interface.ts`
+
+- Component implementation files (e.g., `index.tsx`) SHOULD NOT export prop types. Import from `./interface` instead.
+
+- Internal, purely implementation-only types may remain local, but if reused or exported, move them to `interface.ts`.
+
+- Re-export public types from the component entry file when useful:
+
+  - `export type { ButtonProps } from "./interface"`
+
+- Naming conventions:
+
+  - Primary prop type: `<ComponentName>Props` (unions allowed)
+  - Variant enums/unions: `<ComponentName><Variant>`, or generic names when shared (e.g., `ButtonVariant`, `ButtonSize`)
+
+- Accessibility-related props (e.g., `label`, `decorative`) belong in `interface.ts`.
+
+- Exceptions: Trivial wrappers that accept only intrinsic props (e.g., bare `React.SVGProps<SVGSVGElement>`) MAY omit `interface.ts`. If any custom prop is added, create `interface.ts`.
+
+See an example in [src/components/Icon/interface.ts](mdc:src/components/Icon/interface.ts).
