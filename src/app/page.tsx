@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Button } from "@/components/Button";
+import { Text } from "@/components/Text";
 import { SignedIn, SignedOut, UserProfile } from "@clerk/nextjs";
 
 export default function Home() {
@@ -6,12 +8,17 @@ export default function Home() {
     <div className="font-sans min-h-screen p-8">
       <main className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-primary mb-4">
             Welcome to Dishology
           </h1>
-          <p className="text-xl text-gray-600">
+          <Text as="h2" size="lg" align="center">
             Your culinary journey starts here
-          </p>
+          </Text>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <Button>Primary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -38,7 +45,7 @@ export default function Home() {
             </SignedOut>
             <SignedIn>
               <p className="text-green-600 font-medium mb-4">
-                ✅ You're signed in! Welcome back.
+                ✅ You&apos;re signed in! Welcome back.
               </p>
               <div className="space-y-3">
                 <p className="text-sm text-gray-600">
