@@ -7,32 +7,22 @@ import type { ButtonProps } from "./interface";
 
 const buttonStyles = tv(
   {
-    base: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+    base: "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-base font-medium transition-all duration-300 ease-in-out min-h-[44px] min-w-[44px] px-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
     variants: {
       variant: {
-        solid: "bg-foreground text-background hover:opacity-90",
+        solid: "bg-primary text-white hover:bg-black",
         outline:
-          "border border-foreground/20 text-foreground hover:bg-foreground/5",
-        ghost: "text-foreground hover:bg-foreground/10",
-        link: "text-foreground underline-offset-4 hover:underline p-0 h-auto",
+          "border-2 border-primary text-primary hover:bg-primary hover:text-white",
+        ghost:
+          "text-primary hover:text-secondary !min-w-0 !min-h-0 !px-0 !rounded-none",
       },
-      size: {
-        xs: "h-8 px-2 py-1 text-xs",
-        sm: "h-9 px-3",
-        md: "h-10 px-4",
-        lg: "h-11 px-6 text-base",
-        icon: "h-10 w-10 p-0",
-      },
-      radius: {
-        md: "rounded-md",
-        lg: "rounded-lg",
-        full: "rounded-full",
+      iconOnly: {
+        true: "!px-0",
       },
     },
     defaultVariants: {
       variant: "solid",
-      size: "md",
-      radius: "md",
+      iconOnly: false,
     },
   },
   { twMerge: false }
@@ -45,12 +35,11 @@ export const Button = forwardRef<
   const {
     className,
     variant,
-    size,
-    radius,
     isLoading,
     leftIcon,
     rightIcon,
     children,
+    iconOnly,
     handlePress,
     ...rest
   } = props as ButtonProps;
@@ -63,7 +52,7 @@ export const Button = forwardRef<
     </>
   );
 
-  const classes = clsx(buttonStyles({ variant, size, radius }), className);
+  const classes = clsx(buttonStyles({ variant, iconOnly }), className);
 
   if ("href" in props && props.href) {
     const anchorProps = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;

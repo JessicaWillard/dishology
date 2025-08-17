@@ -15,13 +15,9 @@ export default function Home() {
             Your culinary journey starts here
           </Text>
           <div className="mt-6 flex items-center justify-center gap-3">
-            <Button size="sm">Primary</Button>
-            <Button size="lg" variant="outline">
-              Outline
-            </Button>
-            <Button size="sm" variant="ghost">
-              Ghost
-            </Button>
+            <Button>Primary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
           </div>
         </div>
 

@@ -1,9 +1,7 @@
 import type React from "react";
 
 // Variant types kept in sync with the implementation
-export type ButtonVariant = "solid" | "outline" | "ghost" | "link";
-export type ButtonSize = "xs" | "sm" | "md" | "lg" | "icon";
-export type ButtonRadius = "md" | "lg" | "full";
+export type ButtonVariant = "solid" | "outline" | "ghost";
 
 export interface TBaseButtonProps {
   className?: string;
@@ -11,8 +9,7 @@ export interface TBaseButtonProps {
 
   // Style variants
   variant?: ButtonVariant;
-  size?: ButtonSize;
-  radius?: ButtonRadius;
+  iconOnly?: boolean;
 
   // Extras
   isLoading?: boolean;

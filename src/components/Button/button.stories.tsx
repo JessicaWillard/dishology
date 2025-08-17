@@ -13,15 +13,10 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: "select" },
-      options: ["solid", "outline", "ghost", "link"],
+      options: ["solid", "outline", "ghost"],
     },
-    size: {
-      control: { type: "select" },
-      options: ["xs", "sm", "md", "lg", "icon"],
-    },
-    radius: {
-      control: { type: "select" },
-      options: ["md", "lg", "full"],
+    iconOnly: {
+      control: { type: "boolean" },
     },
   },
   args: { children: "Button", handlePress: fn() },
@@ -48,28 +43,14 @@ export const Ghost: Story = {
   },
 };
 
-export const Link: Story = {
-  args: {
-    variant: "link",
-  },
-};
-
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">
-      <Button {...args} size="xs">
-        XS
-      </Button>
-      <Button {...args} size="sm">
-        SM
-      </Button>
-      <Button {...args} size="md">
-        MD
-      </Button>
-      <Button {...args} size="lg">
-        LG
-      </Button>
-      <Button {...args} size="icon" aria-label="icon">
+      <Button {...args}>X</Button>
+      <Button {...args}>SM</Button>
+      <Button {...args}>MD</Button>
+      <Button {...args}>LG</Button>
+      <Button {...args} iconOnly={true}>
         <Icon name="List" />
       </Button>
     </div>
