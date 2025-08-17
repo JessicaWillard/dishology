@@ -51,7 +51,7 @@ export const Sizes: Story = {
       <Button {...args}>MD</Button>
       <Button {...args}>LG</Button>
       <Button {...args} iconOnly={true}>
-        <Icon name="List" />
+        <Icon name="Warning" />
       </Button>
     </div>
   ),
