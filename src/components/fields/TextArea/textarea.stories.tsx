@@ -108,43 +108,6 @@ export const AutoExpanding: Story = {
   },
 };
 
-export const LargeTextArea: Story = {
-  args: {
-    label: "Recipe Instructions",
-    placeholder: "Provide detailed cooking instructions...",
-    rows: 8,
-    helperText:
-      "Include prep time, cooking time, and step-by-step instructions.",
-  },
-};
-
-export const NoResize: Story = {
-  args: {
-    label: "Fixed Size TextArea",
-    placeholder: "This textarea cannot be resized",
-    resize: "none",
-    rows: 4,
-  },
-};
-
-export const HorizontalResize: Story = {
-  args: {
-    label: "Horizontal Resize Only",
-    placeholder: "This textarea can only be resized horizontally",
-    resize: "horizontal",
-    rows: 4,
-  },
-};
-
-export const WithIcon: Story = {
-  args: {
-    label: "Recipe Notes",
-    placeholder: "Add your cooking notes...",
-    rightIcon: "Recipe",
-    rows: 4,
-  },
-};
-
 export const Disabled: Story = {
   args: {
     label: "Disabled TextArea",
@@ -152,46 +115,6 @@ export const Disabled: Story = {
     disabled: true,
     rows: 3,
   },
-};
-
-export const ReadOnly: Story = {
-  args: {
-    label: "Read Only Recipe",
-    value:
-      "This is a read-only recipe that cannot be modified. It contains the original instructions as provided by the chef.",
-    readOnly: true,
-    rows: 3,
-  },
-};
-
-export const TextAreaVariations: Story = {
-  render: () => (
-    <div className="space-y-4 max-w-lg">
-      <TextArea
-        label="Standard TextArea"
-        placeholder="Enter your text..."
-        rows={3}
-      />
-      <TextArea
-        label="With Icon"
-        placeholder="Recipe instructions..."
-        rightIcon="Recipe"
-        rows={4}
-      />
-      <TextArea
-        label="Auto-expanding"
-        placeholder="Start typing and watch me grow..."
-        autoExpand
-        rows={2}
-      />
-      <TextArea
-        label="Required Field"
-        placeholder="This field is required"
-        required
-        rows={3}
-      />
-    </div>
-  ),
 };
 
 export const NoLabel: Story = {
