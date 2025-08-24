@@ -12,13 +12,13 @@ export const fieldContainerStyles = tv({
 
 // Shared label styling - from labelStyles
 export const fieldLabelStyles = tv({
-  base: "mb-2 font-medium text-black",
+  base: "mb-2 text-sm text-black",
   variants: {
     error: {
       true: "text-error",
     },
     disabled: {
-      true: "text-gray-400",
+      true: "opacity-65",
     },
   },
 });
@@ -30,15 +30,14 @@ export const fieldWrapperStyles = tv({
 
 // Base field control styles - from inputStyles
 export const fieldControlStyles = tv({
-  base: "w-full border-2 rounded-xl transition-all duration-300 ease-in-out focus:outline-none focus-ring-color-1-500 px-4 py-3 text-base min-h-[44px]",
+  base: "w-full outline-1 outline-gray-dark hover:outline-2 rounded-lg transition-all duration-300 ease-in-out focus:outline-2 focus-ring-color-primary px-4 py-3 text-base min-h-[44px]",
   variants: {
     variant: {
-      default: "border-gray-200 bg-white text-black",
-      error: "border-error bg-white text-black",
+      default: "bg-white text-black",
+      error: "bg-white outline-error outline-2 text-black",
     },
     disabled: {
-      true: "bg-gray-100 text-gray-400 cursor-not-allowed opacity-50",
-      false: "bg-white text-black",
+      true: "pointer-events-none opacity-50",
     },
     hasRightIcon: {
       true: "pr-12",
@@ -52,7 +51,7 @@ export const fieldControlStyles = tv({
 
 // Shared icon positioning - from iconStyles
 export const fieldIconStyles = tv({
-  base: "absolute text-gray-400 pointer-events-none top-1/2 -translate-y-1/2 right-4",
+  base: "absolute text-gray-dark pointer-events-none top-1/2 -translate-y-1/2 right-4",
 });
 
 // Shared feedback text styling - from feedbackStyles
@@ -61,7 +60,28 @@ export const fieldFeedbackStyles = tv({
   variants: {
     type: {
       error: "text-error",
-      helper: "text-gray-400",
+      helper: "text-gray-dark",
+    },
+  },
+});
+
+// ComboBox specific styles
+export const comboBoxButtonStyles = tv({
+  base: "absolute top-1/2 -translate-y-1/2 right-4 text-gray-dark pointer-events-auto cursor-pointer hover:text-black transition-colors duration-200 focus:outline-none focus:text-black",
+});
+
+export const comboBoxListBoxStyles = tv({
+  base: "absolute top-full left-0 right-0 z-50 mt-1 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-auto focus:outline-none",
+});
+
+export const comboBoxOptionStyles = tv({
+  base: "px-4 py-3 cursor-pointer text-base first:rounded-t-xl last:rounded-b-xl hover:bg-gray-light",
+  variants: {
+    isSelected: {
+      true: "bg-gray-dark text-white hover:bg-gray-dark hover:text-white",
+    },
+    isDisabled: {
+      true: "pointer-events-none opacity-65",
     },
   },
 });
