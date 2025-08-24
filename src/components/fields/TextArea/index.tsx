@@ -116,7 +116,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             })}
           >
             {label}
-            {required && <span className="text-error ml-1">*</span>}
+            {required && <span className="ml-1">*</span>}
           </label>
         )}
 

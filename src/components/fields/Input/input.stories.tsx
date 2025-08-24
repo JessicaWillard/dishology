@@ -107,32 +107,6 @@ export const Disabled: Story = {
   },
 };
 
-export const ReadOnly: Story = {
-  args: {
-    label: "Read Only",
-    value: "This is read only",
-    readOnly: true,
-  },
-};
-
-export const InputVariations: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <Input label="Standard Input" placeholder="Enter text..." />
-      <Input
-        label="With Icon"
-        placeholder="Enter amount"
-        rightIcon="Currency"
-      />
-      <Input
-        label="Required Field"
-        placeholder="This field is required"
-        required
-      />
-    </div>
-  ),
-};
-
 export const NoLabel: Story = {
   args: {
     placeholder: "Input without visible label",

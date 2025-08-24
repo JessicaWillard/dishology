@@ -30,7 +30,7 @@ export const fieldWrapperStyles = tv({
 
 // Base field control styles - from inputStyles
 export const fieldControlStyles = tv({
-  base: "w-full outline-1 outline-gray-dark hover:outline-2 rounded-lg transition-all duration-300 ease-in-out focus:outline-2 focus-ring-color-primary px-4 py-3 text-base min-h-[44px]",
+  base: "w-full outline-1 outline-gray-dark hover:outline-2 rounded-lg transition-all duration-300 ease-in-out focus:outline-2 focus-ring-color-primary px-4 py-3 text-base min-h-[44px] placeholder:text-gray-medium",
   variants: {
     variant: {
       default: "bg-white text-black",
@@ -56,7 +56,7 @@ export const fieldIconStyles = tv({
 
 // Shared feedback text styling - from feedbackStyles
 export const fieldFeedbackStyles = tv({
-  base: "mt-2 text-sm",
+  base: "mt-2 text-xs",
   variants: {
     type: {
       error: "text-error",
