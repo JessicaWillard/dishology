@@ -50,9 +50,14 @@ const ComboBoxListBox = ({
   listBoxProps: Omit<AriaListBoxProps<object>, "children">;
   state: ComboBoxState<object>;
 }) => {
-  // Filter out the autoFocus prop that has incompatible types
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { autoFocus, ...filteredListBoxProps } = listBoxProps;
+  // Filter out React-specific props that shouldn't be passed to DOM elements
+  const {
+    // Extract React-specific props to prevent them from being spread to DOM
+    autoFocus: _,
+    shouldSelectOnPressUp: __,
+    shouldFocusOnHover: ___,
+    ...filteredListBoxProps
+  } = listBoxProps;
 
   return (
     <ul
