@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "build-storybook": {
+      "cache": true
+    }
+  }
+}
