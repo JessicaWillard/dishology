@@ -11,6 +11,14 @@ export type {
   ComboBoxItem,
 } from "./ComboBox/interface";
 
+export { Checkbox, CheckboxGroup } from "./Checkbox";
+export type {
+  CheckboxProps,
+  CheckboxVariant,
+  CheckboxGroupProps,
+  CheckboxGroupItem,
+} from "./Checkbox/interface";
+
 // Export centralized field theme utilities
 export {
   fieldContainerStyles,
@@ -19,4 +27,12 @@ export {
   fieldControlStyles,
   fieldIconStyles,
   fieldFeedbackStyles,
+  checkboxContainerStyles,
+  checkboxItemStyles,
+  checkboxInputStyles,
+  checkboxBoxStyles,
+  checkboxCheckStyles,
+  checkboxLabelContentStyles,
+  checkboxLabelTextStyles,
+  checkboxDescriptionStyles,
 } from "./theme";

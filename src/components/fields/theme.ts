@@ -85,3 +85,80 @@ export const comboBoxOptionStyles = tv({
     },
   },
 });
+
+// Checkbox specific styles
+export const checkboxContainerStyles = tv({
+  base: "flex items-start gap-6 mt-2",
+  variants: {
+    orientation: {
+      vertical: "flex-col",
+      horizontal: "flex-row flex-wrap",
+    },
+    disabled: {
+      true: "opacity-65 pointer-events-none",
+    },
+  },
+  defaultVariants: {
+    orientation: "vertical",
+  },
+});
+
+export const checkboxItemStyles = tv({
+  base: "flex items-start gap-2 cursor-pointer group",
+  variants: {
+    disabled: {
+      true: "cursor-not-allowed opacity-65",
+    },
+  },
+});
+
+export const checkboxInputStyles = tv({
+  base: "peer sr-only",
+});
+
+export const checkboxBoxStyles = tv({
+  base: "relative flex items-center justify-center w-5 h-5 mt-0.5 border-2 rounded transition-all duration-200 ease-in-out group-hover:border-gray-dark focus-within:ring-2 focus-within:ring-primary-light focus-within:ring-offset-2",
+  variants: {
+    variant: {
+      default:
+        "border-gray-medium bg-white peer-checked:bg-primary peer-checked:border-primary",
+      error:
+        "border-error bg-white peer-checked:bg-error peer-checked:border-error",
+    },
+    disabled: {
+      true: "opacity-50 cursor-not-allowed",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+export const checkboxCheckStyles = tv({
+  base: "absolute inset-0 flex items-center justify-center text-white transition-opacity duration-200 ease-in-out peer-checked:opacity-100",
+});
+
+export const checkboxLabelContentStyles = tv({
+  base: "flex flex-col",
+});
+
+export const checkboxLabelTextStyles = tv({
+  base: "text-sm text-black",
+  variants: {
+    disabled: {
+      true: "text-gray-medium",
+    },
+    error: {
+      true: "text-error",
+    },
+  },
+});
+
+export const checkboxDescriptionStyles = tv({
+  base: "text-xs text-gray-dark mt-1",
+  variants: {
+    disabled: {
+      true: "text-gray-medium",
+    },
+  },
+});
