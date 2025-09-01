@@ -13,7 +13,7 @@ import { clsx } from "clsx";
 import type { PopoverProps } from "./interface";
 
 const popoverStyles = tv({
-  base: "bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-w-sm outline-none",
+  base: "bg-white border border-gray-200 rounded-xl shadow-lg z-50 p-4 outline-none",
 });
 
 export const Popover = ({
