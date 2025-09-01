@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 
 const boxStyles = tv(
   {
-    base: "relative w-full bg-white text-foreground border border-foreground/10",
+    base: "relative w-full bg-white text-foreground ",
     variants: {
       tone: {
         default: "bg-white",
@@ -17,7 +17,12 @@ const boxStyles = tv(
         md: "p-4",
         lg: "p-6",
       },
+      // border: {
+      //   false: "border-none",
+      //   true: "border",
+      // },
       radius: {
+        none: "rounded-none",
         md: "rounded-md",
         lg: "rounded-lg",
         full: "rounded-full",
@@ -31,9 +36,9 @@ const boxStyles = tv(
     },
     defaultVariants: {
       tone: "default",
-      padding: "md",
-      radius: "md",
-      shadow: "sm",
+      padding: "none",
+      radius: "none",
+      shadow: "none",
     },
   },
   { twMerge: false }

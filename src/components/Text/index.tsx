@@ -16,10 +16,16 @@ const textStyles = tv(
       size: {
         xs: "text-xs",
         sm: "text-sm",
-        md: "text-base font-medium",
-        lg: "text-lg font-bold",
-        xl: "text-xl font-extrabold",
-        "2xl": "text-2xl font-extrabold",
+        md: "text-base",
+        lg: "text-lg",
+        xl: "text-xl",
+        "2xl": "text-2xl",
+      },
+      weight: {
+        normal: "font-normal",
+        medium: "font-medium",
+        bold: "font-bold",
+        extrabold: "font-extrabold",
       },
       align: {
         left: "text-left",
@@ -31,7 +37,26 @@ const textStyles = tv(
       variant: "body",
       size: "sm",
       align: "left",
+      weight: "normal",
     },
+    compoundVariants: [
+      {
+        size: "md",
+        weight: "medium",
+      },
+      {
+        size: "lg",
+        weight: "bold",
+      },
+      {
+        size: "xl",
+        weight: "extrabold",
+      },
+      {
+        size: "2xl",
+        weight: "extrabold",
+      },
+    ],
   },
   { twMerge: false }
 );
@@ -42,12 +67,15 @@ export type TextProps = HTMLAttributes<HTMLParagraphElement> &
   };
 
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
-  ({ as = "p", className, variant, size, align, ...rest }, ref) => {
+  ({ as = "p", className, variant, size, align, weight, ...rest }, ref) => {
     const Comp = as as ElementType;
     return (
       <Comp
         ref={ref}
-        className={clsx(textStyles({ variant, size, align }), className)}
+        className={clsx(
+          textStyles({ variant, size, align, weight }),
+          className
+        )}
         {...rest}
       />
     );
