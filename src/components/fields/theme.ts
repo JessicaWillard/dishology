@@ -162,3 +162,44 @@ export const checkboxDescriptionStyles = tv({
     },
   },
 });
+
+export const datePickerContainer = tv({
+  base: "relative inline-flex flex-col text-left w-full gap-2",
+});
+
+export const datePickerWrapper = tv({
+  base: "w-full flex items-center gap-4 border-1 border-gray-dark rounded focus-ring-black",
+});
+
+export const datePickerCalendarPopoverUnderlay = tv({
+  base: "fixed inset-0",
+});
+
+export const datePickerCalendarPopoverContainer = tv({
+  base: "absolute top-full bg-white border border-gray-dark rounded-md shadow-lg mt-2 p-8 z-10",
+});
+
+export const datePickerDateField = tv({
+  base: "pr-1 flex gap-2",
+  defaultVariants: {
+    dateFieldShown: true,
+  },
+  variants: {
+    dateFieldShown: {
+      true: "",
+      false: "hidden",
+    },
+  },
+});
+
+export const datePickerDateSegment = tv({
+  base: "focus-ring-black  focus:bg-blue-300",
+});
+
+export const datePickerIcon = tv({
+  base: "text-primary bg-gray-light border-l-2 border-primary h-full py-2 px-2",
+});
+
+export const datePickerLabel = tv({
+  base: "text-gray-medium font-bold px-2",
+});
