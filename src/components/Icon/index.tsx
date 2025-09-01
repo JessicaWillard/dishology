@@ -1,7 +1,6 @@
 import React, { forwardRef, type CSSProperties } from "react";
 import * as Icons from "../icons";
 import type { IconProps } from "./interface";
-export type { IconProps } from "./interface";
 export type IconName = keyof typeof Icons;
 
 export const Icon = forwardRef<

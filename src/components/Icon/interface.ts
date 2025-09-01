@@ -1,5 +1,4 @@
 import type React from "react";
-
 export interface IconProps
   extends Omit<React.SVGProps<SVGSVGElement>, "width" | "height"> {
   name: IconName | string;
