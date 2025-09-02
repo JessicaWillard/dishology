@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SupplierForm } from "@/components/SupplierForm";
 import { useSuppliers } from "@/hooks/useSuppliers";
 import { Button } from "@/components/Button";
+import { Icon } from "@/components/Icon";
 import { SupplierCard } from "@/components/SupplierCard";
 import type { Supplier } from "@/types/supplier";
 
@@ -87,14 +88,14 @@ export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
       </div>
 
       {/* Create Form Section */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Create New Supplier</h2>
           <Button
             variant="solid"
+            iconOnly
             handlePress={() => setShowCreateForm(!showCreateForm)}
           >
-            {showCreateForm ? "Cancel" : "Add Supplier"}
+            {showCreateForm ? <Icon name="CloseBtn" /> : <Icon name="Plus" />}
           </Button>
         </div>
 

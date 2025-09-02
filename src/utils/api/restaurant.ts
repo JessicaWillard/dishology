@@ -1,5 +1,8 @@
 // Simplified restaurant utilities for suppliers_simple table
 
+import { createClient } from "../supabase/server";
+import { Restaurant } from "@/types/supplier";
+
 /**
  * Get user's restaurant ID from their profile
  * If user doesn't have a restaurant, create a default one
@@ -18,6 +21,7 @@ export async function getUserRestaurantId(userId: string): Promise<string> {
 /**
  * Create a default restaurant for a user and assign it to their profile
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function createDefaultRestaurantForUser(userId: string): Promise<string> {
   console.log("createDefaultRestaurantForUser - Starting for user:", userId);
   const supabase = await createClient();
