@@ -29,6 +29,11 @@ export interface SupplierFormProps {
   onCancel?: () => void;
 
   /**
+   * Called when user deletes the supplier (edit mode only)
+   */
+  onDelete?: (id: string) => void;
+
+  /**
    * Whether to show the cancel button
    */
   showCancel?: boolean;

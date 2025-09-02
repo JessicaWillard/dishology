@@ -178,7 +178,6 @@ export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
                 phone={supplier.contact.phone}
                 website={supplier.contact.website}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
               />
             ))}
           </div>

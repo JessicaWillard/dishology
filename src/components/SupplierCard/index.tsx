@@ -27,18 +27,11 @@ export const SupplierCard = (props: SupplierCardProps) => {
     phone,
     website,
     onEdit,
-    onDelete,
   } = props;
 
   const handleEdit = () => {
     if (id && onEdit) {
       onEdit(id);
-    }
-  };
-
-  const handleDelete = () => {
-    if (id && onDelete) {
-      onDelete(id);
     }
   };
 
@@ -62,18 +55,11 @@ export const SupplierCard = (props: SupplierCardProps) => {
             </Text>
           )}
         </Box>
-        <Box className="flex items-center gap-2">
-          {onEdit && (
-            <Button variant="ghost" handlePress={handleEdit}>
-              Edit
-            </Button>
-          )}
-          {onDelete && (
-            <Button variant="ghost" handlePress={handleDelete}>
-              Delete
-            </Button>
-          )}
-        </Box>
+        {onEdit && (
+          <Button variant="ghost" handlePress={handleEdit}>
+            Edit
+          </Button>
+        )}
       </Box>
       <hr className="w-full border-gray-light" />
       <Box className={clsx(supplierCardBodyStyles())}>

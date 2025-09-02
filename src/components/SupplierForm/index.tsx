@@ -6,7 +6,11 @@ import { tv } from "tailwind-variants";
 import type { SupplierFormProps } from "./interface";
 import type { SupplierFormData } from "@/types/supplier";
 import { useSupplierForm } from "@/hooks/useSupplierForm";
-import { createSupplier, updateSupplier } from "@/utils/api/suppliers";
+import {
+  createSupplier,
+  updateSupplier,
+  deleteSupplier,
+} from "@/utils/api/suppliers";
 import { Input } from "../fields/Input";
 import { TextArea } from "../fields/TextArea";
 import { Button } from "../Button";
@@ -46,6 +50,7 @@ export function SupplierForm({
   onSuccess,
   onError,
   onCancel,
+  onDelete,
   showCancel = true,
   submitText,
   cancelText = "Cancel",
@@ -112,6 +117,31 @@ export function SupplierForm({
     resetForm();
     onCancel?.();
   }, [isDirty, resetForm, onCancel]);
+
+  // Handle delete
+  const handleDelete = useCallback(async () => {
+    console.log("Delete button clicked", { initialData, onDelete });
+
+    if (!initialData?.id) {
+      console.log("No initial data ID found");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this supplier? This action cannot be undone."
+    );
+    if (!confirmed) return;
+
+    try {
+      await deleteSupplier(initialData.id);
+      onDelete?.(initialData.id);
+      // Close the form after successful deletion
+      onCancel?.();
+    } catch (error) {
+      console.error("Delete error:", error);
+      onError?.(error as Error);
+    }
+  }, [initialData, onDelete, onCancel, onError]);
 
   const isFormLoading = isLoading || isSubmitting;
   const defaultSubmitText = mode === "create" ? "Save" : "Save Changes";
@@ -205,10 +235,13 @@ export function SupplierForm({
         {/* Form Actions */}
         <div
           className={formActionsStyles({
-            alignment: showCancel ? "between" : "right",
+            alignment:
+              (showCancel && mode === "create") || mode === "edit"
+                ? "between"
+                : "right",
           })}
         >
-          {showCancel && (
+          {mode === "create" && showCancel && (
             <Button
               type="button"
               variant="outline"
@@ -216,6 +249,17 @@ export function SupplierForm({
               disabled={isFormLoading}
             >
               {cancelText}
+            </Button>
+          )}
+
+          {mode === "edit" && (
+            <Button
+              type="button"
+              variant="destructive"
+              handlePress={handleDelete}
+              disabled={isFormLoading}
+            >
+              Delete
             </Button>
           )}
 

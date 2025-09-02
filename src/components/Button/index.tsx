@@ -15,6 +15,8 @@ const buttonStyles = tv(
           "border-2 border-primary text-primary hover:bg-primary hover:text-white",
         ghost:
           "text-primary hover:text-secondary !min-w-0 !min-h-0 !px-0 !rounded-none",
+        destructive:
+          "text-error hover:text-black !min-w-0 !min-h-0 !px-0 !rounded-none",
       },
       iconOnly: {
         true: "!px-0",

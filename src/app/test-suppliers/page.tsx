@@ -14,14 +14,12 @@ export default async function TestSuppliersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Supplier Management Test
-            </h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold">Supplier Management Test</h1>
+            <p className="text-gray-dark mt-2">
               Test the supplier form and list functionality
             </p>
           </header>

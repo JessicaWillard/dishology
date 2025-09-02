@@ -9,5 +9,4 @@ export interface SupplierCardProps {
   phone: Nullable<string>;
   website: Nullable<string>;
   onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
 }
