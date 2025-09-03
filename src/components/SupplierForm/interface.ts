@@ -31,7 +31,7 @@ export interface SupplierFormProps {
   /**
    * Called when user deletes the supplier (edit mode only)
    */
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string) => Promise<void>;
 
   /**
    * Whether to show the cancel button
@@ -57,4 +57,14 @@ export interface SupplierFormProps {
    * Whether the form is in a loading state
    */
   isLoading?: boolean;
+
+  /**
+   * Function to create a new supplier (for create mode)
+   */
+  onCreate?: (data: SupplierFormData) => Promise<Supplier>;
+
+  /**
+   * Function to update an existing supplier (for edit mode)
+   */
+  onUpdate?: (id: string, data: Partial<SupplierFormData>) => Promise<Supplier>;
 }

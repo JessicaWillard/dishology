@@ -8,14 +8,16 @@ import { Icon } from "@/components/Icon";
 import { SupplierCard } from "@/components/SupplierCard";
 import type { Supplier } from "@/types/supplier";
 
-interface TestSuppliersClientProps {
+interface SuppliersClientProps {
   userId: string;
 }
 
-export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
-  const { suppliers, loading, error, refetch } = useSuppliers();
+  const { suppliers, loading, error, refetch, create, update, remove } =
+    useSuppliers();
 
   const handleCreateSuccess = (supplier: Supplier) => {
     console.log("Supplier created:", supplier);
@@ -46,49 +48,10 @@ export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this supplier?")) {
-      try {
-        const response = await fetch(`/api/suppliers/${id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          refetch();
-        } else {
-          throw new Error("Failed to delete supplier");
-        }
-      } catch (error) {
-        console.error("Delete error:", error);
-        alert("Failed to delete supplier");
-      }
-    }
-  };
-
   return (
-    <div className="space-y-8">
-      {/* Debug Info */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h3 className="font-semibold text-blue-900 mb-2">Debug Information</h3>
-        <div className="text-sm text-blue-800 space-y-1">
-          <p>
-            <strong>User ID:</strong> {userId}
-          </p>
-          <p>
-            <strong>Suppliers Count:</strong> {suppliers.length}
-          </p>
-          <p>
-            <strong>Loading:</strong> {loading ? "Yes" : "No"}
-          </p>
-          {error && (
-            <p className="text-red-600">
-              <strong>Error:</strong> {error}
-            </p>
-          )}
-        </div>
-      </div>
-
+    <div className="flex flex-col gap-8 justify-center items-center">
       {/* Create Form Section */}
-      <div className="">
+      <div className="w-full flex flex-col justify-center items-center">
         <div className="flex items-center justify-between mb-4">
           <Button
             variant="solid"
@@ -106,13 +69,14 @@ export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
             onError={handleCreateError}
             onCancel={() => setShowCreateForm(false)}
             showCancel={true}
+            onCreate={create}
           />
         )}
       </div>
 
       {/* Edit Form Section */}
       {editingSupplier && (
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="w-full rounded-lg shadow-sm border p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Edit Supplier</h2>
             <Button
@@ -130,23 +94,14 @@ export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
             onError={handleEditError}
             onCancel={() => setEditingSupplier(null)}
             showCancel={true}
+            onUpdate={update}
+            onDelete={remove}
           />
         </div>
       )}
 
       {/* Suppliers List Section */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Existing Suppliers</h2>
-          <Button
-            variant="outline"
-            handlePress={() => refetch()}
-            disabled={loading}
-          >
-            {loading ? "Loading..." : "Refresh"}
-          </Button>
-        </div>
-
+      <div className="w-full">
         {loading && suppliers.length === 0 ? (
           <p className="text-gray-500">Loading suppliers...</p>
         ) : error ? (
@@ -185,4 +140,4 @@ export function TestSuppliersClient({ userId }: TestSuppliersClientProps) {
       </div>
     </div>
   );
-}
+};

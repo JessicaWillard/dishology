@@ -48,15 +48,9 @@ export default function Home() {
                 ✅ You&apos;re signed in! Welcome back.
               </p>
               <div className="space-y-3">
-                <p className="text-sm text-gray-600">
-                  • Browse our recipe collection
-                </p>
-                <p className="text-sm text-gray-600">
-                  • Create your own recipes
-                </p>
-                <p className="text-sm text-gray-600">
-                  • Join cooking challenges
-                </p>
+                <Button variant="solid" href="/suppliers">
+                  Manage Suppliers
+                </Button>
               </div>
             </SignedIn>
           </div>
@@ -65,9 +59,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Your Profile
             </h2>
-            <SignedIn>
-              <UserProfile />
-            </SignedIn>
+            <SignedIn>{/* <UserProfile /> */}</SignedIn>
             <SignedOut>
               <div className="text-center py-8">
                 <Image

@@ -6,11 +6,7 @@ import { tv } from "tailwind-variants";
 import type { SupplierFormProps } from "./interface";
 import type { SupplierFormData } from "@/types/supplier";
 import { useSupplierForm } from "@/hooks/useSupplierForm";
-import {
-  createSupplier,
-  updateSupplier,
-  deleteSupplier,
-} from "@/utils/api/suppliers";
+import { deleteSupplier } from "@/utils/api/suppliers";
 import { Input } from "../fields/Input";
 import { TextArea } from "../fields/TextArea";
 import { Button } from "../Button";
@@ -56,6 +52,8 @@ export function SupplierForm({
   cancelText = "Cancel",
   className,
   isLoading = false,
+  onCreate,
+  onUpdate,
 }: SupplierFormProps) {
   // Initialize form with existing data for edit mode
   const formInitialData = initialData
@@ -85,15 +83,21 @@ export function SupplierForm({
   const onSubmit = useCallback(
     async (data: SupplierFormData) => {
       if (mode === "create") {
-        return await createSupplier(data);
+        if (!onCreate) {
+          throw new Error("onCreate function is required for create mode");
+        }
+        return await onCreate(data);
       } else {
         if (!initialData?.id) {
           throw new Error("Cannot update supplier without ID");
         }
-        return await updateSupplier(initialData.id, data);
+        if (!onUpdate) {
+          throw new Error("onUpdate function is required for edit mode");
+        }
+        return await onUpdate(initialData.id, data);
       }
     },
-    [mode, initialData?.id]
+    [mode, initialData?.id, onCreate, onUpdate]
   );
 
   // Handle form submission
@@ -133,8 +137,11 @@ export function SupplierForm({
     if (!confirmed) return;
 
     try {
-      await deleteSupplier(initialData.id);
-      onDelete?.(initialData.id);
+      if (onDelete) {
+        await onDelete(initialData.id);
+      } else {
+        await deleteSupplier(initialData.id);
+      }
       // Close the form after successful deletion
       onCancel?.();
     } catch (error) {
