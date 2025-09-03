@@ -7,6 +7,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     height={24}
     viewBox="0 0 24 24"
     fill="none"
+    {...props}
   >
     <g clip-path="url(#clip0_74306_828)">
       <path
