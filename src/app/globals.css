@@ -17,6 +17,24 @@
   --color-gray-medium: #92918e;
   --color-gray-dark: #494743;
   --color-error: #dc2a2a;
+  --color-produce: #456628;
+  --color-produce-light: #f5f7f0;
+  --color-dry: #6e4d2c;
+  --color-dry-light: #f7f5f0;
+  --color-meat: #aa3c3b;
+  --color-meat-light: #faf6f2;
+  --color-dairy: #293873;
+  --color-dairy-light: #f0f4f7;
+  --color-beverage: #295466;
+  --color-beverage-light: #f0f6f7;
+  --color-cleaning: #4a1d96;
+  --color-cleaning-light: #f7f0fa;
+  --color-smallwares: #161e2e;
+  --color-smallwares-light: #edf2f5;
+  --color-equipment: #751a3d;
+  --color-equipment-light: #f7edf4;
+  --color-other: #f26249;
+  --color-other-light: #fffcf7;
 
   /* Fonts */
   --font-sans: var(--font-inter);
