@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import type { DateValue } from "@internationalized/date";
 import type {
   DateFieldState,

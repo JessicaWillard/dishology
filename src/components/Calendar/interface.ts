@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import type { CalendarDate, DateValue } from "@internationalized/date";
 import type { CalendarProps, RangeCalendarProps } from "@react-aria/calendar";
 import type {

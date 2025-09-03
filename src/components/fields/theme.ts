@@ -168,7 +168,7 @@ export const datePickerContainer = tv({
 });
 
 export const datePickerWrapper = tv({
-  base: "w-full flex items-center gap-4 border-1 border-gray-dark rounded focus-ring-black",
+  base: "w-full flex items-center gap-4 p-4 !rounded-lg border-1 border-gray-dark hover:border-gray-dark focus-ring-black",
 });
 
 export const datePickerCalendarPopoverUnderlay = tv({

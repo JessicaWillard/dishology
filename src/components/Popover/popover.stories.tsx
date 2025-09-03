@@ -95,7 +95,6 @@ export const Placements: Story = {
 
 export const WithComplexContent: Story = {
   render: () => (
-    // eslint-disable-next-line react/no-children-prop
     <PopoverDemo placement={"bottom"}>
       <div className="p-4 w-80">
         <div className="flex items-center gap-3 mb-3">

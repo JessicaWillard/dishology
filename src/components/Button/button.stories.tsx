@@ -43,6 +43,12 @@ export const Ghost: Story = {
   },
 };
 
+export const Destructive: Story = {
+  args: {
+    variant: "destructive",
+  },
+};
+
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">

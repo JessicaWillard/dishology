@@ -18,8 +18,23 @@ export const supplierCardBodyStyles = tv({
 });
 
 export const SupplierCard = (props: SupplierCardProps) => {
-  const { supplierName, description, contactName, email, phone, website } =
-    props;
+  const {
+    id,
+    supplierName,
+    description,
+    contactName,
+    email,
+    phone,
+    website,
+    onEdit,
+  } = props;
+
+  const handleEdit = () => {
+    if (id && onEdit) {
+      onEdit(id);
+    }
+  };
+
   return (
     <Box
       className={clsx(supplierCardContainerStyles())}
@@ -40,7 +55,11 @@ export const SupplierCard = (props: SupplierCardProps) => {
             </Text>
           )}
         </Box>
-        <Button variant="ghost">Edit</Button>
+        {onEdit && (
+          <Button variant="ghost" handlePress={handleEdit}>
+            Edit
+          </Button>
+        )}
       </Box>
       <hr className="w-full border-gray-light" />
       <Box className={clsx(supplierCardBodyStyles())}>

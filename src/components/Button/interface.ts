@@ -1,7 +1,7 @@
 import type React from "react";
 
 // Variant types kept in sync with the implementation
-export type ButtonVariant = "solid" | "outline" | "ghost";
+export type ButtonVariant = "solid" | "outline" | "ghost" | "destructive";
 
 export interface TBaseButtonProps {
   className?: string;
