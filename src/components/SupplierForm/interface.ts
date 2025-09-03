@@ -1,4 +1,4 @@
-import type { Supplier, SupplierFormData } from "@/types/supplier";
+import type { Supplier, SupplierFormData } from "@/utils/types/supplier";
 
 export type SupplierFormMode = "create" | "edit";
 

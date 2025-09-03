@@ -5,10 +5,9 @@ import { clsx } from "clsx";
 
 const textStyles = tv(
   {
-    base: "text-foreground",
     variants: {
       variant: {
-        body: "leading-relaxed",
+        body: "leading-normal",
         muted: "text-foreground/70",
         danger: "!text-error",
         success: "text-primary",
@@ -32,12 +31,19 @@ const textStyles = tv(
         center: "text-center",
         right: "text-right",
       },
+      width: {
+        auto: "w-auto",
+        full: "w-full",
+        fit: "w-fit",
+        max: "w-max",
+      },
     },
     defaultVariants: {
       variant: "body",
       size: "sm",
       align: "left",
       weight: "normal",
+      width: "auto",
     },
     compoundVariants: [
       {
@@ -67,13 +73,16 @@ export type TextProps = HTMLAttributes<HTMLParagraphElement> &
   };
 
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
-  ({ as = "p", className, variant, size, align, weight, ...rest }, ref) => {
+  (
+    { as = "p", className, variant, size, align, weight, width, ...rest },
+    ref
+  ) => {
     const Comp = as as ElementType;
     return (
       <Comp
         ref={ref}
         className={clsx(
-          textStyles({ variant, size, align, weight }),
+          textStyles({ variant, size, align, weight, width }),
           className
         )}
         {...rest}

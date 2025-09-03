@@ -2,7 +2,7 @@ import type {
   Supplier,
   SupplierFormData,
   SupplierListResponse,
-} from "@/types/supplier";
+} from "@/utils/types/supplier";
 
 /**
  * Client-side API utilities for supplier operations

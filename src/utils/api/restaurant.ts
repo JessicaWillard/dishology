@@ -1,7 +1,7 @@
 // Simplified restaurant utilities for suppliers_simple table
 
 import { createClient } from "../supabase/server";
-import { Restaurant } from "@/types/supplier";
+import { Restaurant } from "@/utils/types/supplier";
 
 /**
  * Get user's restaurant ID from their profile

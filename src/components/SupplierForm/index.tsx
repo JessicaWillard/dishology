@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { clsx } from "clsx";
 import { tv } from "tailwind-variants";
 import type { SupplierFormProps } from "./interface";
-import type { SupplierFormData } from "@/types/supplier";
+import type { SupplierFormData } from "@/utils/types/supplier";
 import { useSupplierForm } from "@/hooks/useSupplierForm";
 import { deleteSupplier } from "@/utils/api/suppliers";
 import { Input } from "../fields/Input";

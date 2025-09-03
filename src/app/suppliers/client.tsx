@@ -6,7 +6,7 @@ import { useSuppliers } from "@/hooks/useSuppliers";
 import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { SupplierCard } from "@/components/SupplierCard";
-import type { Supplier } from "@/types/supplier";
+import type { Supplier } from "@/utils/types/supplier";
 
 interface SuppliersClientProps {
   userId: string;
