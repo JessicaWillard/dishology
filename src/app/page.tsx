@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/Button";
 import { Text } from "@/components/Text";
-import { SignedIn, SignedOut, UserProfile } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function Home() {
   return (

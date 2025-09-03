@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createServiceRoleClient } from "@/utils/supabase/server";
-import { getUserRestaurantId } from "@/utils/api/restaurant";
 import type { UpdateSupplierRequest } from "@/types/supplier";
 
 /**
@@ -10,7 +9,7 @@ import type { UpdateSupplierRequest } from "@/types/supplier";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -19,10 +18,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
-
-    // Get user's restaurant ID
-    const restaurantId = await getUserRestaurantId(userId);
+    const { id } = await params;
 
     const supabase = await createServiceRoleClient();
 
@@ -63,7 +59,7 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -72,11 +68,8 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
-
-    // Get user's restaurant ID
-    const restaurantId = await getUserRestaurantId(userId);
 
     const updateData: Partial<UpdateSupplierRequest> = {};
 
@@ -140,7 +133,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -149,10 +142,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
-
-    // Get user's restaurant ID
-    const restaurantId = await getUserRestaurantId(userId);
+    const { id } = await params;
 
     const supabase = await createServiceRoleClient();
 

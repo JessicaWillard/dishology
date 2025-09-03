@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import type { DateValue } from "@internationalized/date";
 import { createCalendar } from "@internationalized/date";
 import type { AriaDatePickerProps } from "@react-aria/datepicker";
@@ -48,7 +47,6 @@ function DateField(props: AriaDatePickerProps<DateValue>) {
   return (
     <div {...fieldProps} ref={ref} className="flex">
       {state.segments.map((segment, i) => (
-        // eslint-disable-next-line react/no-array-index-key
         <DateSegment key={i} segment={segment} state={state} />
       ))}
     </div>

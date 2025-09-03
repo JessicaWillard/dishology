@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { createCalendar } from "@internationalized/date";
 import { useRangeCalendar } from "@react-aria/calendar";
 import { useLocale } from "@react-aria/i18n";

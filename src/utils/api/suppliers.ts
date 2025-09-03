@@ -32,6 +32,7 @@ async function handleApiResponse<T>(response: Response): Promise<T> {
 
   try {
     return await response.json();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     throw new SupplierApiError("Invalid response from server", response.status);
   }

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createServiceRoleClient } from "@/utils/supabase/server";
-import { getUserRestaurantId } from "@/utils/api/restaurant";
 import type { CreateSupplierRequest } from "@/types/supplier";
 
 /**
@@ -19,11 +18,6 @@ export async function GET() {
     }
 
     console.log("GET /api/suppliers - User ID:", userId);
-
-    // Get user's restaurant ID
-    console.log("GET /api/suppliers - Getting restaurant ID...");
-    const restaurantId = await getUserRestaurantId(userId);
-    console.log("GET /api/suppliers - Restaurant ID:", restaurantId);
 
     const supabase = await createServiceRoleClient();
 
@@ -71,9 +65,6 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-
-    // Get user's restaurant ID
-    const restaurantId = await getUserRestaurantId(userId);
 
     const supplierData: CreateSupplierRequest = {
       name: body.name,
