@@ -26,7 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        elements: {
+          modalBackdrop: "backdrop-blur-sm",
+        },
+      }}
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
+      afterSignOutUrl="/"
+    >
       <html lang="en">
         <body className={`${inter.variable} antialiased font-sans`}>
           <header className="border-b border-gray-200 bg-white">
@@ -39,12 +49,12 @@ export default function RootLayout({
                 </div>
                 <div className="flex items-center space-x-4">
                   <SignedOut>
-                    <SignInButton mode="modal">
+                    <SignInButton mode="modal" forceRedirectUrl="/">
                       <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                         Sign In
                       </button>
                     </SignInButton>
-                    <SignUpButton mode="modal">
+                    <SignUpButton mode="modal" forceRedirectUrl="/">
                       <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                         Sign Up
                       </button>
