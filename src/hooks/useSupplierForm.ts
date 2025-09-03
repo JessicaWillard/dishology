@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { SupplierFormData, Supplier } from "@/types/supplier";
+import type { SupplierFormData, Supplier } from "@/utils/types/supplier";
 import {
   validateSupplier,
   validateField,

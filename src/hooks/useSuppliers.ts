@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import type { Supplier, SupplierFormData } from "@/types/supplier";
+import type { Supplier, SupplierFormData } from "@/utils/types/supplier";
 import {
   fetchSuppliers,
   createSupplier,

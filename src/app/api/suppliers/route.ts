@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createServiceRoleClient } from "@/utils/supabase/server";
-import type { CreateSupplierRequest } from "@/types/supplier";
+import type { CreateSupplierRequest } from "@/utils/types/supplier";
 
 /**
  * GET /api/suppliers
