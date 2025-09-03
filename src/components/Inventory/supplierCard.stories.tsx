@@ -68,6 +68,10 @@ const meta: Meta<typeof InventoryCard> = {
       control: { type: "text" },
       description: "Count date",
     },
+    minCount: {
+      control: { type: "number" },
+      description: "Minimum count",
+    },
   },
   args: {
     name: "Inventory Name",
@@ -79,7 +83,7 @@ const meta: Meta<typeof InventoryCard> = {
     pricePerUnit: "10",
     pricePerPack: "10",
     countDate: new CalendarDate(2025, 1, 1),
-    isLow: false,
+    minCount: "5",
   },
 };
 

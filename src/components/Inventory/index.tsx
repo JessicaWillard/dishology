@@ -8,6 +8,7 @@ import {
   inventoryHighlightStyles,
   inventoryCardLowInventoryStyles,
 } from "./theme";
+import { useEffect, useState } from "react";
 
 export const InventoryCard = (props: InventoryProps) => {
   const {
@@ -22,9 +23,15 @@ export const InventoryCard = (props: InventoryProps) => {
     pricePerPack,
     supplier,
     countDate,
-    isLow = false,
     onEdit,
+    minCount,
   } = props;
+
+  const [isLow, setIsLow] = useState(false);
+  const lowStock = parseFloat(quantity) <= parseFloat(minCount || "0");
+  useEffect(() => {
+    setIsLow(lowStock);
+  }, [lowStock]);
 
   const handleEdit = () => {
     if (id && onEdit) {

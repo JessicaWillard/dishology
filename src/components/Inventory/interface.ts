@@ -26,6 +26,5 @@ export interface InventoryProps {
   location: Nullable<string>;
   minCount: Nullable<string>;
   countDate: CalendarDate;
-  isLow: boolean;
   onEdit?: (id: string) => void;
 }
