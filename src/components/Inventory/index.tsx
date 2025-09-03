@@ -23,7 +23,7 @@ export const InventoryCard = (props: InventoryProps) => {
     pricePerPack,
     supplier,
     countDate,
-    onEdit,
+    // onEdit,
     minCount,
   } = props;
 
@@ -33,11 +33,11 @@ export const InventoryCard = (props: InventoryProps) => {
     setIsLow(lowStock);
   }, [lowStock]);
 
-  const handleEdit = () => {
-    if (id && onEdit) {
-      onEdit(id);
-    }
-  };
+  // const handleEdit = () => {
+  //   if (id && onEdit) {
+  //     onEdit(id);
+  //   }
+  // };
 
   const totalPrice = pricePerUnit
     ? parseFloat(pricePerUnit) * parseFloat(quantity)
