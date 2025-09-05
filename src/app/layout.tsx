@@ -8,6 +8,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { QueryProvider } from "@/providers/QueryProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -67,7 +68,9 @@ export default function RootLayout({
               </div>
             </div>
           </header>
-          <main>{children}</main>
+          <main>
+            <QueryProvider>{children}</QueryProvider>
+          </main>
         </body>
       </html>
     </ClerkProvider>

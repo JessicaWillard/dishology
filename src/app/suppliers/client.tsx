@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SupplierForm } from "@/components/SupplierForm";
-import { useSuppliers } from "@/hooks/useSuppliers";
+import { useSuppliers } from "@/hooks/useSuppliersQuery";
 import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { SupplierCard } from "@/components/SupplierCard";
@@ -16,8 +16,18 @@ interface SuppliersClientProps {
 export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
-  const { suppliers, loading, error, refetch, create, update, remove } =
-    useSuppliers();
+  const {
+    suppliers,
+    loading,
+    error,
+    refetch,
+    create,
+    update,
+    remove,
+    isCreating,
+    isUpdating,
+    isDeleting,
+  } = useSuppliers();
 
   const handleCreateSuccess = () => {
     setShowCreateForm(false);
@@ -67,6 +77,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
             onCancel={() => setShowCreateForm(false)}
             showCancel={true}
             onCreate={create}
+            isLoading={isCreating}
           />
         )}
       </div>
@@ -93,6 +104,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
             showCancel={true}
             onUpdate={update}
             onDelete={remove}
+            isLoading={isUpdating || isDeleting}
           />
         </div>
       )}
