@@ -154,7 +154,7 @@ export function SupplierForm({
   const defaultSubmitText = mode === "create" ? "Save" : "Save Changes";
 
   return (
-    <Box padding="lg" radius="md" shadow="md">
+    <Box padding="lg" radius="md" shadow="md" width="full">
       <form
         onSubmit={handleFormSubmit}
         className={clsx(

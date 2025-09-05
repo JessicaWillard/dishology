@@ -84,7 +84,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
 
       {/* Edit Form Section */}
       {editingSupplier && (
-        <div className="w-full rounded-lg shadow-sm border p-6">
+        <div className="w-full">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Edit Supplier</h2>
             <Button
