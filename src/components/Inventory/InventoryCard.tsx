@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 export const InventoryCard = (props: InventoryProps) => {
   const {
-    id,
+    // id,
     name,
     type = "default",
     description,
