@@ -119,19 +119,19 @@ export const inventoryTHeaderRowStyles = tv({
 });
 
 export const inventoryTableRowStyles = tv({
-  base: "border-b border-gray-light hover:bg-gray-50 transition-colors relative",
+  base: "border-b  hover:bg-gray-50 transition-colors relative",
   variants: {
     variant: {
-      default: "bg-white",
-      produce: "bg-produce-light",
-      dry: "bg-dry-light",
-      meat: "bg-meat-light",
-      dairy: "bg-dairy-light",
-      beverage: "bg-beverage-light",
-      cleaning: "bg-cleaning-light",
-      smallwares: "bg-smallwares-light",
-      equipment: "bg-equipment-light",
-      other: "bg-other-light",
+      default: "bg-white border-gray-light",
+      produce: "bg-produce-light border-produce",
+      dry: "bg-dry-light border-dry",
+      meat: "bg-meat-light border-meat",
+      dairy: "bg-dairy-light border-dairy",
+      beverage: "bg-beverage-light border-beverage",
+      cleaning: "bg-cleaning-light border-cleaning",
+      smallwares: "bg-smallwares-light border-smallwares",
+      equipment: "bg-equipment-light border-equipment",
+      other: "bg-other-light border-other",
     },
     clickable: {
       true: "cursor-pointer",
@@ -173,7 +173,7 @@ export const inventoryTableCellStyles = tv({
 });
 
 export const inventoryTableQuantityStyles = tv({
-  base: "p-1 rounded-lg text-white text-xs font-medium",
+  base: "py-1 px-2 rounded-lg text-white text-xs font-medium",
   variants: {
     variant: {
       default: "bg-gray-dark",

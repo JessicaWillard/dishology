@@ -29,8 +29,9 @@ export interface InventoryProps {
   onEdit?: (id: string) => void;
 }
 
-export interface InventoryTableProps extends InventoryProps {
+export interface InventoryTableProps {
+  items: InventoryProps[];
   showHeader?: boolean;
-  compact?: boolean;
   onRowClick?: (id: string) => void;
+  type?: InventoryType | "mixed";
 }

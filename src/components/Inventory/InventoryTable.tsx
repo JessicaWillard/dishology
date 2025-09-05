@@ -1,53 +1,38 @@
-import Icon from "../Icon";
 import type { InventoryTableProps } from "./interface";
 import {
   inventoryTableStyles,
   inventoryTableHeaderStyles,
-  inventoryTableRowStyles,
-  inventoryTableCellStyles,
-  inventoryTableQuantityStyles,
   inventoryTHeaderRowStyles,
-  inventoryTableQuantityLowStyles,
 } from "./theme";
-import { useEffect, useState } from "react";
+import { InventoryRow } from "./InventoryRow";
 
 export const InventoryTable = (props: InventoryTableProps) => {
-  const {
-    id,
-    name,
-    type = "default",
-    quantity,
-    size,
-    unit,
-    pricePerUnit,
-    countDate,
-    minCount,
-    showHeader = true,
-    onRowClick,
-  } = props;
+  const { items, showHeader = true, onRowClick, type } = props;
 
-  const [isLow, setIsLow] = useState(false);
-  const lowStock = parseFloat(quantity) <= parseFloat(minCount || "0");
-
-  useEffect(() => {
-    setIsLow(lowStock);
-  }, [lowStock]);
-
-  const totalPrice = pricePerUnit
-    ? parseFloat(pricePerUnit) * parseFloat(quantity)
-    : 0;
-
-  const handleRowClick = () => {
-    if (onRowClick) {
-      onRowClick(id);
+  // Determine the header type based on items
+  const getHeaderType = () => {
+    if (type) {
+      return type === "mixed" ? "default" : type;
     }
+
+    if (items.length === 0) {
+      return "default";
+    }
+
+    // Check if all items have the same type
+    const firstItemType = items[0].type;
+    const allSameType = items.every((item) => item.type === firstItemType);
+
+    return allSameType ? firstItemType : "default";
   };
 
+  const headerType = getHeaderType();
+
   return (
-    <table className={inventoryTableStyles({ variant: type })}>
+    <table className={inventoryTableStyles({ variant: headerType })}>
       {showHeader && (
         <thead>
-          <tr className={inventoryTHeaderRowStyles({ variant: type })}>
+          <tr className={inventoryTHeaderRowStyles({ variant: headerType })}>
             <th className={`${inventoryTableHeaderStyles()} rounded-tl-lg`}>
               Item
             </th>
@@ -62,44 +47,9 @@ export const InventoryTable = (props: InventoryTableProps) => {
         </thead>
       )}
       <tbody>
-        <tr
-          className={inventoryTableRowStyles({
-            variant: type,
-            clickable: !!onRowClick,
-          })}
-          onClick={handleRowClick}
-        >
-          <td className={inventoryTableCellStyles({ variant: type })}>
-            <div>{name && <div className="font-medium">{name}</div>}</div>
-          </td>
-          <td className={inventoryTableCellStyles({ variant: type })}>
-            {size && unit ? `${parseFloat(size)} ${unit}` : "-"}
-          </td>
-          <td
-            className={inventoryTableCellStyles({
-              variant: type,
-            })}
-          >
-            <span className={inventoryTableQuantityStyles({ variant: type })}>
-              {parseFloat(quantity)}
-            </span>
-          </td>
-          <td className={inventoryTableCellStyles({ variant: type })}>
-            {countDate ? countDate.toString() : "-"}
-          </td>
-          <td className={inventoryTableCellStyles({ variant: type })}>
-            {pricePerUnit ? `$${parseFloat(pricePerUnit).toFixed(2)}` : "-"}
-          </td>
-          <td className={inventoryTableCellStyles({ variant: type })}>
-            {totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : "-"}
-          </td>
-          {isLow && (
-            <Icon
-              name="LowStock"
-              className={inventoryTableQuantityLowStyles()}
-            />
-          )}
-        </tr>
+        {items.map((item) => (
+          <InventoryRow key={item.id} {...item} onRowClick={onRowClick} />
+        ))}
       </tbody>
     </table>
   );
