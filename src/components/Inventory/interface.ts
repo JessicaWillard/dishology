@@ -14,17 +14,17 @@ export type InventoryType =
 
 export interface InventoryProps {
   id: string;
-  name: Nullable<string>;
+  name: string;
   type: InventoryType;
   description?: Nullable<string>;
   quantity: string;
-  size: Nullable<string>;
-  unit: Nullable<string>;
-  pricePerUnit: Nullable<string>;
+  size?: Nullable<string>;
+  unit?: Nullable<string>;
+  pricePerUnit: string;
   pricePerPack?: Nullable<string>;
   supplier?: Nullable<string>;
   location?: Nullable<string>;
-  minCount: Nullable<string>;
+  minCount?: Nullable<string>;
   countDate: CalendarDate;
   onEdit?: (id: string) => void;
 }

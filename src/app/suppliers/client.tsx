@@ -6,7 +6,7 @@ import { useSuppliers } from "@/hooks/useSuppliers";
 import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { SupplierCard } from "@/components/SupplierCard";
-import type { Supplier } from "@/utils/types/supplier";
+import type { Supplier } from "@/utils/types/database";
 
 interface SuppliersClientProps {
   userId: string;
@@ -19,19 +19,16 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
   const { suppliers, loading, error, refetch, create, update, remove } =
     useSuppliers();
 
-  const handleCreateSuccess = (supplier: Supplier) => {
-    console.log("Supplier created:", supplier);
+  const handleCreateSuccess = () => {
     setShowCreateForm(false);
     // The useSuppliers hook will automatically update the list
   };
 
   const handleCreateError = (error: Error) => {
-    console.error("Failed to create supplier:", error);
     alert(`Error creating supplier: ${error.message}`);
   };
 
-  const handleEditSuccess = (supplier: Supplier) => {
-    console.log("Supplier updated:", supplier);
+  const handleEditSuccess = () => {
     setEditingSupplier(null);
     // The useSuppliers hook will automatically update the list
   };
