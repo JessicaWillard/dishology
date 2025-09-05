@@ -1,4 +1,4 @@
-import type { IconName } from "@/components/Icon";
+import type { IconName } from "@/components/ui/Icon";
 import type React from "react";
 
 export type TextAreaVariant = "default" | "error";

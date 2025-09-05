@@ -1,4 +1,4 @@
-import type { SupplierFormData } from "@/utils/types/supplier";
+import type { SupplierFormData } from "@/utils/types/database";
 
 export interface ValidationErrors {
   [key: string]: string | undefined;

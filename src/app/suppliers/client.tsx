@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { SupplierForm } from "@/components/SupplierForm";
-import { useSuppliers } from "@/hooks/useSuppliers";
-import { Button } from "@/components/Button";
-import { Icon } from "@/components/Icon";
-import { SupplierCard } from "@/components/SupplierCard";
-import type { Supplier } from "@/utils/types/supplier";
+import { useSuppliers } from "@/hooks/useSuppliersQuery";
+import { SuppliersList } from "@/components/suppliers/SuppliersList";
+import { CreateSupplierSection } from "@/components/suppliers/CreateSupplierSection";
+import { EditSupplierSection } from "@/components/suppliers/EditSupplierSection";
+import type { Supplier } from "@/utils/types/database";
 
 interface SuppliersClientProps {
   userId: string;
@@ -14,32 +13,19 @@ interface SuppliersClientProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
-  const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
-  const { suppliers, loading, error, refetch, create, update, remove } =
-    useSuppliers();
-
-  const handleCreateSuccess = (supplier: Supplier) => {
-    console.log("Supplier created:", supplier);
-    setShowCreateForm(false);
-    // The useSuppliers hook will automatically update the list
-  };
-
-  const handleCreateError = (error: Error) => {
-    console.error("Failed to create supplier:", error);
-    alert(`Error creating supplier: ${error.message}`);
-  };
-
-  const handleEditSuccess = (supplier: Supplier) => {
-    console.log("Supplier updated:", supplier);
-    setEditingSupplier(null);
-    // The useSuppliers hook will automatically update the list
-  };
-
-  const handleEditError = (error: Error) => {
-    console.error("Failed to update supplier:", error);
-    alert(`Error updating supplier: ${error.message}`);
-  };
+  const {
+    suppliers,
+    loading,
+    error,
+    refetch,
+    create,
+    update,
+    remove,
+    isCreating,
+    isUpdating,
+    isDeleting,
+  } = useSuppliers();
 
   const handleEdit = (id: string) => {
     const supplier = suppliers.find((s) => s.id === id);
@@ -48,96 +34,33 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
     }
   };
 
+  const handleEditCancel = () => {
+    setEditingSupplier(null);
+  };
+
   return (
     <div className="flex flex-col gap-8 justify-center items-center">
-      {/* Create Form Section */}
-      <div className="w-full flex flex-col justify-center items-center">
-        <div className="flex items-center justify-between mb-4">
-          <Button
-            variant="solid"
-            iconOnly
-            handlePress={() => setShowCreateForm(!showCreateForm)}
-          >
-            {showCreateForm ? <Icon name="CloseBtn" /> : <Icon name="Plus" />}
-          </Button>
-        </div>
+      {/* Create Supplier Section */}
+      <CreateSupplierSection onCreate={create} isCreating={isCreating} />
 
-        {showCreateForm && (
-          <SupplierForm
-            mode="create"
-            onSuccess={handleCreateSuccess}
-            onError={handleCreateError}
-            onCancel={() => setShowCreateForm(false)}
-            showCancel={true}
-            onCreate={create}
-          />
-        )}
-      </div>
+      {/* Edit Supplier Section */}
+      <EditSupplierSection
+        editingSupplier={editingSupplier}
+        onUpdate={update}
+        onDelete={remove}
+        onCancel={handleEditCancel}
+        isUpdating={isUpdating}
+        isDeleting={isDeleting}
+      />
 
-      {/* Edit Form Section */}
-      {editingSupplier && (
-        <div className="w-full rounded-lg shadow-sm border p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Edit Supplier</h2>
-            <Button
-              variant="outline"
-              handlePress={() => setEditingSupplier(null)}
-            >
-              Cancel Edit
-            </Button>
-          </div>
-
-          <SupplierForm
-            mode="edit"
-            initialData={editingSupplier}
-            onSuccess={handleEditSuccess}
-            onError={handleEditError}
-            onCancel={() => setEditingSupplier(null)}
-            showCancel={true}
-            onUpdate={update}
-            onDelete={remove}
-          />
-        </div>
-      )}
-
-      {/* Suppliers List Section */}
-      <div className="w-full">
-        {loading && suppliers.length === 0 ? (
-          <p className="text-gray-500">Loading suppliers...</p>
-        ) : error ? (
-          <div className="text-red-600 bg-red-50 border border-red-200 rounded p-4">
-            <p className="font-semibold">Error loading suppliers:</p>
-            <p>{error}</p>
-            <Button
-              variant="outline"
-              handlePress={() => refetch()}
-              className="mt-2"
-            >
-              Retry
-            </Button>
-          </div>
-        ) : suppliers.length === 0 ? (
-          <p className="text-gray-500">
-            No suppliers found. Create your first supplier above!
-          </p>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
-            {suppliers.map((supplier) => (
-              <SupplierCard
-                key={supplier.id}
-                id={supplier.id}
-                supplierName={supplier.name}
-                description={supplier.description}
-                contactName={supplier.contact.contactName}
-                email={supplier.contact.email}
-                phone={supplier.contact.phone}
-                website={supplier.contact.website}
-                onEdit={handleEdit}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Suppliers List */}
+      <SuppliersList
+        suppliers={suppliers}
+        loading={loading}
+        error={error}
+        onEdit={handleEdit}
+        onRetry={refetch}
+      />
     </div>
   );
 };

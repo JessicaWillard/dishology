@@ -1,4 +1,4 @@
-import type { Nullable } from "../../utils/types/components";
+import type { Nullable } from "@/utils/types/components";
 
 export interface SupplierCardProps {
   id?: string;

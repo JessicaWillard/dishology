@@ -4,13 +4,13 @@ import { useCallback } from "react";
 import { clsx } from "clsx";
 import { tv } from "tailwind-variants";
 import type { SupplierFormProps } from "./interface";
-import type { SupplierFormData } from "@/utils/types/supplier";
+import type { SupplierFormData } from "@/utils/types/database";
 import { useSupplierForm } from "@/hooks/useSupplierForm";
 import { deleteSupplier } from "@/utils/api/suppliers";
-import { Input } from "../fields/Input";
-import { TextArea } from "../fields/TextArea";
-import { Button } from "../Button";
-import { Box } from "../Box";
+import { Input } from "../../fields/Input";
+import { TextArea } from "../../fields/TextArea";
+import { Button } from "../../ui/Button";
+import { Box } from "../../ui/Box";
 
 const supplierFormStyles = tv({
   base: "flex flex-col gap-6",
@@ -77,6 +77,8 @@ export function SupplierForm({
     initialData: formInitialData,
     onSuccess,
     onError,
+    formId: mode === "create" ? "create" : `edit-${initialData?.id || "new"}`,
+    enablePersistence: true,
   });
 
   // Submit handler
@@ -154,7 +156,7 @@ export function SupplierForm({
   const defaultSubmitText = mode === "create" ? "Save" : "Save Changes";
 
   return (
-    <Box padding="lg" radius="md" shadow="md">
+    <Box padding="lg" radius="md" shadow="md" width="full">
       <form
         onSubmit={handleFormSubmit}
         className={clsx(
