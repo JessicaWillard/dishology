@@ -1,7 +1,7 @@
 import type { SupplierCardProps } from "./interface";
-import { Box } from "../Box";
-import { Button } from "../Button";
-import { Text } from "../Text";
+import { Box } from "../../ui/Box";
+import { Button } from "../../ui/Button";
+import { Text } from "../../ui/Text";
 import { tv } from "tailwind-variants";
 import { clsx } from "clsx";
 

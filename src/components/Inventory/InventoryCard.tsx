@@ -1,6 +1,6 @@
 import type { InventoryProps } from "./interface";
-import { Box } from "../Box";
-import { Text } from "../Text";
+import { Box } from "../ui/Box";
+import { Text } from "../ui/Text";
 import {
   inventoryStyles,
   inventoryCardWrapperStyles,

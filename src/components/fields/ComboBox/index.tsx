@@ -11,7 +11,7 @@ import type { AriaButtonProps } from "@react-types/button";
 import type { ComboBoxState } from "react-stately";
 import type { Node } from "@react-types/shared";
 import type { AriaListBoxProps } from "@react-types/listbox";
-import Icon from "../../Icon";
+import Icon from "../../ui/Icon";
 import type { ComboBoxProps } from "./interface";
 import {
   fieldContainerStyles,

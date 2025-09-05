@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/Button";
-import { Text } from "@/components/Text";
+import { Button } from "@/components/ui/Button";
+import { Text } from "@/components/ui/Text";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function Home() {

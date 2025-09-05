@@ -1,4 +1,4 @@
-import Icon from "../Icon";
+import Icon from "../ui/Icon";
 import type { InventoryProps } from "./interface";
 import {
   inventoryTableRowStyles,

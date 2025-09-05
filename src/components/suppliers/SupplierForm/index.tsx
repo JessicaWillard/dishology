@@ -7,10 +7,10 @@ import type { SupplierFormProps } from "./interface";
 import type { SupplierFormData } from "@/utils/types/database";
 import { useSupplierForm } from "@/hooks/useSupplierForm";
 import { deleteSupplier } from "@/utils/api/suppliers";
-import { Input } from "../fields/Input";
-import { TextArea } from "../fields/TextArea";
-import { Button } from "../Button";
-import { Box } from "../Box";
+import { Input } from "../../fields/Input";
+import { TextArea } from "../../fields/TextArea";
+import { Button } from "../../ui/Button";
+import { Box } from "../../ui/Box";
 
 const supplierFormStyles = tv({
   base: "flex flex-col gap-6",
