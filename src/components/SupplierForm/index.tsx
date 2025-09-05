@@ -77,6 +77,8 @@ export function SupplierForm({
     initialData: formInitialData,
     onSuccess,
     onError,
+    formId: mode === "create" ? "create" : `edit-${initialData?.id || "new"}`,
+    enablePersistence: true,
   });
 
   // Submit handler
