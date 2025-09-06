@@ -1,9 +1,9 @@
-import type { InventoryTableProps } from "./interface";
+import type { InventoryTableProps } from "../interface";
 import {
   inventoryTableStyles,
   inventoryTableHeaderStyles,
   inventoryTHeaderRowStyles,
-} from "./theme";
+} from "../theme";
 import { InventoryRow } from "./InventoryRow";
 
 export const InventoryTable = (props: InventoryTableProps) => {

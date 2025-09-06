@@ -1,15 +1,5 @@
-import { Button } from "../../ui/Button";
 import { SupplierForm } from "../SupplierForm";
-import type { Supplier, SupplierFormData } from "@/utils/types/database";
-
-interface EditSupplierSectionProps {
-  editingSupplier: Supplier | null;
-  onUpdate: (id: string, data: Partial<SupplierFormData>) => Promise<Supplier>;
-  onDelete: (id: string) => Promise<void>;
-  onCancel: () => void;
-  isUpdating: boolean;
-  isDeleting: boolean;
-}
+import type { EditSupplierSectionProps } from "./interface";
 
 export function EditSupplierSection({
   editingSupplier,
@@ -33,12 +23,9 @@ export function EditSupplierSection({
   };
 
   return (
-    <div className="w-full rounded-lg shadow-sm border p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="w-full">
+      <div className="mb-6">
         <h2 className="text-xl font-semibold">Edit Supplier</h2>
-        <Button variant="outline" handlePress={onCancel}>
-          Cancel Edit
-        </Button>
       </div>
 
       <SupplierForm
@@ -47,7 +34,7 @@ export function EditSupplierSection({
         onSuccess={handleEditSuccess}
         onError={handleEditError}
         onCancel={onCancel}
-        showCancel={true}
+        showCancel={false}
         onUpdate={onUpdate}
         onDelete={onDelete}
         isLoading={isUpdating || isDeleting}

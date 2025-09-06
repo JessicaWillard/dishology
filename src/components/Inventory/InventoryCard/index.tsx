@@ -1,13 +1,13 @@
-import type { InventoryProps } from "./interface";
-import { Box } from "../ui/Box";
-import { Text } from "../ui/Text";
+import type { InventoryProps } from "../interface";
+import { Box } from "../../ui/Box";
+import { Text } from "../../ui/Text";
 import {
   inventoryStyles,
   inventoryCardWrapperStyles,
   inventoryTextStyles,
   inventoryHighlightStyles,
   inventoryCardLowInventoryStyles,
-} from "./theme";
+} from "../theme";
 import { useEffect, useState } from "react";
 
 export const InventoryCard = (props: InventoryProps) => {

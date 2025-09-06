@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { InventoryTable } from "./InventoryTable";
+import { InventoryTable } from ".";
 import { CalendarDate } from "@internationalized/date";
 
 const meta: Meta<typeof InventoryTable> = {

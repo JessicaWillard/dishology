@@ -124,6 +124,17 @@ export function SupplierForm({
     onCancel?.();
   }, [isDirty, resetForm, onCancel]);
 
+  // Handle reset
+  const handleReset = useCallback(() => {
+    if (isDirty) {
+      const confirmed = window.confirm(
+        "Are you sure you want to reset the form? All unsaved changes will be lost."
+      );
+      if (!confirmed) return;
+    }
+    resetForm();
+  }, [isDirty, resetForm]);
+
   // Handle delete
   const handleDelete = useCallback(async () => {
     console.log("Delete button clicked", { initialData, onDelete });
@@ -244,10 +255,7 @@ export function SupplierForm({
         {/* Form Actions */}
         <div
           className={formActionsStyles({
-            alignment:
-              (showCancel && mode === "create") || mode === "edit"
-                ? "between"
-                : "right",
+            alignment: "between",
           })}
         >
           {mode === "create" && showCancel && (
@@ -258,6 +266,17 @@ export function SupplierForm({
               disabled={isFormLoading}
             >
               {cancelText}
+            </Button>
+          )}
+
+          {mode === "create" && !showCancel && (
+            <Button
+              type="button"
+              variant="ghost"
+              handlePress={handleReset}
+              disabled={isFormLoading}
+            >
+              Reset
             </Button>
           )}
 
