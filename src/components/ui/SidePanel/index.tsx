@@ -46,7 +46,7 @@ export const SidePanel = ({
   }, [isOpen]);
 
   const widthClasses = {
-    half: "w-1/2",
+    half: "w-full lg:w-1/2",
     full: "w-full",
   };
 
