@@ -48,6 +48,9 @@ storybook-static
 
 # cursor
 .cursorrules
+.cursor/DATABASE_MODIFICATIONS.md
+.cursor/INTEGRATION_GUIDE.md
+
 
 
 
