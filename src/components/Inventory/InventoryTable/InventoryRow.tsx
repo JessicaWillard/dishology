@@ -1,11 +1,11 @@
-import Icon from "../ui/Icon";
-import type { InventoryProps } from "./interface";
+import Icon from "../../ui/Icon";
+import type { InventoryProps } from "../interface";
 import {
   inventoryTableRowStyles,
   inventoryTableCellStyles,
   inventoryTableQuantityStyles,
   inventoryTableQuantityLowStyles,
-} from "./theme";
+} from "../theme";
 import { useEffect, useState } from "react";
 
 interface InventoryRowProps extends InventoryProps {
