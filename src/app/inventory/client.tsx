@@ -3,12 +3,10 @@
 import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
-// TESTING: Using simple test component
-import { TestCard } from "@/components/Inventory/TestCard";
-// import { InventoryCard } from "@/components/inventory/InventoryCard";
-// import { InventoryTable } from "@/components/inventory/InventoryTable";
-// import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
-// import { EditInventorySection } from "@/components/inventory/EditInventorySection";
+import { InventoryCard } from "@/components/inventory/InventoryCard";
+import { InventoryTable } from "@/components/inventory/InventoryTable";
+import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
+import { EditInventorySection } from "@/components/inventory/EditInventorySection";
 // import { ComboBox } from "@/components/fields/ComboBox";
 import { Input } from "@/components/fields/Input";
 import { Button } from "@/components/ui/Button";
@@ -338,13 +336,27 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                 </Text>
               </Box> */}
               <Box className={clusterContentStyles({ view: viewMode })}>
-                {/* TESTING: Using simple TestCard */}
                 {viewMode === "card" ? (
-                  items.map((item) => <TestCard key={item.id} />)
+                  items.map((item) => (
+                    <InventoryCard
+                      key={item.id}
+                      id={item.id!}
+                      name={item.name}
+                      type={item.type || "other"}
+                      description={item.description}
+                      quantity={item.quantity}
+                      size={item.size}
+                      unit={item.unit}
+                      pricePerUnit={item.price_per_unit}
+                      pricePerPack={item.price_per_pack}
+                      supplier={item.supplier?.name}
+                      countDate={item.count_date}
+                      minCount={item.min_count}
+                      onEdit={handleEdit}
+                    />
+                  ))
                 ) : (
-                  <Text>Table view temporarily disabled for testing</Text>
-                )}
-                {/* <InventoryTable
+                  <InventoryTable
                     items={items.map((item) => ({
                       id: item.id!,
                       name: item.name,
@@ -361,15 +373,16 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                     }))}
                     type={type as InventoryType}
                     onRowClick={handleEdit}
-                  /> */}
+                  />
+                )}
               </Box>
             </Box>
           ))
         )}
       </Box>
 
-      {/* Side Panels - TEMPORARILY COMMENTED OUT FOR DEPLOYMENT TESTING */}
-      {/* <CreateInventorySection
+      {/* Side Panels */}
+      <CreateInventorySection
         onCreate={handleCreate}
         isCreating={isCreating}
         suppliers={supplierOptions}
@@ -385,7 +398,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         isDeleting={isDeleting}
         suppliers={supplierOptions}
         onClose={handleCloseEditPanel}
-      /> */}
+      />
     </Box>
   );
 }
