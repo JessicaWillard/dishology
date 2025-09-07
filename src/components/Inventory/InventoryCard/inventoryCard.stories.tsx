@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { InventoryCard } from "./index";
+import { InventoryCard } from ".";
 import { CalendarDate } from "@internationalized/date";
 
 const meta: Meta<typeof InventoryCard> = {
@@ -82,7 +82,7 @@ const meta: Meta<typeof InventoryCard> = {
     unit: "kg",
     pricePerUnit: "10",
     pricePerPack: "10",
-    countDate: "2025-01-01",
+    countDate: new CalendarDate(2025, 1, 1).toString(),
     minCount: "5",
   },
 };

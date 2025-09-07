@@ -3,10 +3,10 @@
 import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
-import { InventoryCard } from "@/components/inventory/InventoryCard";
-import { InventoryTable } from "@/components/inventory/InventoryTable";
-import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
-import { EditInventorySection } from "@/components/inventory/EditInventorySection";
+import { InventoryCard } from "../../components/inventory/InventoryCard";
+import { InventoryTable } from "../../components/inventory/InventoryTable";
+import { CreateInventorySection } from "../../components/inventory/CreateInventorySection";
+import { EditInventorySection } from "../../components/inventory/EditInventorySection";
 // import { ComboBox } from "@/components/fields/ComboBox";
 import { Input } from "@/components/fields/Input";
 import { Button } from "@/components/ui/Button";
