@@ -3,10 +3,11 @@
 import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
-import { InventoryCard } from "@/components/inventory/InventoryCard";
-import { InventoryTable } from "@/components/inventory/InventoryTable";
-import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
-import { EditInventorySection } from "@/components/inventory/EditInventorySection";
+// TEMPORARILY COMMENTED OUT FOR DEPLOYMENT TESTING
+// import { InventoryCard } from "@/components/inventory/InventoryCard";
+// import { InventoryTable } from "@/components/inventory/InventoryTable";
+// import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
+// import { EditInventorySection } from "@/components/inventory/EditInventorySection";
 // import { ComboBox } from "@/components/fields/ComboBox";
 import { Input } from "@/components/fields/Input";
 import { Button } from "@/components/ui/Button";
@@ -336,7 +337,9 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                 </Text>
               </Box> */}
               <Box className={clusterContentStyles({ view: viewMode })}>
-                {viewMode === "card" ? (
+                {/* TEMPORARILY COMMENTED OUT FOR DEPLOYMENT TESTING */}
+                <Text>Inventory components temporarily disabled for testing</Text>
+                {/* {viewMode === "card" ? (
                   items.map((item) => (
                     <InventoryCard
                       key={item.id}
@@ -374,15 +377,15 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                     type={type as InventoryType}
                     onRowClick={handleEdit}
                   />
-                )}
+                )} */}
               </Box>
             </Box>
           ))
         )}
       </Box>
 
-      {/* Side Panels */}
-      <CreateInventorySection
+      {/* Side Panels - TEMPORARILY COMMENTED OUT FOR DEPLOYMENT TESTING */}
+      {/* <CreateInventorySection
         onCreate={handleCreate}
         isCreating={isCreating}
         suppliers={supplierOptions}
@@ -398,7 +401,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         isDeleting={isDeleting}
         suppliers={supplierOptions}
         onClose={handleCloseEditPanel}
-      />
+      /> */}
     </Box>
   );
 }
