@@ -9,6 +9,7 @@ import {
   inventoryCardLowInventoryStyles,
 } from "../theme";
 import { useEffect, useState } from "react";
+import { formatDateFromString } from "@/utils/date";
 
 export const InventoryCard = (props: InventoryProps) => {
   const {
@@ -79,11 +80,9 @@ export const InventoryCard = (props: InventoryProps) => {
             {supplier}
           </Text>
         )}
-        {countDate && (
-          <Text size="xs" weight="bold">
-            {countDate.toString()}
-          </Text>
-        )}
+        <Text size="xs" weight="bold">
+          {formatDateFromString(countDate)}
+        </Text>
       </Box>
       <hr className={inventoryStyles({ variant: type })} />
       <Box display="flexRow" gap="xl" justify="between" align="center">

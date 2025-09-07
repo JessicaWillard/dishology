@@ -7,6 +7,7 @@ import {
   inventoryTableQuantityLowStyles,
 } from "../theme";
 import { useEffect, useState } from "react";
+import { formatDateFromString } from "@/utils/date";
 
 interface InventoryRowProps extends InventoryProps {
   onRowClick?: (id: string) => void;
@@ -67,7 +68,7 @@ export const InventoryRow = (props: InventoryRowProps) => {
         </span>
       </td>
       <td className={inventoryTableCellStyles({ variant: type })}>
-        {countDate ? countDate.toString() : "-"}
+        {formatDateFromString(countDate)}
       </td>
       <td className={inventoryTableCellStyles({ variant: type })}>
         {pricePerUnit ? `$${parseFloat(pricePerUnit).toFixed(2)}` : "-"}

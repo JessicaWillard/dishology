@@ -1,5 +1,4 @@
 import type { Nullable } from "../../utils/types/components";
-import type { CalendarDate } from "@internationalized/date";
 
 export type InventoryType =
   | "produce"
@@ -25,7 +24,7 @@ export interface InventoryProps {
   supplier?: Nullable<string>;
   location?: Nullable<string>;
   minCount?: Nullable<string>;
-  countDate: CalendarDate;
+  countDate: string;
   onEdit?: (id: string) => void;
 }
 

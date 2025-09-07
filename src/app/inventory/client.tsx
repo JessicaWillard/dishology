@@ -18,7 +18,7 @@ import type {
   InventoryType,
   InventoryFormData,
 } from "@/utils/types/database";
-import type { CalendarDate } from "@internationalized/date";
+import { formatDateFromString, formatDateForInput } from "@/utils/date";
 import { tv } from "tailwind-variants";
 
 const inventoryPageStyles = tv({
@@ -192,7 +192,12 @@ export function InventoryClient({ userId }: InventoryClientProps) {
     (id: string) => {
       const item = inventory.find((i) => i.id === id);
       if (item) {
-        setEditingItem(item);
+        // Transform the item to have the correct date format for the form
+        const editingItem = {
+          ...item,
+          count_date: formatDateForInput(item.count_date),
+        };
+        setEditingItem(editingItem);
       }
     },
     [inventory]
@@ -343,9 +348,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                       pricePerUnit={item.price_per_unit}
                       pricePerPack={item.price_per_pack}
                       supplier={item.supplier?.name}
-                      countDate={
-                        new Date(item.count_date) as unknown as CalendarDate
-                      }
+                      countDate={formatDateFromString(item.count_date)}
                       minCount={item.min_count}
                       onEdit={handleEdit}
                     />
@@ -363,9 +366,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                       pricePerUnit: item.price_per_unit,
                       pricePerPack: item.price_per_pack,
                       supplier: (item as InventoryWithSupplier).supplier?.name,
-                      countDate: new Date(
-                        item.count_date
-                      ) as unknown as CalendarDate,
+                      countDate: formatDateFromString(item.count_date),
                       minCount: item.min_count,
                     }))}
                     type={type as InventoryType}
