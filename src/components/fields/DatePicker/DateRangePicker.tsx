@@ -1,6 +1,6 @@
 "use client";
-import { useDateRangePicker } from "@react-aria/datepicker";
-import { useDateRangePickerState } from "@react-stately/datepicker";
+import { useDateRangePicker } from "react-aria";
+import { useDateRangePickerState } from "react-stately";
 import { useRef } from "react";
 import { Box } from "../../ui/Box";
 import { Button } from "../../ui/Button";
@@ -32,6 +32,16 @@ function DateRangePicker(props: TDateRangePickerProps) {
     calendarProps,
   } = useDateRangePicker(props, state, ref);
 
+  // Filter out isDisabled from field props to avoid React warnings
+  const { isDisabled: _startFieldIsDisabled, ...filteredStartFieldProps } =
+    startFieldProps;
+
+  const { isDisabled: _endFieldIsDisabled, ...filteredEndFieldProps } =
+    endFieldProps;
+
+  // Filter out isDisabled from button props to avoid React warnings
+  const { isDisabled: _buttonIsDisabled, ...filteredButtonProps } = buttonProps;
+
   const { label, buttonLabel, description, popoverPlacement, icon } = props;
 
   const containerTheme = datePickerContainer();
@@ -46,15 +56,15 @@ function DateRangePicker(props: TDateRangePickerProps) {
         <Box className={datePickerWrapper()}>
           {buttonLabel && <p className={labelTheme}>{buttonLabel}</p>}
           <div className={dateFieldTheme}>
-            <DateField {...startFieldProps} /> –
-            <DateField {...endFieldProps} />
+            <DateField {...filteredStartFieldProps} /> –
+            <DateField {...filteredEndFieldProps} />
             {state.isInvalid && "❌"}
           </div>
           <Button
             type="button"
             iconOnly
             variant="ghost"
-            {...buttonProps}
+            {...filteredButtonProps}
             handlePress={buttonProps.onPress as unknown as () => void}
           >
             <Icon name={icon || "Calendar"} />
@@ -71,8 +81,8 @@ function DateRangePicker(props: TDateRangePickerProps) {
         >
           <Dialog {...dialogProps}>
             <div className={dateFieldTheme}>
-              <DateField {...startFieldProps} /> -
-              <DateField {...endFieldProps} />
+              <DateField {...filteredStartFieldProps} /> -
+              <DateField {...filteredEndFieldProps} />
               {state.isInvalid && "❌"}
             </div>
             <RangeCalendar {...calendarProps} />

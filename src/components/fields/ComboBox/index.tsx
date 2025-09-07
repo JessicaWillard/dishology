@@ -3,14 +3,16 @@
 
 import { forwardRef, useId, useRef } from "react";
 import { clsx } from "clsx";
-import { FocusRing } from "@react-aria/focus";
-import { useButton, useComboBox, useFilter, useOption } from "react-aria";
-import { useComboBoxState } from "react-stately";
-import { Item } from "@react-stately/collections";
-import type { AriaButtonProps } from "@react-types/button";
-import type { ComboBoxState } from "react-stately";
-import type { Node } from "@react-types/shared";
-import type { AriaListBoxProps } from "@react-types/listbox";
+import {
+  FocusRing,
+  useButton,
+  useComboBox,
+  useFilter,
+  useOption,
+} from "react-aria";
+import { useComboBoxState, Item, type ComboBoxState } from "react-stately";
+import type { AriaButtonProps, AriaListBoxProps } from "react-aria";
+import type { Node } from "react-stately";
 import Icon from "../../ui/Icon";
 import type { ComboBoxProps } from "./interface";
 import {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useDatePicker } from "@react-aria/datepicker";
-import { useDatePickerState } from "@react-stately/datepicker";
+import { useDatePicker, type PressEvent } from "react-aria";
+import { useDatePickerState } from "react-stately";
 import { useRef } from "react";
 import { Box } from "../../ui/Box";
 import { Button } from "../../ui/Button";
@@ -19,13 +19,13 @@ import {
 } from "../theme";
 import { datePickerLabel } from "../theme";
 
-function DatePicker({
+export const DatePicker = ({
   popoverPlacement = "bottom start",
   icon,
   description,
   buttonLabel,
   ...rest
-}: TDatePickerProps) {
+}: TDatePickerProps) => {
   const state = useDatePickerState({ ...rest });
   const ref = useRef<HTMLDivElement>(null);
   const {
@@ -37,6 +37,20 @@ function DatePicker({
     dialogProps,
     calendarProps,
   } = useDatePicker({ ...rest }, state, ref);
+
+  // Extract only the props we need from buttonProps to avoid React warnings
+  const {
+    onPress,
+    id,
+    "aria-label": ariaLabel,
+    "aria-describedby": ariaDescribedby,
+    "aria-expanded": ariaExpanded,
+    "aria-haspopup": ariaHaspopup,
+    isDisabled,
+  } = buttonProps;
+
+  // Filter out isDisabled from fieldProps to avoid React warnings
+  const { isDisabled: _, ...filteredFieldProps } = fieldProps;
 
   const { label } = { ...rest };
 
@@ -52,15 +66,25 @@ function DatePicker({
         <Box className={datePickerWrapper()}>
           {buttonLabel && <p className={labelTheme}>{buttonLabel}</p>}
           <div className={dateFieldTheme}>
-            <DateField {...fieldProps} />
+            <DateField {...filteredFieldProps} />
             {state.isInvalid && "❌"}
           </div>
           <Button
-            {...buttonProps}
             iconOnly
             variant="ghost"
             type="button"
-            handlePress={buttonProps.onPress as unknown as () => void}
+            handlePress={
+              onPress
+                ? (e: React.MouseEvent<HTMLButtonElement>) =>
+                    onPress?.(e as unknown as PressEvent)
+                : undefined
+            }
+            id={id}
+            aria-label={ariaLabel}
+            aria-describedby={ariaDescribedby}
+            aria-expanded={ariaExpanded}
+            aria-haspopup={ariaHaspopup}
+            disabled={!!isDisabled}
           >
             <Icon name={icon || "Calendar"} />
           </Button>
@@ -76,7 +100,7 @@ function DatePicker({
         >
           <Dialog {...dialogProps}>
             <div>
-              <DateField {...fieldProps} />
+              <DateField {...filteredFieldProps} />
               {state.isInvalid && "❌"}
             </div>
             <Calendar {...calendarProps} />
@@ -85,6 +109,6 @@ function DatePicker({
       )}
     </div>
   );
-}
+};
 
-export default DatePicker;
+DatePicker.displayName = "DatePicker";

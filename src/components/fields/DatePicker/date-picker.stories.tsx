@@ -1,5 +1,5 @@
 import DateRangePicker from "./DateRangePicker";
-import DatePicker from ".";
+import { DatePicker } from ".";
 import type { TDatePickerProps, TDateRangePickerProps } from "./interface";
 import type { DateValue } from "@internationalized/date";
 

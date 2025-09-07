@@ -1,9 +1,8 @@
 "use client";
 
 import { createCalendar } from "@internationalized/date";
-import { useCalendar } from "@react-aria/calendar";
-import { useLocale } from "@react-aria/i18n";
-import { useCalendarState } from "@react-stately/calendar";
+import { useCalendar, useLocale } from "react-aria";
+import { useCalendarState } from "react-stately";
 import { useRef } from "react";
 import { Button } from "../Button";
 import Icon from "../Icon";
@@ -28,12 +27,16 @@ const Calendar = ({ buttons, ...rest }: TCalendarProps) => {
   const { calendarProps, prevButtonProps, nextButtonProps, title } =
     useCalendar({ ...rest }, state);
 
+  // Filter out isDisabled from calendarProps to avoid React warnings
+  const { isDisabled: _calendarIsDisabled, ...filteredCalendarProps } =
+    calendarProps;
+
   const containerTheme = calendarContainer();
   const headerTheme = calendarHeaderContainer();
   const navigationButtonsContainer = calendarNavigationButtonsContainer();
 
   return (
-    <div {...calendarProps} ref={ref} className={containerTheme}>
+    <div {...filteredCalendarProps} ref={ref} className={containerTheme}>
       <div className={headerTheme}>
         <Text as="p" size="sm">
           {title}

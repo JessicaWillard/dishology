@@ -59,9 +59,13 @@ export const Button = forwardRef<
   if ("href" in props && props.href) {
     type ExtendedAnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
       linkBehavior?: unknown;
+      isDisabled?: boolean;
     };
-    const { linkBehavior: _ignoreLinkBehavior, ...anchorProps } =
-      rest as ExtendedAnchorProps;
+    const {
+      linkBehavior: _ignoreLinkBehavior,
+      isDisabled: _ignoreIsDisabled,
+      ...anchorProps
+    } = rest as ExtendedAnchorProps;
     return (
       <a
         ref={ref as React.Ref<HTMLAnchorElement>}
@@ -80,9 +84,13 @@ export const Button = forwardRef<
 
   type ExtendedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     linkBehavior?: unknown;
+    isDisabled?: boolean;
   };
-  const { linkBehavior: _ignoreLinkBehavior, ...buttonProps } =
-    rest as ExtendedButtonProps;
+  const {
+    linkBehavior: _ignoreLinkBehavior,
+    isDisabled: _ignoreIsDisabled,
+    ...buttonProps
+  } = rest as ExtendedButtonProps;
   return (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}

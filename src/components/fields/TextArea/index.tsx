@@ -2,7 +2,7 @@
 
 import { forwardRef, useId, useRef, useEffect } from "react";
 import { clsx } from "clsx";
-import { FocusRing } from "@react-aria/focus";
+import { FocusRing } from "react-aria";
 import Icon from "../../ui/Icon";
 import type { TextAreaProps } from "./interface";
 import {

@@ -2,7 +2,7 @@
 
 import { forwardRef, useId, useRef } from "react";
 import { clsx } from "clsx";
-import { FocusRing } from "@react-aria/focus";
+import { FocusRing } from "react-aria";
 import Icon from "../../ui/Icon";
 import type { CheckboxProps, CheckboxGroupProps } from "./interface";
 import {

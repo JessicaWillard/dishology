@@ -1,10 +1,10 @@
 import type { CalendarDate, DateValue } from "@internationalized/date";
-import type { CalendarProps, RangeCalendarProps } from "@react-aria/calendar";
 import type {
-  CalendarState,
-  RangeCalendarState,
-} from "@react-stately/calendar";
-import type { AriaCalendarGridProps } from "react-aria";
+  CalendarProps,
+  RangeCalendarProps,
+  AriaCalendarGridProps,
+} from "react-aria";
+import type { CalendarState, RangeCalendarState } from "react-stately";
 
 export interface TCalendarProps extends CalendarProps<DateValue> {
   buttons?: {

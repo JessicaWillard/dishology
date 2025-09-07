@@ -4,8 +4,8 @@ import type {
   DateSegment,
   DatePickerStateOptions,
   DateRangePickerStateOptions,
-} from "@react-stately/datepicker";
-import type { RangeValue } from "@react-types/shared";
+} from "react-stately";
+import type { RangeValue } from "react-aria";
 import type { PopoverPlacement } from "../../ui/Popover/interface";
 export interface TDateSegmentProps {
   segment: DateSegment;
