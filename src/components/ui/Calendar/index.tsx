@@ -27,9 +27,8 @@ const Calendar = ({ buttons, ...rest }: TCalendarProps) => {
   const { calendarProps, prevButtonProps, nextButtonProps, title } =
     useCalendar({ ...rest }, state);
 
-  // Filter out isDisabled from calendarProps to avoid React warnings
-  const { isDisabled: _calendarIsDisabled, ...filteredCalendarProps } =
-    calendarProps;
+  // Use calendarProps directly since isDisabled doesn't exist on this type
+  const filteredCalendarProps = calendarProps;
 
   const containerTheme = calendarContainer();
   const headerTheme = calendarHeaderContainer();

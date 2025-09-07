@@ -25,23 +25,12 @@ function RangeCalendar({ buttons, ...rest }: TRangeCalendarProps) {
   const { calendarProps, prevButtonProps, nextButtonProps, title } =
     useRangeCalendar({ ...rest }, state, ref);
 
-  // Filter out isDisabled from calendarProps to avoid React warnings
-  const { isDisabled: _calendarIsDisabled, ...filteredCalendarProps } =
-    calendarProps;
-
-  // Filter out isDisabled from button props to avoid React warnings
-  const { isDisabled: _prevIsDisabled, ...filteredPrevButtonProps } =
-    prevButtonProps;
-
-  const { isDisabled: _nextIsDisabled, ...filteredNextButtonProps } =
-    nextButtonProps;
-
   const containerTheme = calendarContainer();
   const headerTheme = calendarHeaderContainer();
   const navigationButtonsContainer = calendarNavigationButtonsContainer();
 
   return (
-    <div {...filteredCalendarProps} ref={ref} className={containerTheme}>
+    <div {...calendarProps} ref={ref} className={containerTheme}>
       <div className={headerTheme}>
         <Text as="p" size="sm">
           {title}
@@ -50,7 +39,7 @@ function RangeCalendar({ buttons, ...rest }: TRangeCalendarProps) {
           <Button
             iconOnly
             type="button"
-            {...filteredPrevButtonProps}
+            {...prevButtonProps}
             handlePress={() => prevButtonProps.onPress?.({} as never)}
           >
             <Icon name={buttons?.buttonPrev?.icon ?? "ArrowLeft"} />
@@ -58,7 +47,7 @@ function RangeCalendar({ buttons, ...rest }: TRangeCalendarProps) {
           <Button
             iconOnly
             type="button"
-            {...filteredNextButtonProps}
+            {...nextButtonProps}
             handlePress={() => nextButtonProps.onPress?.({} as never)}
           >
             <Icon name={buttons?.buttonNext?.icon ?? "ArrowRight"} />

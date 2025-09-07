@@ -82,7 +82,7 @@ const meta: Meta<typeof InventoryCard> = {
     unit: "kg",
     pricePerUnit: "10",
     pricePerPack: "10",
-    countDate: new CalendarDate(2025, 1, 1),
+    countDate: "2025-01-01",
     minCount: "5",
   },
 };

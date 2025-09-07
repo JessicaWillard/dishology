@@ -9,10 +9,9 @@ function CalendarGrid({ state, ...rest }: TCalendarGridProps) {
   const { gridProps, headerProps } = useCalendarGrid({ ...rest }, state);
   const weekDays = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
-  // Filter out isDisabled from gridProps and headerProps to avoid React warnings
-  const { isDisabled: _gridIsDisabled, ...filteredGridProps } = gridProps;
-
-  const { isDisabled: _headerIsDisabled, ...filteredHeaderProps } = headerProps;
+  // Use gridProps and headerProps directly since isDisabled doesn't exist on these types
+  const filteredGridProps = gridProps;
+  const filteredHeaderProps = headerProps;
 
   // Get the number of weeks in the month so we can render the proper number of rows.
   const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);

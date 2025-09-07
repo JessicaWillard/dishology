@@ -34,7 +34,7 @@ const meta: Meta<typeof InventoryTable> = {
 export default meta;
 type Story = StoryObj<typeof InventoryTable>;
 
-const sampleDate = new CalendarDate(2025, 7, 25);
+const sampleDate = new CalendarDate(2025, 7, 25).toString();
 
 const sampleItems = [
   {
