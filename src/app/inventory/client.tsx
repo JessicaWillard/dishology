@@ -3,8 +3,8 @@
 import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
-// TEMPORARILY COMMENTED OUT FOR DEPLOYMENT TESTING
-// import { InventoryCard } from "@/components/inventory/InventoryCard";
+// TESTING: Adding back components one by one
+import { InventoryCard } from "@/components/inventory/InventoryCard";
 // import { InventoryTable } from "@/components/inventory/InventoryTable";
 // import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
 // import { EditInventorySection } from "@/components/inventory/EditInventorySection";
@@ -337,9 +337,8 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                 </Text>
               </Box> */}
               <Box className={clusterContentStyles({ view: viewMode })}>
-                {/* TEMPORARILY COMMENTED OUT FOR DEPLOYMENT TESTING */}
-                <Text>Inventory components temporarily disabled for testing</Text>
-                {/* {viewMode === "card" ? (
+                {/* TESTING: Adding back InventoryCard only */}
+                {viewMode === "card" ? (
                   items.map((item) => (
                     <InventoryCard
                       key={item.id}
@@ -359,7 +358,9 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                     />
                   ))
                 ) : (
-                  <InventoryTable
+                  <Text>Table view temporarily disabled for testing</Text>
+                )}
+                {/* <InventoryTable
                     items={items.map((item) => ({
                       id: item.id!,
                       name: item.name,
@@ -376,8 +377,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                     }))}
                     type={type as InventoryType}
                     onRowClick={handleEdit}
-                  />
-                )} */}
+                  /> */}
               </Box>
             </Box>
           ))
