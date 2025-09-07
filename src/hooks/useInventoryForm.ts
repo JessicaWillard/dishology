@@ -66,7 +66,7 @@ export function useInventoryForm(options: UseInventoryFormOptions = {}) {
 
     return {
       name: initialData?.name || "",
-      type: initialData?.type || "other",
+      type: initialData?.type || null,
       description: initialData?.description || "",
       quantity: initialData?.quantity || "0",
       size: initialData?.size || "",
@@ -128,7 +128,7 @@ export function useInventoryForm(options: UseInventoryFormOptions = {}) {
   const resetForm = useCallback(() => {
     const resetData = {
       name: initialData?.name || "",
-      type: initialData?.type || "other",
+      type: initialData?.type || null,
       description: initialData?.description || "",
       quantity: initialData?.quantity || "0",
       size: initialData?.size || "",

@@ -11,6 +11,7 @@ import { TextArea } from "../../fields/TextArea";
 import { ComboBox } from "../../fields/ComboBox";
 import { Button } from "../../ui/Button";
 import { Box } from "../../ui/Box";
+import { Icon } from "../../ui/Icon";
 
 const inventoryFormStyles = tv({
   base: "flex flex-col gap-6",
@@ -59,12 +60,6 @@ const UNITS = [
   { id: "oz", name: "oz" },
   { id: "l", name: "L" },
   { id: "ml", name: "ml" },
-  { id: "cup", name: "cup" },
-  { id: "tbsp", name: "tbsp" },
-  { id: "tsp", name: "tsp" },
-  { id: "piece", name: "piece" },
-  { id: "box", name: "box" },
-  { id: "case", name: "case" },
 ];
 
 export function InventoryForm({
@@ -79,6 +74,7 @@ export function InventoryForm({
   cancelText = "Cancel",
   className,
   isLoading = false,
+  createSupplierUrl,
   onCreate,
   onUpdate,
   suppliers = [],
@@ -290,8 +286,9 @@ export function InventoryForm({
             variant="solid"
             className="mt-6 h-10 w-10 p-0"
             aria-label="Add new supplier"
+            href={createSupplierUrl}
           >
-            +
+            <Icon name="Plus" />
           </Button>
         </div>
 
@@ -337,10 +334,10 @@ export function InventoryForm({
       {/* Form Actions */}
       <Box
         className={formActionsStyles({
-          alignment: canDelete ? "between" : "right",
+          alignment: "between",
         })}
       >
-        {canDelete && (
+        {canDelete && mode === "edit" && (
           <Button
             type="button"
             variant="ghost"
@@ -352,27 +349,27 @@ export function InventoryForm({
           </Button>
         )}
 
-        <div className="flex gap-3">
-          {showCancel && (
-            <Button
-              type="button"
-              variant="ghost"
-              handlePress={handleCancel}
-              disabled={isFormLoading}
-            >
-              {cancelText}
-            </Button>
-          )}
-
+        {/* <div className="flex gap-3"> */}
+        {showCancel && mode === "create" && (
           <Button
-            type="submit"
-            variant="solid"
+            type="button"
+            variant="ghost"
+            handlePress={handleCancel}
             disabled={isFormLoading}
-            isLoading={isSubmitting}
           >
-            {submitText || (mode === "create" ? "Create Item" : "Update Item")}
+            {cancelText}
           </Button>
-        </div>
+        )}
+
+        <Button
+          type="submit"
+          variant="solid"
+          disabled={isFormLoading}
+          isLoading={isSubmitting}
+        >
+          {submitText || (mode === "create" ? "Create Item" : "Update Item")}
+        </Button>
+        {/* </div> */}
       </Box>
     </form>
   );

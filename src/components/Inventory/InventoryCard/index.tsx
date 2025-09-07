@@ -71,7 +71,9 @@ export const InventoryCard = (props: InventoryProps) => {
         </Box>
         {isLow && (
           <Box padding="xs" className={inventoryCardLowInventoryStyles()}>
-            <Text size="xs">Low stock</Text>
+            <Text size="xs" width="max">
+              Low stock
+            </Text>
           </Box>
         )}
       </Box>

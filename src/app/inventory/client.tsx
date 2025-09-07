@@ -7,7 +7,7 @@ import { InventoryCard } from "@/components/inventory/InventoryCard";
 import { InventoryTable } from "@/components/inventory/InventoryTable";
 import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
 import { EditInventorySection } from "@/components/inventory/EditInventorySection";
-import { ComboBox } from "@/components/fields/ComboBox";
+// import { ComboBox } from "@/components/fields/ComboBox";
 import { Input } from "@/components/fields/Input";
 import { Button } from "@/components/ui/Button";
 import { Box } from "@/components/ui/Box";
@@ -342,7 +342,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                       key={item.id}
                       id={item.id!}
                       name={item.name}
-                      type={item.type}
+                      type={item.type || "other"}
                       description={item.description}
                       quantity={item.quantity}
                       size={item.size}
@@ -360,7 +360,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                     items={items.map((item) => ({
                       id: item.id!,
                       name: item.name,
-                      type: item.type,
+                      type: item.type || "other",
                       description: item.description,
                       quantity: item.quantity,
                       size: item.size,

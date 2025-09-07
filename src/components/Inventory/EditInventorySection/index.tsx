@@ -78,7 +78,7 @@ export function EditInventorySection({
           <Text variant="body" size="lg" weight="bold" className="mb-2">
             {editingItem ? `Edit ${editingItem.name}` : "Edit Inventory Item"}
           </Text>
-          <Text variant="body" size="sm" className="text-gray-600">
+          <Text variant="body" size="sm" className="text-gray-dark">
             Update the inventory item details, pricing, and supplier
             information.
           </Text>
@@ -94,8 +94,9 @@ export function EditInventorySection({
             onCancel={handleCancel}
             suppliers={suppliers}
             isLoading={isLoading}
-            showCancel={true}
+            showCancel={false}
             submitText="Update Item"
+            createSupplierUrl={"/suppliers"}
           />
         )}
       </Box>

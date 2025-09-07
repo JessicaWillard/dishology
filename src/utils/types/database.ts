@@ -69,7 +69,7 @@ export interface Inventory {
   id: string; // uuid
   user_id: string; // Clerk ID (text)
   name: string;
-  type: InventoryType;
+  type: Nullable<InventoryType> | null;
   description?: Nullable<string>;
   quantity: string; // as per InventoryProps interface
   size?: Nullable<string>;
@@ -146,7 +146,7 @@ export interface StockMovement {
   id: string; // uuid
   user_id: string; // Clerk ID (text) - updated from restaurant_id
   item_id: string; // uuid reference to inventory
-  type: string;
+  type: Nullable<string>;
   qty: number;
   unit: string;
   note?: Nullable<string>;
@@ -156,7 +156,7 @@ export interface StockMovement {
 // Form data types for creating/updating records
 export interface InventoryFormData {
   name: string;
-  type: InventoryType;
+  type: Nullable<InventoryType> | null;
   description?: string;
   quantity: string;
   size?: string;

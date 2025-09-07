@@ -56,7 +56,7 @@ export function CreateInventorySection({
           <Text variant="body" size="lg" weight="bold" className="mb-2">
             Add Inventory Item
           </Text>
-          <Text variant="body" size="sm" className="text-gray-600">
+          <Text variant="body" size="sm" className="text-gray-dark">
             Add a new inventory item to track your stock levels, pricing, and
             supplier information.
           </Text>
@@ -71,6 +71,8 @@ export function CreateInventorySection({
           isLoading={isCreating || isSubmitting}
           showCancel={true}
           submitText="Add Item"
+          cancelText="Reset"
+          createSupplierUrl={"/suppliers"}
         />
       </Box>
     </SidePanel>

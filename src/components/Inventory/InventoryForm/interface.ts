@@ -62,6 +62,11 @@ export interface InventoryFormProps {
   isLoading?: boolean;
 
   /**
+   * URL to create a new supplier
+   */
+  createSupplierUrl?: string;
+
+  /**
    * Function to create a new inventory item (for create mode)
    */
   onCreate?: (data: InventoryFormData) => Promise<InventoryWithSupplier>;
