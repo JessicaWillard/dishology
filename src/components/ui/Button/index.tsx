@@ -57,7 +57,11 @@ export const Button = forwardRef<
   const classes = clsx(buttonStyles({ variant, iconOnly }), className);
 
   if ("href" in props && props.href) {
-    const anchorProps = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
+    type ExtendedAnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+      linkBehavior?: unknown;
+    };
+    const { linkBehavior: _ignoreLinkBehavior, ...anchorProps } =
+      rest as ExtendedAnchorProps;
     return (
       <a
         ref={ref as React.Ref<HTMLAnchorElement>}
@@ -74,7 +78,11 @@ export const Button = forwardRef<
     );
   }
 
-  const buttonProps = rest as React.ButtonHTMLAttributes<HTMLButtonElement>;
+  type ExtendedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    linkBehavior?: unknown;
+  };
+  const { linkBehavior: _ignoreLinkBehavior, ...buttonProps } =
+    rest as ExtendedButtonProps;
   return (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}
