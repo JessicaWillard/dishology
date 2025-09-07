@@ -97,7 +97,7 @@ export const inventoryTableStyles = tv({
 });
 
 export const inventoryTableHeaderStyles = tv({
-  base: "text-white font-bold text-sm px-4 py-3 text-left",
+  base: "text-white font-bold text-sm px-1 py-3 md:px-4 md:text-sm text-left",
 });
 
 export const inventoryTHeaderRowStyles = tv({
@@ -119,7 +119,7 @@ export const inventoryTHeaderRowStyles = tv({
 });
 
 export const inventoryTableRowStyles = tv({
-  base: "border-b  hover:bg-gray-50 transition-colors relative",
+  base: "border-b hover:bg-gray-50 transition-colors relative",
   variants: {
     variant: {
       default: "bg-white border-gray-light",
@@ -146,7 +146,7 @@ export const inventoryTableRowStyles = tv({
 });
 
 export const inventoryTableCellStyles = tv({
-  base: "px-4 py-2 text-sm",
+  base: "text-xs py-4 px-1 md:px-4 md:text-sm",
   variants: {
     variant: {
       default: "text-black",
@@ -165,10 +165,17 @@ export const inventoryTableCellStyles = tv({
       center: "text-center",
       right: "text-right",
     },
+    width: {
+      date: "w-20 md:w-auto",
+      quantity: "w-12 md:w-auto",
+      name: "w-25 md:w-[35%]",
+      auto: "w-auto",
+    },
   },
   defaultVariants: {
     variant: "default",
     align: "left",
+    width: "auto",
   },
 });
 
@@ -194,5 +201,5 @@ export const inventoryTableQuantityStyles = tv({
 });
 
 export const inventoryTableQuantityLowStyles = tv({
-  base: "text-error absolute right-4 top-1/2 -translate-y-1/2",
+  base: "text-error absolute -right-4 lg:right-0 top-1/2 -translate-y-1/2 w-4 h-4 lg:w-6 lg:h-6",
 });

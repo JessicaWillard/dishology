@@ -6,7 +6,8 @@ import {
   inventoryTableQuantityStyles,
   inventoryTableQuantityLowStyles,
 } from "../theme";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { formatDateFromString } from "@/utils/date";
 
 interface InventoryRowProps extends InventoryProps {
   onRowClick?: (id: string) => void;
@@ -26,12 +27,8 @@ export const InventoryRow = (props: InventoryRowProps) => {
     onRowClick,
   } = props;
 
-  const [isLow, setIsLow] = useState(false);
   const lowStock = parseFloat(quantity) <= parseFloat(minCount || "0");
-
-  useEffect(() => {
-    setIsLow(lowStock);
-  }, [lowStock]);
+  const [isLow, setIsLow] = useState(lowStock);
 
   const totalPrice = pricePerUnit
     ? parseFloat(pricePerUnit) * parseFloat(quantity)
@@ -51,7 +48,9 @@ export const InventoryRow = (props: InventoryRowProps) => {
       })}
       onClick={handleRowClick}
     >
-      <td className={inventoryTableCellStyles({ variant: type })}>
+      <td
+        className={inventoryTableCellStyles({ variant: type, width: "name" })}
+      >
         <div>{name && <div className="font-medium">{name}</div>}</div>
       </td>
       <td className={inventoryTableCellStyles({ variant: type })}>
@@ -60,24 +59,37 @@ export const InventoryRow = (props: InventoryRowProps) => {
       <td
         className={inventoryTableCellStyles({
           variant: type,
+          width: "quantity",
+          // align: "center",
         })}
       >
         <span className={inventoryTableQuantityStyles({ variant: type })}>
           {parseFloat(quantity)}
         </span>
       </td>
-      <td className={inventoryTableCellStyles({ variant: type })}>
-        {countDate ? countDate.toString() : "-"}
+      <td
+        className={inventoryTableCellStyles({ variant: type, width: "date" })}
+      >
+        {formatDateFromString(countDate)}
       </td>
       <td className={inventoryTableCellStyles({ variant: type })}>
         {pricePerUnit ? `$${parseFloat(pricePerUnit).toFixed(2)}` : "-"}
       </td>
-      <td className={inventoryTableCellStyles({ variant: type })}>
-        {totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : "-"}
+      <td
+        className={`${inventoryTableCellStyles({
+          variant: type,
+        })} pr-4`}
+      >
+        <div className="relative">
+          {totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : "-"}
+          {isLow && (
+            <Icon
+              name="LowStock"
+              className={inventoryTableQuantityLowStyles()}
+            />
+          )}
+        </div>
       </td>
-      {isLow && (
-        <Icon name="LowStock" className={inventoryTableQuantityLowStyles()} />
-      )}
     </tr>
   );
 };

@@ -53,6 +53,9 @@ export default function Home() {
                 <Button variant="solid" href="/suppliers">
                   Manage Suppliers
                 </Button>
+                <Button variant="solid" href="/inventory">
+                  Manage Inventory
+                </Button>
               </div>
             </SignedIn>
           </div>

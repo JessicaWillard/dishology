@@ -9,10 +9,11 @@ import {
   inventoryCardLowInventoryStyles,
 } from "../theme";
 import { useEffect, useState } from "react";
+import { formatDateFromString } from "@/utils/date";
 
 export const InventoryCard = (props: InventoryProps) => {
   const {
-    // id,
+    id,
     name,
     type = "default",
     description,
@@ -23,7 +24,7 @@ export const InventoryCard = (props: InventoryProps) => {
     pricePerPack,
     supplier,
     countDate,
-    // onEdit,
+    onEdit,
     minCount,
   } = props;
 
@@ -33,11 +34,11 @@ export const InventoryCard = (props: InventoryProps) => {
     setIsLow(lowStock);
   }, [lowStock]);
 
-  // const handleEdit = () => {
-  //   if (id && onEdit) {
-  //     onEdit(id);
-  //   }
-  // };
+  const handleEdit = () => {
+    if (id && onEdit) {
+      onEdit(id);
+    }
+  };
 
   const totalPrice = pricePerUnit
     ? parseFloat(pricePerUnit) * parseFloat(quantity)
@@ -45,10 +46,11 @@ export const InventoryCard = (props: InventoryProps) => {
 
   return (
     <Box
-      className={inventoryStyles({ variant: type })}
+      className={`${inventoryStyles({ variant: type })} cursor-pointer`}
       padding="md"
       radius="md"
       shadow="md"
+      onClick={handleEdit}
     >
       <Box className={inventoryCardWrapperStyles()}>
         <Box width="auto">
@@ -69,7 +71,9 @@ export const InventoryCard = (props: InventoryProps) => {
         </Box>
         {isLow && (
           <Box padding="xs" className={inventoryCardLowInventoryStyles()}>
-            <Text size="xs">Low stock</Text>
+            <Text size="xs" width="max">
+              Low stock
+            </Text>
           </Box>
         )}
       </Box>
@@ -79,11 +83,9 @@ export const InventoryCard = (props: InventoryProps) => {
             {supplier}
           </Text>
         )}
-        {countDate && (
-          <Text size="xs" weight="bold">
-            {countDate.toString()}
-          </Text>
-        )}
+        <Text size="xs" weight="bold">
+          {formatDateFromString(countDate)}
+        </Text>
       </Box>
       <hr className={inventoryStyles({ variant: type })} />
       <Box display="flexRow" gap="xl" justify="between" align="center">

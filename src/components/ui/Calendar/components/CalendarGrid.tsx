@@ -1,6 +1,5 @@
 import { getWeeksInMonth } from "@internationalized/date";
-import { useCalendarGrid } from "@react-aria/calendar";
-import { useLocale } from "@react-aria/i18n";
+import { useCalendarGrid, useLocale } from "react-aria";
 import { calendarTable, calendarDayLabel } from "../theme";
 import type { TCalendarGridProps } from "../interface";
 import CalendarCell from "./CalendarCell";
@@ -10,6 +9,10 @@ function CalendarGrid({ state, ...rest }: TCalendarGridProps) {
   const { gridProps, headerProps } = useCalendarGrid({ ...rest }, state);
   const weekDays = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
+  // Use gridProps and headerProps directly since isDisabled doesn't exist on these types
+  const filteredGridProps = gridProps;
+  const filteredHeaderProps = headerProps;
+
   // Get the number of weeks in the month so we can render the proper number of rows.
   const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
@@ -17,8 +20,8 @@ function CalendarGrid({ state, ...rest }: TCalendarGridProps) {
   const dayLabelTheme = calendarDayLabel();
 
   return (
-    <table {...gridProps} cellPadding="0" className={tableTheme}>
-      <thead {...headerProps}>
+    <table {...filteredGridProps} cellPadding="0" className={tableTheme}>
+      <thead {...filteredHeaderProps}>
         <tr>
           {weekDays.map((day) => (
             <th key={`day-${day}`} className={dayLabelTheme}>

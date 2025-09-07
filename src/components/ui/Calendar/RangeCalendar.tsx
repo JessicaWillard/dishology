@@ -1,7 +1,6 @@
 import { createCalendar } from "@internationalized/date";
-import { useRangeCalendar } from "@react-aria/calendar";
-import { useLocale } from "@react-aria/i18n";
-import { useRangeCalendarState } from "@react-stately/calendar";
+import { useRangeCalendar, useLocale } from "react-aria";
+import { useRangeCalendarState } from "react-stately";
 import { useRef } from "react";
 import { Button } from "../Button";
 import Icon from "../Icon";

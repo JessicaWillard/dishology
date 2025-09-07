@@ -71,7 +71,7 @@ export const comboBoxButtonStyles = tv({
 });
 
 export const comboBoxListBoxStyles = tv({
-  base: "absolute top-full left-0 right-0 z-50 mt-1 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-auto focus:outline-none",
+  base: "absolute top-full left-0 right-0 z-[60] mt-1 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-auto focus:outline-none",
 });
 
 export const comboBoxOptionStyles = tv({
@@ -161,45 +161,4 @@ export const checkboxDescriptionStyles = tv({
       true: "text-gray-medium",
     },
   },
-});
-
-export const datePickerContainer = tv({
-  base: "relative inline-flex flex-col text-left w-full gap-2",
-});
-
-export const datePickerWrapper = tv({
-  base: "w-full flex items-center gap-4 p-4 !rounded-lg border-1 border-gray-dark hover:border-gray-dark focus-ring-black",
-});
-
-export const datePickerCalendarPopoverUnderlay = tv({
-  base: "fixed inset-0",
-});
-
-export const datePickerCalendarPopoverContainer = tv({
-  base: "absolute top-full bg-white border border-gray-dark rounded-md shadow-lg mt-2 p-8 z-10",
-});
-
-export const datePickerDateField = tv({
-  base: "pr-1 flex gap-2",
-  defaultVariants: {
-    dateFieldShown: true,
-  },
-  variants: {
-    dateFieldShown: {
-      true: "",
-      false: "hidden",
-    },
-  },
-});
-
-export const datePickerDateSegment = tv({
-  base: "focus-ring-black  focus:bg-blue-300",
-});
-
-export const datePickerIcon = tv({
-  base: "text-primary bg-gray-light border-l-2 border-primary h-full py-2 px-2",
-});
-
-export const datePickerLabel = tv({
-  base: "text-gray-medium font-bold px-2",
 });

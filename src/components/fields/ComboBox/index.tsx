@@ -3,14 +3,16 @@
 
 import { forwardRef, useId, useRef } from "react";
 import { clsx } from "clsx";
-import { FocusRing } from "@react-aria/focus";
-import { useButton, useComboBox, useFilter, useOption } from "react-aria";
-import { useComboBoxState } from "react-stately";
-import { Item } from "@react-stately/collections";
-import type { AriaButtonProps } from "@react-types/button";
-import type { ComboBoxState } from "react-stately";
-import type { Node } from "@react-types/shared";
-import type { AriaListBoxProps } from "@react-types/listbox";
+import {
+  FocusRing,
+  useButton,
+  useComboBox,
+  useFilter,
+  useOption,
+} from "react-aria";
+import { useComboBoxState, Item, type ComboBoxState } from "react-stately";
+import type { AriaButtonProps, AriaListBoxProps } from "react-aria";
+import type { Node } from "react-stately";
 import Icon from "../../ui/Icon";
 import type { ComboBoxProps } from "./interface";
 import {
@@ -42,6 +44,11 @@ const ComboBoxButton = ({ buttonProps }: { buttonProps: AriaButtonProps }) => {
   );
 };
 
+type ExtendedListBoxProps = Omit<AriaListBoxProps<object>, "children"> & {
+  shouldUseVirtualFocus?: boolean;
+  linkBehavior?: unknown;
+};
+
 const ComboBoxListBox = ({
   listBoxRef,
   listBoxProps,
@@ -57,8 +64,12 @@ const ComboBoxListBox = ({
     autoFocus: _,
     shouldSelectOnPressUp: __,
     shouldFocusOnHover: ___,
+    // React Aria virtual focus flag should not hit the DOM
+    shouldUseVirtualFocus: ____,
+    // Some libs (e.g., MUI) inject this; avoid passing to DOM
+    linkBehavior: _____,
     ...filteredListBoxProps
-  } = listBoxProps;
+  } = listBoxProps as ExtendedListBoxProps;
 
   return (
     <ul
@@ -186,8 +197,12 @@ export const ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
         onFocus,
         onBlur,
         onKeyDown,
-        "aria-label": rest["aria-label"],
-        "aria-labelledby": rest["aria-labelledby"],
+        // Pass label to React Aria for proper accessible name wiring
+        label,
+        // If the label is visually hidden, provide an aria-label so there is still
+        // an accessible name on the input element
+        "aria-label": hideLabel && label ? label : rest["aria-label"],
+        // Allow consumer to pass through describedby if provided
         "aria-describedby": rest["aria-describedby"],
       },
       state

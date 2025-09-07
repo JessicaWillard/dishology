@@ -17,6 +17,7 @@ export const SidePanel = ({
   showOverlay = true,
   closeOnOverlayClick = true,
   closeOnEscape = true,
+  scrollRef,
 }: SidePanelProps) => {
   // Handle escape key
   useEffect(() => {
@@ -123,7 +124,11 @@ export const SidePanel = ({
                 </Box>
 
                 {/* Content */}
-                <Box className="flex-1 overflow-y-auto" padding="md">
+                <Box
+                  ref={scrollRef}
+                  className="flex-1 overflow-y-auto"
+                  padding="md"
+                >
                   {children}
                 </Box>
               </Box>

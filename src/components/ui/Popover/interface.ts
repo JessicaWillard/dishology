@@ -13,6 +13,8 @@ export interface PopoverProps {
   placement: PopoverPlacement;
   offset?: number;
   shouldFlip?: boolean;
+  boundaryElement?: Element | null;
+  scrollRef?: React.RefObject<Element | null>;
 
   // Trigger element (for positioning)
   triggerRef: React.RefObject<Element>;
