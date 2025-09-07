@@ -3,14 +3,12 @@
 import { useCallback } from "react";
 import { clsx } from "clsx";
 import { tv } from "tailwind-variants";
-import { CalendarDate } from "@internationalized/date";
 import type { InventoryFormProps } from "./interface";
 import type { InventoryFormData } from "@/utils/types/database";
 import { useInventoryForm } from "@/hooks/useInventoryForm";
 import { Input } from "../../fields/Input";
 import { TextArea } from "../../fields/TextArea";
 import { ComboBox } from "../../fields/ComboBox";
-import { DatePicker } from "../../fields/DatePicker";
 import { Button } from "../../ui/Button";
 import { Box } from "../../ui/Box";
 import { Icon } from "../../ui/Icon";
@@ -322,7 +320,7 @@ export function InventoryForm({
             step="0.01"
           />
 
-          {/* <Input
+          <Input
             label="Count date"
             name="count_date"
             type="date"
@@ -330,29 +328,6 @@ export function InventoryForm({
             onChange={(value, e) => updateField("count_date", e.target.value)}
             onBlur={(e) => validateFieldOnBlur("count_date", e.target.value)}
             {...getFieldProps("count_date")}
-          /> */}
-          <DatePicker
-            label="Count date"
-            value={
-              formData.count_date
-                ? (() => {
-                    try {
-                      const [year, month, day] = formData.count_date
-                        .split("-")
-                        .map(Number);
-                      return new CalendarDate(year, month, day);
-                    } catch {
-                      return null;
-                    }
-                  })()
-                : null
-            }
-            onChange={(value) =>
-              updateField("count_date", value ? value.toString() : "")
-            }
-            isInvalid={!!errors.count_date}
-            errorMessage={errors.count_date}
-            isRequired={true}
           />
         </div>
       </Box>

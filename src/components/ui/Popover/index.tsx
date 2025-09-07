@@ -13,7 +13,7 @@ import { clsx } from "clsx";
 import type { PopoverProps } from "./interface";
 
 const popoverStyles = tv({
-  base: "bg-white border border-gray-200 rounded-xl shadow-lg z-50 p-4 outline-none",
+  base: "bg-white border border-gray-200 rounded-xl shadow-lg z-[60] p-4 outline-none",
 });
 
 export const Popover = ({
@@ -23,6 +23,8 @@ export const Popover = ({
   placement = "bottom",
   offset = 8,
   shouldFlip = true,
+  boundaryElement,
+  scrollRef,
   triggerRef,
   className,
   isDismissable = true,
@@ -53,6 +55,8 @@ export const Popover = ({
     placement,
     offset,
     shouldFlip,
+    boundaryElement: boundaryElement || undefined,
+    scrollRef: scrollRef?.current ? { current: scrollRef.current } : undefined,
     isOpen,
   });
 

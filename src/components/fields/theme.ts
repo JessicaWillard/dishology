@@ -71,7 +71,7 @@ export const comboBoxButtonStyles = tv({
 });
 
 export const comboBoxListBoxStyles = tv({
-  base: "absolute top-full left-0 right-0 z-50 mt-1 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-auto focus:outline-none",
+  base: "absolute top-full left-0 right-0 z-[60] mt-1 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-60 overflow-auto focus:outline-none",
 });
 
 export const comboBoxOptionStyles = tv({
@@ -176,7 +176,7 @@ export const datePickerCalendarPopoverUnderlay = tv({
 });
 
 export const datePickerCalendarPopoverContainer = tv({
-  base: "absolute top-full bg-white border border-gray-dark rounded-md shadow-lg mt-2 p-8 z-10",
+  base: "absolute top-full bg-white border border-gray-dark rounded-md shadow-lg mt-2 p-8 z-[60]",
 });
 
 export const datePickerDateField = tv({

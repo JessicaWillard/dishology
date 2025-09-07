@@ -18,6 +18,8 @@ export interface TDatePickerProps extends DatePickerStateOptions<DateValue> {
   icon?: string;
   buttonLabel?: string;
   description?: string;
+  boundaryElement?: Element | null;
+  scrollRef?: React.RefObject<Element | null>;
 }
 
 export interface TDateRangePickerProps

@@ -10,4 +10,5 @@ export interface SidePanelProps {
   showOverlay?: boolean;
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }

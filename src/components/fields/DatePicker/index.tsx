@@ -24,6 +24,8 @@ export const DatePicker = ({
   icon,
   description,
   buttonLabel,
+  boundaryElement,
+  scrollRef,
   ...rest
 }: TDatePickerProps) => {
   const state = useDatePickerState({ ...rest });
@@ -96,6 +98,8 @@ export const DatePicker = ({
           isOpen={state.isOpen}
           onOpenChange={state.setOpen}
           placement={popoverPlacement}
+          boundaryElement={boundaryElement}
+          scrollRef={scrollRef}
           className={datePickerCalendarPopoverContainer()}
         >
           <Dialog {...dialogProps}>
