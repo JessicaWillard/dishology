@@ -285,26 +285,28 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         <Button variant="solid" handlePress={handleOpenCreatePanel} iconOnly>
           <Icon name="Plus" />
         </Button>
+        <Button variant="ghost" iconOnly>
+          <Icon name="Filter" />
+        </Button>
       </Box>
       <Box
-        // className={searchSectionStyles()}
-        display="flexRow"
-        align="center"
-        gap="sm"
+      // className={searchSectionStyles()}
+      // display="flexRow"
+      // align="center"
+      // gap="sm"
       >
-        <ComboBox
+        {/* <ComboBox
           items={typeOptions}
           selectedKey={selectedType}
           onSelectionChange={(key) => handleTypeChange(key as string)}
           placeholder="Filter by type"
           className="w-40"
-        />
+        /> */}
         <Input
           placeholder="Search inventory..."
           value={searchTerm}
           onChange={(value, e) => handleSearchChange(e)}
           rightIcon="Search"
-          className="w-64"
         />
       </Box>
 
