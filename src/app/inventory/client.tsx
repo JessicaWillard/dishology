@@ -3,8 +3,9 @@
 import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
-// TESTING: Adding back components one by one
-import { InventoryCard } from "@/components/inventory/InventoryCard";
+// TESTING: Using simple test component
+import { TestCard } from "@/components/inventory/TestCard";
+// import { InventoryCard } from "@/components/inventory/InventoryCard";
 // import { InventoryTable } from "@/components/inventory/InventoryTable";
 // import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
 // import { EditInventorySection } from "@/components/inventory/EditInventorySection";
@@ -337,25 +338,10 @@ export function InventoryClient({ userId }: InventoryClientProps) {
                 </Text>
               </Box> */}
               <Box className={clusterContentStyles({ view: viewMode })}>
-                {/* TESTING: Adding back InventoryCard only */}
+                {/* TESTING: Using simple TestCard */}
                 {viewMode === "card" ? (
                   items.map((item) => (
-                    <InventoryCard
-                      key={item.id}
-                      id={item.id!}
-                      name={item.name}
-                      type={item.type || "other"}
-                      description={item.description}
-                      quantity={item.quantity}
-                      size={item.size}
-                      unit={item.unit}
-                      pricePerUnit={item.price_per_unit}
-                      pricePerPack={item.price_per_pack}
-                      supplier={item.supplier?.name}
-                      countDate={item.count_date}
-                      minCount={item.min_count}
-                      onEdit={handleEdit}
-                    />
+                    <TestCard key={item.id} />
                   ))
                 ) : (
                   <Text>Table view temporarily disabled for testing</Text>
