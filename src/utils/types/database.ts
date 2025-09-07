@@ -38,6 +38,14 @@ export interface UpdateSupplierRequest extends Partial<SupplierFormData> {
   id: string;
 }
 
+export interface CreateInventoryRequest extends InventoryFormData {
+  user_id: string;
+}
+
+export interface UpdateInventoryRequest extends Partial<InventoryFormData> {
+  id: string;
+}
+
 // API response types
 export interface SupplierListResponse {
   suppliers: Supplier[];
