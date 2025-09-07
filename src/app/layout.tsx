@@ -10,6 +10,7 @@ import {
 } from "@clerk/nextjs";
 import { QueryProvider } from "@/providers/QueryProvider";
 import "./globals.css";
+import Link from "next/link";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,9 +45,12 @@ export default function RootLayout({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center">
-                  <p className="text-xl font-sans font-semibold text-black">
+                  <Link
+                    href="/"
+                    className="text-xl font-sans font-semibold text-black"
+                  >
                     Dishology
-                  </p>
+                  </Link>
                 </div>
                 <div className="flex items-center space-x-4">
                   <SignedOut>
