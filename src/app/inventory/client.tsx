@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
 // TESTING: Using simple test component
-import { TestCard } from "@/components/inventory/TestCard";
+import { TestCard } from "@/components/Inventory/TestCard";
 // import { InventoryCard } from "@/components/inventory/InventoryCard";
 // import { InventoryTable } from "@/components/inventory/InventoryTable";
 // import { CreateInventorySection } from "@/components/inventory/CreateInventorySection";
@@ -340,9 +340,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
               <Box className={clusterContentStyles({ view: viewMode })}>
                 {/* TESTING: Using simple TestCard */}
                 {viewMode === "card" ? (
-                  items.map((item) => (
-                    <TestCard key={item.id} />
-                  ))
+                  items.map((item) => <TestCard key={item.id} />)
                 ) : (
                   <Text>Table view temporarily disabled for testing</Text>
                 )}
