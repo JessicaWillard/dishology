@@ -20,6 +20,11 @@ import type {
 } from "@/utils/types/database";
 import type { FilterOptions } from "@/components/inventory-components/FilterPanel/interface";
 import { formatDateForInput } from "@/utils/date";
+import {
+  exportToCSV,
+  formatDateForCSV,
+  formatCurrencyForCSV,
+} from "@/utils/csvExport";
 import { tv } from "tailwind-variants";
 
 const inventoryPageStyles = tv({
@@ -252,6 +257,42 @@ export function InventoryClient({}: InventoryClientProps) {
     setShowFilterPanel(false);
   }, []);
 
+  const handleExportToCSV = useCallback(() => {
+    // Get all filtered items (flattened from grouped structure)
+    const allFilteredItems = filteredAndGroupedInventory.flatMap(
+      (group) => group.items
+    );
+
+    if (allFilteredItems.length === 0) {
+      return;
+    }
+
+    // Transform data for CSV export
+    const csvData = allFilteredItems.map((item) => ({
+      Name: item.name,
+      Type: INVENTORY_TYPE_LABELS[item.type as InventoryType] || "Other",
+      Description: item.description || "",
+      Quantity: item.quantity,
+      Size: item.size || "",
+      Unit: item.unit || "",
+      "Price per Unit": formatCurrencyForCSV(item.price_per_unit),
+      "Price per Pack": item.price_per_pack
+        ? formatCurrencyForCSV(item.price_per_pack)
+        : "",
+      Supplier: (item as InventoryWithSupplier).supplier?.name || "",
+      Location: item.location || "",
+      "Min Count": item.min_count || "",
+      "Count Date": formatDateForCSV(item.count_date),
+      "Created At": item.created_at ? formatDateForCSV(item.created_at) : "",
+    }));
+
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().split("T")[0];
+    const filename = `inventory-export-${timestamp}.csv`;
+
+    exportToCSV(csvData, { filename });
+  }, [filteredAndGroupedInventory]);
+
   // Prepare suppliers for ComboBox
   const supplierOptions = suppliers.map((supplier) => ({
     id: supplier.id!,
@@ -283,7 +324,7 @@ export function InventoryClient({}: InventoryClientProps) {
   }
 
   return (
-    <Box className={inventoryPageStyles()}>
+    <Box display="flexCol" gap={6}>
       {/* Controls Bar */}
       <Box
         // className={controlsBarStyles()}
@@ -292,7 +333,7 @@ export function InventoryClient({}: InventoryClientProps) {
         align="center"
         gap="md"
       >
-        <Box className={viewToggleStyles()}>
+        <Box display="flexRow" gap={2}>
           <Button
             variant="ghost"
             handlePress={handleViewToggle}
@@ -312,19 +353,7 @@ export function InventoryClient({}: InventoryClientProps) {
           <Icon name="Filter" />
         </Button>
       </Box>
-      <Box
-      // className={searchSectionStyles()}
-      // display="flexRow"
-      // align="center"
-      // gap="sm"
-      >
-        {/* <ComboBox
-          items={typeOptions}
-          selectedKey={selectedType}
-          onSelectionChange={(key) => handleTypeChange(key as string)}
-          placeholder="Filter by type"
-          className="w-40"
-        /> */}
+      <Box width="full">
         <Input
           placeholder="Search inventory..."
           value={searchTerm}
@@ -337,7 +366,7 @@ export function InventoryClient({}: InventoryClientProps) {
       {(filters.types.length > 0 ||
         filters.suppliers.length > 0 ||
         filters.lowStock) && (
-        <Box display="flexRow" gap="sm" className="flex-wrap">
+        <Box display="flexRow" gap={2} className="flex-wrap">
           {filters.types.map((type) => (
             <Button
               key={`type-${type}`}
@@ -462,6 +491,16 @@ export function InventoryClient({}: InventoryClientProps) {
             </Box>
           ))
         )}
+        <Box display="flexRow" justify="center" width="full">
+          <Button
+            variant="solid"
+            handlePress={handleExportToCSV}
+            aria-label="Export to CSV"
+            rightIcon="Download"
+          >
+            Export to CSV
+          </Button>
+        </Box>
       </Box>
 
       {/* Side Panels */}
