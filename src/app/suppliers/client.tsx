@@ -42,7 +42,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
     setIsCreatePanelOpen(false);
   };
 
-  const handleCreateCancel = () => {
+  const handleCloseCreatePanel = () => {
     setIsCreatePanelOpen(false);
   };
 
@@ -54,7 +54,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
     }
   };
 
-  const handleEditCancel = () => {
+  const handleCloseEditPanel = () => {
     setEditingSupplier(null);
     setIsEditPanelOpen(false);
   };
@@ -82,7 +82,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
       {/* Create Supplier Side Panel */}
       <SidePanel
         isOpen={isCreatePanelOpen}
-        onClose={handleCreateCancel}
+        onClose={handleCloseCreatePanel}
         width="half"
         position="right"
       >
@@ -106,7 +106,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
       {/* Edit Supplier Side Panel */}
       <SidePanel
         isOpen={isEditPanelOpen}
-        onClose={handleEditCancel}
+        onClose={handleCloseEditPanel}
         width="half"
         position="right"
       >
@@ -115,9 +115,9 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
             editingSupplier={editingSupplier}
             onUpdate={update}
             onDelete={remove}
-            onCancel={handleEditCancel}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
+            onSuccess={handleCloseEditPanel}
           />
         )}
       </SidePanel>

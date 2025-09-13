@@ -5,6 +5,4 @@ export interface CreateSupplierSectionProps {
   isCreating: boolean;
   onCreateClick?: () => void;
   onSuccess?: () => void;
-  onCancel?: () => void;
-  showCancel?: boolean;
 }

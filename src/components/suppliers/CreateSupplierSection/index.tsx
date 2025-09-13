@@ -9,8 +9,6 @@ export function CreateSupplierSection({
   isCreating,
   onCreateClick,
   onSuccess,
-  onCancel,
-  showCancel = false,
 }: CreateSupplierSectionProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -18,13 +16,8 @@ export function CreateSupplierSection({
   if (onCreateClick) {
     return (
       <div className="w-full">
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6">
           <h2 className="text-xl font-semibold">Create New Supplier</h2>
-          {onCancel && (
-            <Button variant="outline" handlePress={onCancel}>
-              Cancel
-            </Button>
-          )}
         </div>
 
         <SupplierForm
@@ -33,8 +26,6 @@ export function CreateSupplierSection({
           onError={(error: Error) => {
             alert(`Error creating supplier: ${error.message}`);
           }}
-          onCancel={onCancel || (() => setShowCreateForm(false))}
-          showCancel={showCancel}
           onCreate={onCreate}
           isLoading={isCreating}
         />
@@ -68,8 +59,6 @@ export function CreateSupplierSection({
           mode="create"
           onSuccess={handleCreateSuccess}
           onError={handleCreateError}
-          onCancel={() => setShowCreateForm(false)}
-          showCancel={true}
           onCreate={onCreate}
           isLoading={isCreating}
         />
