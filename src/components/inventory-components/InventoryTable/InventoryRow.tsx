@@ -54,7 +54,7 @@ export const InventoryRow = (props: InventoryRowProps) => {
         <div>{name && <div className="font-medium">{name}</div>}</div>
       </td>
       <td className={inventoryTableCellStyles({ variant: type })}>
-        {size && unit ? `${parseFloat(size)} ${unit}` : "-"}
+        {size && unit ? `${parseFloat(size)} ${unit}` : "—"}
       </td>
       <td
         className={inventoryTableCellStyles({
@@ -73,7 +73,7 @@ export const InventoryRow = (props: InventoryRowProps) => {
         {formatDateFromString(countDate)}
       </td>
       <td className={inventoryTableCellStyles({ variant: type })}>
-        {pricePerUnit ? `$${parseFloat(pricePerUnit).toFixed(2)}` : "-"}
+        {pricePerUnit ? `$${parseFloat(pricePerUnit).toFixed(2)}` : "—"}
       </td>
       <td
         className={`${inventoryTableCellStyles({
@@ -81,7 +81,7 @@ export const InventoryRow = (props: InventoryRowProps) => {
         })} pr-4`}
       >
         <div className="relative">
-          {totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : "-"}
+          {totalPrice > 0 ? `$${totalPrice.toFixed(2)}` : "—"}
           {isLow && (
             <Icon
               name="LowStock"

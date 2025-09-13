@@ -7,7 +7,7 @@ import { InventoryCard } from "@/components/inventory-components/InventoryCard";
 import { InventoryTable } from "@/components/inventory-components/InventoryTable";
 import { CreateInventorySection } from "@/components/inventory-components/CreateInventorySection";
 import { EditInventorySection } from "@/components/inventory-components/EditInventorySection";
-// import { ComboBox } from "@/components/fields/ComboBox";
+import { FilterPanel } from "@/components/inventory-components/FilterPanel";
 import { Input } from "@/components/fields/Input";
 import { Button } from "@/components/ui/Button";
 import { Box } from "@/components/ui/Box";
@@ -18,6 +18,7 @@ import type {
   InventoryType,
   InventoryFormData,
 } from "@/utils/types/database";
+import type { FilterOptions } from "@/components/inventory-components/FilterPanel/interface";
 import { formatDateForInput } from "@/utils/date";
 import { tv } from "tailwind-variants";
 
@@ -25,17 +26,9 @@ const inventoryPageStyles = tv({
   base: "flex flex-col gap-6",
 });
 
-// const controlsBarStyles = tv({
-//   base: "flex items-center justify-between gap-4",
-// });
-
 const viewToggleStyles = tv({
   base: "flex items-center gap-2",
 });
-
-// const searchSectionStyles = tv({
-//   base: "flex items-center gap-4",
-// });
 
 const contentStyles = tv({
   base: "flex flex-col gap-6",
@@ -44,23 +37,6 @@ const contentStyles = tv({
 const clusterStyles = tv({
   base: "flex flex-col gap-4",
 });
-
-// const clusterHeaderStyles = tv({
-//   base: "flex items-center justify-between p-3 rounded-lg text-white font-medium",
-//   variants: {
-//     type: {
-//       produce: "bg-green-600",
-//       dry: "bg-amber-600",
-//       meat: "bg-red-600",
-//       dairy: "bg-blue-600",
-//       beverage: "bg-purple-600",
-//       cleaning: "bg-gray-600",
-//       smallwares: "bg-orange-600",
-//       equipment: "bg-indigo-600",
-//       other: "bg-slate-600",
-//     },
-//   },
-// });
 
 const clusterContentStyles = tv({
   base: "grid gap-4",
@@ -90,14 +66,19 @@ interface InventoryClientProps {
   userId: string;
 }
 
-export function InventoryClient({ userId }: InventoryClientProps) {
+export function InventoryClient({}: InventoryClientProps) {
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState<string>("");
   const [showCreatePanel, setShowCreatePanel] = useState(false);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [editingItem, setEditingItem] = useState<InventoryWithSupplier | null>(
     null
   );
+  const [filters, setFilters] = useState<FilterOptions>({
+    types: [],
+    suppliers: [],
+    lowStock: false,
+  });
 
   const {
     inventory,
@@ -130,9 +111,31 @@ export function InventoryClient({ userId }: InventoryClientProps) {
       );
     }
 
-    // Filter by type
-    if (selectedType) {
-      filtered = filtered.filter((item) => item.type === selectedType);
+    // Filter by selected types
+    if (filters.types.length > 0) {
+      filtered = filtered.filter(
+        (item) => item.type && filters.types.includes(item.type)
+      );
+    }
+
+    // Filter by suppliers
+    if (filters.suppliers.length > 0) {
+      filtered = filtered.filter(
+        (item) =>
+          (item as InventoryWithSupplier).supplier?.id &&
+          filters.suppliers.includes(
+            (item as InventoryWithSupplier).supplier!.id
+          )
+      );
+    }
+
+    // Filter by low stock
+    if (filters.lowStock) {
+      filtered = filtered.filter((item) => {
+        const quantity = parseFloat(item.quantity);
+        const minCount = item.min_count ? parseFloat(item.min_count) : 0;
+        return quantity <= minCount;
+      });
     }
 
     // Group by type
@@ -164,7 +167,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         type,
         items: grouped[type],
       }));
-  }, [inventory, searchTerm, selectedType]);
+  }, [inventory, searchTerm, filters]);
 
   const handleViewToggle = useCallback(() => {
     setViewMode((prev) => (prev === "card" ? "table" : "card"));
@@ -176,10 +179,6 @@ export function InventoryClient({ userId }: InventoryClientProps) {
     },
     []
   );
-
-  const handleTypeChange = useCallback((key: string) => {
-    setSelectedType(key || "");
-  }, []);
 
   const handleCreate = useCallback(
     async (data: InventoryFormData) => {
@@ -227,6 +226,30 @@ export function InventoryClient({ userId }: InventoryClientProps) {
 
   const handleOpenCreatePanel = useCallback(() => {
     setShowCreatePanel(true);
+  }, []);
+
+  const handleOpenFilterPanel = useCallback(() => {
+    setShowFilterPanel(true);
+  }, []);
+
+  const handleCloseFilterPanel = useCallback(() => {
+    setShowFilterPanel(false);
+  }, []);
+
+  const handleFiltersChange = useCallback((newFilters: FilterOptions) => {
+    setFilters(newFilters);
+  }, []);
+
+  const handleResetFilters = useCallback(() => {
+    setFilters({
+      types: [],
+      suppliers: [],
+      lowStock: false,
+    });
+  }, []);
+
+  const handleApplyFilters = useCallback(() => {
+    setShowFilterPanel(false);
   }, []);
 
   // Prepare suppliers for ComboBox
@@ -285,7 +308,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         <Button variant="solid" handlePress={handleOpenCreatePanel} iconOnly>
           <Icon name="Plus" />
         </Button>
-        <Button variant="ghost" iconOnly>
+        <Button variant="ghost" iconOnly handlePress={handleOpenFilterPanel}>
           <Icon name="Filter" />
         </Button>
       </Box>
@@ -310,31 +333,91 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         />
       </Box>
 
+      {/* Filter Tags */}
+      {(filters.types.length > 0 ||
+        filters.suppliers.length > 0 ||
+        filters.lowStock) && (
+        <Box display="flexRow" gap="sm" className="flex-wrap">
+          {filters.types.map((type) => (
+            <Button
+              key={`type-${type}`}
+              variant="tag"
+              handlePress={() => {
+                const newFilters = {
+                  ...filters,
+                  types: filters.types.filter((t) => t !== type),
+                };
+                setFilters(newFilters);
+              }}
+              rightIcon="CloseBtn"
+            >
+              {INVENTORY_TYPE_LABELS[type as InventoryType]}
+            </Button>
+          ))}
+          {filters.suppliers.map((supplierId) => {
+            const supplier = suppliers.find((s) => s.id === supplierId);
+            return (
+              <Button
+                key={`supplier-${supplierId}`}
+                variant="tag"
+                handlePress={() => {
+                  const newFilters = {
+                    ...filters,
+                    suppliers: filters.suppliers.filter(
+                      (s) => s !== supplierId
+                    ),
+                  };
+                  setFilters(newFilters);
+                }}
+                rightIcon="CloseBtn"
+              >
+                {supplier?.name || "Unknown Supplier"}
+              </Button>
+            );
+          })}
+          {filters.lowStock && (
+            <Button
+              variant="tag"
+              handlePress={() => {
+                const newFilters = {
+                  ...filters,
+                  lowStock: false,
+                };
+                setFilters(newFilters);
+              }}
+              rightIcon="CloseBtn"
+            >
+              Low Stock
+            </Button>
+          )}
+        </Box>
+      )}
+
       {/* Content */}
       <Box className={contentStyles()}>
         {filteredAndGroupedInventory.length === 0 ? (
           <Box className="flex flex-col items-center justify-center p-8 gap-4">
             <Icon name="Dish" className="text-gray-400" />
             <Text className="text-gray-600">
-              {searchTerm || selectedType
+              {searchTerm ||
+              filters.types.length > 0 ||
+              filters.suppliers.length > 0 ||
+              filters.lowStock
                 ? "No inventory items match your search criteria."
                 : "No inventory items found. Add your first item to get started."}
             </Text>
-            {!searchTerm && !selectedType && (
-              <Button variant="solid" handlePress={handleOpenCreatePanel}>
-                Add First Item
-              </Button>
-            )}
+            {!searchTerm &&
+              filters.types.length === 0 &&
+              filters.suppliers.length === 0 &&
+              !filters.lowStock && (
+                <Button variant="solid" handlePress={handleOpenCreatePanel}>
+                  Add First Item
+                </Button>
+              )}
           </Box>
         ) : (
           filteredAndGroupedInventory.map(({ type, items }) => (
             <Box key={type} className={clusterStyles()}>
-              {/* <Box className={clusterHeaderStyles({ type })}>
-                <Text variant="body" size="lg" weight="bold">
-                  {INVENTORY_TYPE_LABELS[type as InventoryType]} ({items.length}
-                  )
-                </Text>
-              </Box> */}
               <Box className={clusterContentStyles({ view: viewMode })}>
                 {viewMode === "card" ? (
                   items.map((item) => (
@@ -398,6 +481,17 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         isDeleting={isDeleting}
         suppliers={supplierOptions}
         onClose={handleCloseEditPanel}
+      />
+
+      <FilterPanel
+        isOpen={showFilterPanel}
+        onClose={handleCloseFilterPanel}
+        filters={filters}
+        onFiltersChange={handleFiltersChange}
+        onResetFilters={handleResetFilters}
+        onApplyFilters={handleApplyFilters}
+        availableTypes={typeOptions}
+        availableSuppliers={supplierOptions}
       />
     </Box>
   );
