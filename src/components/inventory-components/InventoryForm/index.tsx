@@ -22,25 +22,6 @@ const inventoryFormStyles = tv({
   },
 });
 
-const formSectionStyles = tv({
-  base: "flex flex-col gap-4",
-});
-
-const formActionsStyles = tv({
-  base: "flex items-center gap-3 pt-2",
-  variants: {
-    alignment: {
-      left: "justify-start",
-      right: "justify-end",
-      center: "justify-center",
-      between: "justify-between",
-    },
-  },
-  defaultVariants: {
-    alignment: "right",
-  },
-});
-
 const INVENTORY_TYPES = [
   { id: "produce", name: "Produce" },
   { id: "dry", name: "Dry Goods" },
@@ -81,8 +62,8 @@ export function InventoryForm({
 }: InventoryFormProps) {
   const {
     formData,
-    errors,
     isSubmitting,
+    isDirty,
     updateField,
     validateFieldOnBlur,
     resetForm,
@@ -135,12 +116,23 @@ export function InventoryForm({
   }, [mode, initialData, onDelete, onSuccess, onError]);
 
   const handleCancel = useCallback(() => {
+    if (isDirty) {
+      const confirmed = window.confirm(
+        "You have unsaved changes. Are you sure you want to cancel?"
+      );
+      if (!confirmed) return;
+    }
     resetForm();
     onCancel?.();
-  }, [resetForm, onCancel]);
+  }, [isDirty, resetForm, onCancel]);
 
   const isFormLoading = isLoading || isSubmitting;
   const canDelete = mode === "edit" && initialData?.id && onDelete;
+
+  // Sort suppliers alphabetically by name
+  const sortedSuppliers = [...suppliers].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
     <form
@@ -154,7 +146,7 @@ export function InventoryForm({
       }}
     >
       {/* Basic Information */}
-      <Box className={formSectionStyles()}>
+      <Box display="flexCol" gap={4}>
         <Input
           label="Name"
           name="name"
@@ -188,8 +180,8 @@ export function InventoryForm({
       </Box>
 
       {/* Quantity and Size */}
-      <Box className={formSectionStyles()}>
-        <div className="grid grid-cols-2 gap-4">
+      <Box>
+        <Box display="grid" gridCols={2} gap={4}>
           <Input
             label="Quantity"
             name="quantity"
@@ -203,7 +195,7 @@ export function InventoryForm({
             step="0.01"
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <Box display="grid" gridCols={2} gap={4}>
             <Input
               label="Size"
               name="size"
@@ -223,15 +215,14 @@ export function InventoryForm({
               selectedKey={formData.unit}
               onSelectionChange={(key) => updateField("unit", key as string)}
               placeholder="Unit"
-              className="w-24"
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Box>
 
       {/* Pricing */}
-      <Box className={formSectionStyles()}>
-        <div className="grid grid-cols-2 gap-4">
+      <Box>
+        <Box display="grid" gridCols={2} gap={4}>
           <Input
             label="$ / unit"
             name="price_per_unit"
@@ -265,16 +256,16 @@ export function InventoryForm({
             min="0"
             step="0.01"
           />
-        </div>
+        </Box>
       </Box>
 
       {/* Supplier and Location */}
-      <Box className={formSectionStyles()}>
-        <div className="flex gap-2">
+      <Box display="flexCol" gap={4}>
+        <Box display="flexRow" align="end" gap={2}>
           <ComboBox
             label="Supplier"
             name="supplier_id"
-            items={suppliers}
+            items={sortedSuppliers}
             selectedKey={formData.supplier_id}
             onSelectionChange={(key) =>
               updateField("supplier_id", key as string)
@@ -285,13 +276,14 @@ export function InventoryForm({
           <Button
             type="button"
             variant="solid"
-            className="mt-6 h-10 w-10 p-0"
+            iconOnly
+            className="h-[50px] w-[50px]"
             aria-label="Add new supplier"
             href={createSupplierUrl}
           >
             <Icon name="Plus" />
           </Button>
-        </div>
+        </Box>
 
         <Input
           label="Location"
@@ -305,8 +297,8 @@ export function InventoryForm({
       </Box>
 
       {/* Additional Information */}
-      <Box className={formSectionStyles()}>
-        <div className="grid grid-cols-2 gap-4">
+      <Box>
+        <Box display="grid" gridCols={2} gap={4}>
           <Input
             label="Min count"
             name="min_count"
@@ -329,28 +321,22 @@ export function InventoryForm({
             onBlur={(e) => validateFieldOnBlur("count_date", e.target.value)}
             {...getFieldProps("count_date")}
           />
-        </div>
+        </Box>
       </Box>
 
       {/* Form Actions */}
-      <Box
-        className={formActionsStyles({
-          alignment: "between",
-        })}
-      >
+      <Box display="flexRow" justify="between" gap={3}>
         {canDelete && mode === "edit" && (
           <Button
             type="button"
-            variant="ghost"
+            variant="destructive"
             handlePress={handleDelete}
             disabled={isFormLoading}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50"
           >
             Delete
           </Button>
         )}
 
-        {/* <div className="flex gap-3"> */}
         {showCancel && mode === "create" && (
           <Button
             type="button"
@@ -365,12 +351,11 @@ export function InventoryForm({
         <Button
           type="submit"
           variant="solid"
-          disabled={isFormLoading}
+          disabled={isFormLoading || !isDirty}
           isLoading={isSubmitting}
         >
           {submitText || (mode === "create" ? "Create Item" : "Update Item")}
         </Button>
-        {/* </div> */}
       </Box>
     </form>
   );

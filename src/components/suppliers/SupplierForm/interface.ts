@@ -24,29 +24,14 @@ export interface SupplierFormProps {
   onError?: (error: Error) => void;
 
   /**
-   * Called when user cancels the form
-   */
-  onCancel?: () => void;
-
-  /**
    * Called when user deletes the supplier (edit mode only)
    */
   onDelete?: (id: string) => Promise<void>;
 
   /**
-   * Whether to show the cancel button
-   */
-  showCancel?: boolean;
-
-  /**
    * Custom submit button text
    */
   submitText?: string;
-
-  /**
-   * Custom cancel button text
-   */
-  cancelText?: string;
 
   /**
    * Additional CSS classes

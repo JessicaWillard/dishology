@@ -81,8 +81,13 @@ export const FilterPanel = ({
     <SidePanel isOpen={isOpen} onClose={onClose} width="half" position="right">
       <Box display="flexCol" gap="lg" className="h-full">
         {/* Reset Button */}
-        <Box display="flexRow" justify="start">
-          <Button variant="outline" handlePress={handleReset} rightIcon="Reset">
+        <Box>
+          <Button
+            variant="outline"
+            handlePress={handleReset}
+            rightIcon="Reset"
+            className="w-full"
+          >
             Reset Filters
           </Button>
         </Box>
