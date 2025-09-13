@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import { tv } from "tailwind-variants";
 import { clsx } from "clsx";
 import type { ButtonProps } from "./interface";
+import { Icon } from "../Icon";
 
 const buttonStyles = tv(
   {
@@ -17,6 +18,7 @@ const buttonStyles = tv(
           "text-primary hover:text-secondary !min-w-0 !min-h-0 !px-0 !rounded-none",
         destructive:
           "text-error hover:text-black !min-w-0 !min-h-0 !px-0 !rounded-none",
+        tag: "bg-gray-dark text-white hover:bg-gray-dark/80 !px-2 !py-1 text-xs !min-h-auto !min-w-auto !rounded-md [&_svg]:h-4 [&_svg]:w-4",
       },
       iconOnly: {
         true: "!px-0",
@@ -48,9 +50,17 @@ export const Button = forwardRef<
 
   const content = (
     <>
-      {leftIcon ? <span className="mr-2 inline-flex">{leftIcon}</span> : null}
+      {leftIcon ? (
+        <span className="mr-2 inline-flex">
+          <Icon name={leftIcon} />
+        </span>
+      ) : null}
       <span>{isLoading ? "Loading…" : children}</span>
-      {rightIcon ? <span className="ml-2 inline-flex">{rightIcon}</span> : null}
+      {rightIcon ? (
+        <span className="ml-2 inline-flex">
+          <Icon name={rightIcon} />
+        </span>
+      ) : null}
     </>
   );
 
