@@ -3,12 +3,13 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { PageWrapper } from "@/components/ui/PageWrapper";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div className="font-sans min-h-screen p-8">
-      <main className="max-w-4xl mx-auto">
+    <PageWrapper>
+      <main>
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-primary mb-4">
             Welcome to Dishology
@@ -106,6 +107,6 @@ export default function Home() {
           </SignedOut>
         </div>
       </main>
-    </div>
+    </PageWrapper>
   );
 }

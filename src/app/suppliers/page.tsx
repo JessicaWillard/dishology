@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SuppliersClient } from "./client";
+import { PageWrapper } from "@/components/ui/PageWrapper";
 
 /**
  * Test page for supplier form functionality
@@ -14,12 +15,8 @@ export default async function TestSuppliersPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <SuppliersClient userId={userId} />
-        </div>
-      </div>
-    </div>
+    <PageWrapper>
+      <SuppliersClient userId={userId} />
+    </PageWrapper>
   );
 }

@@ -64,15 +64,6 @@ const boxStyles = tv(
         lg: "shadow-lg",
       },
     },
-    defaultVariants: {
-      tone: "default",
-      padding: "none",
-      radius: "md",
-      shadow: "none",
-      gap: "none",
-      display: "block",
-      width: "auto",
-    },
   },
   { twMerge: false }
 );

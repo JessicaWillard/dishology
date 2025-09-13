@@ -9,6 +9,7 @@ import { SidePanel } from "@/components/ui/SidePanel";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { Supplier } from "@/utils/types/database";
+import { Box } from "@/components/ui/Box";
 
 interface SuppliersClientProps {
   userId: string;
@@ -60,13 +61,13 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
 
   return (
     <>
-      <div className="flex flex-col gap-8 justify-center items-center">
+      <Box display="flexCol" gap={8} justify="center" align="center">
         {/* Create Supplier Button */}
-        <div className="w-full flex justify-center">
+        <Box display="flexRow" justify="center">
           <Button variant="solid" iconOnly handlePress={handleCreateClick}>
             <Icon name="Plus" />
           </Button>
-        </div>
+        </Box>
 
         {/* Suppliers List */}
         <SuppliersList
@@ -76,7 +77,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
           onEdit={handleEdit}
           onRetry={refetch}
         />
-      </div>
+      </Box>
 
       {/* Create Supplier Side Panel */}
       <SidePanel
@@ -96,8 +97,6 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
             onError={(error: Error) => {
               alert(`Error creating supplier: ${error.message}`);
             }}
-            onCancel={handleCreateCancel}
-            showCancel={false}
             onCreate={create}
             isLoading={isCreating}
           />
