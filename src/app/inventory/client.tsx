@@ -8,11 +8,11 @@ import { InventoryTable } from "@/components/inventory-components/InventoryTable
 import { CreateInventorySection } from "@/components/inventory-components/CreateInventorySection";
 import { EditInventorySection } from "@/components/inventory-components/EditInventorySection";
 import { FilterPanel } from "@/components/inventory-components/FilterPanel";
-import { Input } from "@/components/fields/Input";
 import { Button } from "@/components/ui/Button";
 import { Box } from "@/components/ui/Box";
 import { Text } from "@/components/ui/Text";
 import { Icon } from "@/components/ui/Icon";
+import { ControlsBar } from "@/components/ui/ControlsBar";
 import type {
   InventoryWithSupplier,
   InventoryType,
@@ -26,22 +26,6 @@ import {
   formatCurrencyForCSV,
 } from "@/utils/csvExport";
 import { tv } from "tailwind-variants";
-
-const inventoryPageStyles = tv({
-  base: "flex flex-col gap-6",
-});
-
-const viewToggleStyles = tv({
-  base: "flex items-center gap-2",
-});
-
-const contentStyles = tv({
-  base: "flex flex-col gap-6",
-});
-
-const clusterStyles = tv({
-  base: "flex flex-col gap-4",
-});
 
 const clusterContentStyles = tv({
   base: "grid gap-4",
@@ -308,7 +292,7 @@ export function InventoryClient({}: InventoryClientProps) {
 
   if (loading) {
     return (
-      <Box className="flex items-center justify-center p-8">
+      <Box display="flexCol" align="start" justify="start" padding="lg" gap={4}>
         <Text>Loading inventory...</Text>
       </Box>
     );
@@ -316,8 +300,8 @@ export function InventoryClient({}: InventoryClientProps) {
 
   if (error) {
     return (
-      <Box className="flex flex-col items-center justify-center p-8 gap-4">
-        <Text className="text-red-600">Error loading inventory: {error}</Text>
+      <Box display="flexCol" align="start" justify="start" padding="lg" gap={4}>
+        <Text className="text-error">Error loading inventory: {error}</Text>
         <Button handlePress={() => refetch()}>Try Again</Button>
       </Box>
     );
@@ -326,41 +310,30 @@ export function InventoryClient({}: InventoryClientProps) {
   return (
     <Box display="flexCol" gap={6}>
       {/* Controls Bar */}
-      <Box
-        // className={controlsBarStyles()}
-        display="flexRow"
-        justify="between"
-        align="center"
-        gap="md"
-      >
-        <Box display="flexRow" gap={2}>
-          <Button
-            variant="ghost"
-            handlePress={handleViewToggle}
-            iconOnly
-            aria-label={`Switch to ${
-              viewMode === "card" ? "table" : "card"
-            } view`}
-          >
-            <Icon name={viewMode === "card" ? "List" : "Grid"} />
-          </Button>
-        </Box>
-
-        <Button variant="solid" handlePress={handleOpenCreatePanel} iconOnly>
-          <Icon name="Plus" />
-        </Button>
-        <Button variant="ghost" iconOnly handlePress={handleOpenFilterPanel}>
-          <Icon name="Filter" />
-        </Button>
-      </Box>
-      <Box width="full">
-        <Input
-          placeholder="Search inventory..."
-          value={searchTerm}
-          onChange={(value, e) => handleSearchChange(e)}
-          rightIcon="Search"
-        />
-      </Box>
+      <ControlsBar
+        search={{
+          placeholder: "Search inventory...",
+          value: searchTerm,
+          onChange: handleSearchChange,
+        }}
+        viewToggle={{
+          currentView: viewMode,
+          onToggle: handleViewToggle,
+        }}
+        primaryAction={{
+          onPress: handleOpenCreatePanel,
+          icon: "Plus",
+          label: "Add inventory item",
+        }}
+        secondaryActions={[
+          {
+            onPress: handleOpenFilterPanel,
+            icon: "Filter",
+            label: "Filter inventory",
+            variant: "ghost",
+          },
+        ]}
+      />
 
       {/* Filter Tags */}
       {(filters.types.length > 0 ||
@@ -423,9 +396,15 @@ export function InventoryClient({}: InventoryClientProps) {
       )}
 
       {/* Content */}
-      <Box className={contentStyles()}>
+      <Box display="flexCol" gap={6} className="mt-39 lg:mt-48">
         {filteredAndGroupedInventory.length === 0 ? (
-          <Box className="flex flex-col items-center justify-center p-8 gap-4">
+          <Box
+            display="flexCol"
+            align="center"
+            justify="center"
+            padding="lg"
+            gap={4}
+          >
             <Icon name="Dish" className="text-gray-400" />
             <Text className="text-gray-600">
               {searchTerm ||
@@ -446,7 +425,7 @@ export function InventoryClient({}: InventoryClientProps) {
           </Box>
         ) : (
           filteredAndGroupedInventory.map(({ type, items }) => (
-            <Box key={type} className={clusterStyles()}>
+            <Box key={type} display="flexCol" gap={6}>
               <Box className={clusterContentStyles({ view: viewMode })}>
                 {viewMode === "card" ? (
                   items.map((item) => (

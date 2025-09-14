@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 import { clsx } from "clsx";
 import type { ButtonProps } from "./interface";
 import { Icon } from "../Icon";
@@ -32,9 +32,11 @@ const buttonStyles = tv(
   { twMerge: false }
 );
 
+export type ButtonVariantProps = VariantProps<typeof buttonStyles>;
+
 export const Button = forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
-  ButtonProps
+  ButtonProps & ButtonVariantProps
 >((props, ref) => {
   const {
     className,
@@ -46,7 +48,7 @@ export const Button = forwardRef<
     iconOnly,
     handlePress,
     ...rest
-  } = props as ButtonProps;
+  } = props;
 
   const content = (
     <>
@@ -72,8 +74,8 @@ export const Button = forwardRef<
       isDisabled?: boolean;
     };
     const {
-      linkBehavior: _ignoreLinkBehavior,
-      isDisabled: _ignoreIsDisabled,
+      linkBehavior: _,
+      isDisabled: __,
       ...anchorProps
     } = rest as ExtendedAnchorProps;
     return (
@@ -81,9 +83,16 @@ export const Button = forwardRef<
         ref={ref as React.Ref<HTMLAnchorElement>}
         className={classes}
         onClick={
-          handlePress as
-            | ((e: React.MouseEvent<HTMLAnchorElement>) => void)
-            | undefined
+          handlePress
+            ? (e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+                (
+                  handlePress as (
+                    e: React.MouseEvent<HTMLAnchorElement>
+                  ) => void
+                )(e);
+              }
+            : undefined
         }
         {...anchorProps}
       >
@@ -97,19 +106,15 @@ export const Button = forwardRef<
     isDisabled?: boolean;
   };
   const {
-    linkBehavior: _ignoreLinkBehavior,
-    isDisabled: _ignoreIsDisabled,
+    linkBehavior: _,
+    isDisabled: __,
     ...buttonProps
   } = rest as ExtendedButtonProps;
   return (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}
       className={classes}
-      onClick={
-        handlePress as
-          | ((e: React.MouseEvent<HTMLButtonElement>) => void)
-          | undefined
-      }
+      onClick={handlePress as React.MouseEventHandler<HTMLButtonElement>}
       disabled={
         ("disabled" in props && !!props.disabled) ||
         ("isDisabled" in props && !!props.isDisabled)

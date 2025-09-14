@@ -4,8 +4,14 @@ import { clsx } from "clsx";
 
 const boxStyles = tv(
   {
-    base: "relative",
     variants: {
+      position: {
+        static: "static",
+        fixed: "fixed",
+        absolute: "absolute",
+        relative: "relative",
+        sticky: "sticky",
+      },
       padding: {
         none: "p-0",
         xs: "p-2",
@@ -63,9 +69,12 @@ const boxStyles = tv(
         md: "shadow",
         lg: "shadow-lg",
       },
+      defaultVariants: {
+        position: "relative",
+      },
     },
   },
-  { twMerge: false }
+  { twMerge: true }
 );
 
 export type BoxProps = HTMLAttributes<HTMLDivElement> &
@@ -78,6 +87,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(
   (
     {
       className,
+      position,
       padding,
       radius,
       shadow,
@@ -103,6 +113,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(
             align,
             justify,
             width,
+            position,
           }),
           display === "grid" &&
             gridCols &&

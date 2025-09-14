@@ -6,8 +6,7 @@ import { SuppliersList } from "@/components/suppliers/SuppliersList";
 import { EditSupplierSection } from "@/components/suppliers/EditSupplierSection";
 import { SupplierForm } from "@/components/suppliers/SupplierForm";
 import { SidePanel } from "@/components/ui/SidePanel";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
+import { ControlsBar } from "@/components/ui/ControlsBar";
 import type { Supplier } from "@/utils/types/database";
 import { Box } from "@/components/ui/Box";
 
@@ -61,22 +60,26 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
 
   return (
     <>
-      <Box display="flexCol" gap={8} justify="center" align="center">
-        {/* Create Supplier Button */}
-        <Box display="flexRow" justify="center">
-          <Button variant="solid" iconOnly handlePress={handleCreateClick}>
-            <Icon name="Plus" />
-          </Button>
-        </Box>
+      <Box display="flexCol" gap={6}>
+        {/* Controls Bar */}
+        <ControlsBar
+          primaryAction={{
+            onPress: handleCreateClick,
+            icon: "Plus",
+            label: "Add supplier",
+          }}
+        />
 
         {/* Suppliers List */}
-        <SuppliersList
-          suppliers={suppliers}
-          loading={loading}
-          error={error}
-          onEdit={handleEdit}
-          onRetry={refetch}
-        />
+        <Box className="mt-28 lg:mt-32">
+          <SuppliersList
+            suppliers={suppliers}
+            loading={loading}
+            error={error}
+            onEdit={handleEdit}
+            onRetry={refetch}
+          />
+        </Box>
       </Box>
 
       {/* Create Supplier Side Panel */}
