@@ -154,7 +154,7 @@ export function InventoryClient({}: InventoryClientProps) {
       .filter((type) => grouped[type]?.length > 0)
       .map((type) => ({
         type,
-        items: grouped[type],
+        items: grouped[type].sort((a, b) => a.name.localeCompare(b.name)),
       }));
   }, [inventory, searchTerm, filters]);
 
