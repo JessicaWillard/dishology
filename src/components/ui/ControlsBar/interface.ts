@@ -27,6 +27,9 @@ export interface ControlsBarProps {
     variant?: "ghost" | "solid";
   }>;
 
+  /** Filter tags to display at the bottom */
+  filterTags?: React.ReactNode;
+
   /** Additional CSS classes */
   className?: string;
 }
