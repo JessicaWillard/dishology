@@ -9,8 +9,10 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { QueryProvider } from "@/providers/QueryProvider";
+import { NavBarWrapper } from "@/components/ui/NavBar/NavBarWrapper";
 import "./globals.css";
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -55,14 +57,10 @@ export default function RootLayout({
                 <div className="flex items-center space-x-4">
                   <SignedOut>
                     <SignInButton mode="modal" forceRedirectUrl="/">
-                      <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                        Sign In
-                      </button>
+                      <Button variant="solid">Sign In</Button>
                     </SignInButton>
                     <SignUpButton mode="modal" forceRedirectUrl="/">
-                      <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                        Sign Up
-                      </button>
+                      <Button variant="outline">Sign Up</Button>
                     </SignUpButton>
                   </SignedOut>
                   <SignedIn>
@@ -75,6 +73,7 @@ export default function RootLayout({
           <main>
             <QueryProvider>{children}</QueryProvider>
           </main>
+          <NavBarWrapper />
         </body>
       </html>
     </ClerkProvider>
