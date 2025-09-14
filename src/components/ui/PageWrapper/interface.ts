@@ -1,10 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, type HTMLAttributes } from "react";
 
-export interface PageWrapperProps {
+export interface PageWrapperProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl" | "6xl" | "7xl" | "full";
-  paddingTop?: "none" | "sm" | "md" | "lg" | "xl";
-  paddingBottom?: "none" | "sm" | "md" | "lg" | "xl";
-  background?: "white" | "gray" | "transparent";
 }
