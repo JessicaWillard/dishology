@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SuppliersClient } from "./client";
-import { PageWrapper } from "@/components/ui/PageWrapper";
 
 /**
  * Test page for supplier form functionality
@@ -14,9 +13,5 @@ export default async function TestSuppliersPage() {
     redirect("/");
   }
 
-  return (
-    <PageWrapper>
-      <SuppliersClient userId={userId} />
-    </PageWrapper>
-  );
+  return <SuppliersClient userId={userId} />;
 }

@@ -13,6 +13,7 @@ import { NavBarWrapper } from "@/components/ui/NavBar/NavBarWrapper";
 import "./globals.css";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { PageWrapper } from "@/components/ui/PageWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,7 +72,9 @@ export default function RootLayout({
             </div>
           </header>
           <main>
-            <QueryProvider>{children}</QueryProvider>
+            <PageWrapper>
+              <QueryProvider>{children}</QueryProvider>
+            </PageWrapper>
           </main>
           <NavBarWrapper />
         </body>

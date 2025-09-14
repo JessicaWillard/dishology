@@ -16,11 +16,11 @@ const buttonStyles = tv(
         outline:
           "border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-xl min-h-[44px] min-w-[44px] px-6 py-2",
         ghost:
-          "text-primary hover:text-secondary min-w-0 min-h-0 px-0 rounded-none",
+          "text-primary hover:text-black min-w-0 min-h-0 px-0 rounded-none",
         destructive:
           "text-error hover:text-black min-w-0 min-h-0 px-0 rounded-none",
         tag: "bg-gray-dark text-white hover:bg-gray-dark/80 px-2 py-1 text-xs min-h-auto min-w-auto rounded-md [&_svg]:h-4 [&_svg]:w-4",
-        nav: "text-primary hover:text-secondary active:text-secondary text-xs min-w-0 min-h-0 px-0 py-0 rounded-none",
+        nav: "text-primary hover:text-black active:text-black text-xs min-w-0 min-h-0 px-0 py-0 rounded-none",
       },
       iconOnly: {
         true: "px-0",
