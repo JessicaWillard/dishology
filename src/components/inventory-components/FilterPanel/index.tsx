@@ -6,8 +6,6 @@ import { ComboBox } from "@/components/fields/ComboBox";
 import { CheckboxGroup } from "@/components/fields/Checkbox";
 import { Switch } from "@/components/fields/Switch";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
-import { Text } from "@/components/ui/Text";
 import { Box } from "@/components/ui/Box";
 import type { FilterPanelProps } from "./interface";
 import type { InventoryType } from "@/utils/types/database";
@@ -23,6 +21,7 @@ export const FilterPanel = ({
   availableSuppliers,
 }: FilterPanelProps) => {
   const [localFilters, setLocalFilters] = useState(filters);
+  const [showAllSuppliers, setShowAllSuppliers] = useState(false);
 
   // Sync local state with external filters prop
   useEffect(() => {
@@ -68,9 +67,21 @@ export const FilterPanel = ({
     onApplyFilters();
   };
 
+  const handleToggleSuppliers = () => {
+    setShowAllSuppliers(!showAllSuppliers);
+  };
+
   const typeOptions = [{ id: "all", name: "All types" }, ...availableTypes];
 
-  const supplierOptions = availableSuppliers.map((supplier) => ({
+  // Sort suppliers alphabetically and limit to first 8 unless showAllSuppliers is true
+  const sortedSuppliers = [...availableSuppliers].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+  const displayedSuppliers = showAllSuppliers
+    ? sortedSuppliers
+    : sortedSuppliers.slice(0, 8);
+
+  const supplierOptions = displayedSuppliers.map((supplier) => ({
     id: supplier.id,
     name: supplier.name,
     value: supplier.id,
@@ -79,7 +90,7 @@ export const FilterPanel = ({
 
   return (
     <SidePanel isOpen={isOpen} onClose={onClose} width="half" position="right">
-      <Box display="flexCol" gap="lg" className="h-full">
+      <Box display="flexCol" gap={8} className="h-full">
         {/* Reset Button */}
         <Box>
           <Button
@@ -112,7 +123,7 @@ export const FilterPanel = ({
         </Box>
 
         {/* Suppliers Filter */}
-        <Box display="flexCol" gap="sm">
+        <Box display="flexCol" gap={4}>
           <CheckboxGroup
             label="Suppliers"
             items={supplierOptions}
@@ -120,9 +131,14 @@ export const FilterPanel = ({
             onChange={handleSupplierChange}
             orientation="vertical"
           />
-          {availableSuppliers.length > 5 && (
-            <Button variant="ghost" className="self-start" rightIcon="Plus">
-              View more
+          {availableSuppliers.length > 8 && (
+            <Button
+              variant="ghost"
+              className="self-start"
+              rightIcon={showAllSuppliers ? "ChevronUp" : "Plus"}
+              handlePress={handleToggleSuppliers}
+            >
+              {showAllSuppliers ? "View less" : "View more"}
             </Button>
           )}
         </Box>

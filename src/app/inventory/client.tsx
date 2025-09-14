@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
+import { useControlsBarHeight } from "@/hooks/useControlsBarHeight";
 import { InventoryCard } from "@/components/inventory-components/InventoryCard";
 import { InventoryTable } from "@/components/inventory-components/InventoryTable";
 import { CreateInventorySection } from "@/components/inventory-components/CreateInventorySection";
@@ -31,7 +32,7 @@ const clusterContentStyles = tv({
   base: "grid gap-4",
   variants: {
     view: {
-      card: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+      card: "grid-cols-1 md:grid-cols-2 xl:grid-cols-3",
       table: "grid-cols-1",
     },
   },
@@ -68,6 +69,13 @@ export function InventoryClient({}: InventoryClientProps) {
     suppliers: [],
     lowStock: false,
   });
+
+  // Get dynamic height for ControlsBar
+  const {
+    height: controlsBarHeight,
+    controlsBarRef,
+    forceUpdateHeight,
+  } = useControlsBarHeight();
 
   const {
     inventory,
@@ -165,8 +173,10 @@ export function InventoryClient({}: InventoryClientProps) {
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);
+      // Force height update when search changes (in case it affects layout)
+      setTimeout(forceUpdateHeight, 100);
     },
-    []
+    [forceUpdateHeight]
   );
 
   const handleCreate = useCallback(
@@ -225,9 +235,14 @@ export function InventoryClient({}: InventoryClientProps) {
     setShowFilterPanel(false);
   }, []);
 
-  const handleFiltersChange = useCallback((newFilters: FilterOptions) => {
-    setFilters(newFilters);
-  }, []);
+  const handleFiltersChange = useCallback(
+    (newFilters: FilterOptions) => {
+      setFilters(newFilters);
+      // Force height update when filters change
+      setTimeout(forceUpdateHeight, 100);
+    },
+    [forceUpdateHeight]
+  );
 
   const handleResetFilters = useCallback(() => {
     setFilters({
@@ -235,7 +250,9 @@ export function InventoryClient({}: InventoryClientProps) {
       suppliers: [],
       lowStock: false,
     });
-  }, []);
+    // Force height update when filters are reset
+    setTimeout(forceUpdateHeight, 100);
+  }, [forceUpdateHeight]);
 
   const handleApplyFilters = useCallback(() => {
     setShowFilterPanel(false);
@@ -307,10 +324,83 @@ export function InventoryClient({}: InventoryClientProps) {
     );
   }
 
+  // Generate filter tags JSX
+  const renderFilterTags = () => {
+    if (
+      filters.types.length === 0 &&
+      filters.suppliers.length === 0 &&
+      !filters.lowStock
+    ) {
+      return null;
+    }
+
+    return (
+      <Box display="flexRow" gap={2} className="flex-wrap">
+        {filters.types.map((type) => (
+          <Button
+            key={`type-${type}`}
+            variant="tag"
+            handlePress={() => {
+              const newFilters = {
+                ...filters,
+                types: filters.types.filter((t) => t !== type),
+              };
+              setFilters(newFilters);
+              // Force height update when filter is removed
+              setTimeout(forceUpdateHeight, 100);
+            }}
+            rightIcon="CloseBtn"
+          >
+            {INVENTORY_TYPE_LABELS[type as InventoryType]}
+          </Button>
+        ))}
+        {filters.suppliers.map((supplierId) => {
+          const supplier = suppliers.find((s) => s.id === supplierId);
+          return (
+            <Button
+              key={`supplier-${supplierId}`}
+              variant="tag"
+              handlePress={() => {
+                const newFilters = {
+                  ...filters,
+                  suppliers: filters.suppliers.filter((s) => s !== supplierId),
+                };
+                setFilters(newFilters);
+                // Force height update when filter is removed
+                setTimeout(forceUpdateHeight, 100);
+              }}
+              rightIcon="CloseBtn"
+            >
+              {supplier?.name || "Unknown Supplier"}
+            </Button>
+          );
+        })}
+        {filters.lowStock && (
+          <Button
+            variant="tag"
+            handlePress={() => {
+              const newFilters = {
+                ...filters,
+                lowStock: false,
+              };
+              setFilters(newFilters);
+              // Force height update when filter is removed
+              setTimeout(forceUpdateHeight, 100);
+            }}
+            rightIcon="CloseBtn"
+          >
+            Low Stock
+          </Button>
+        )}
+      </Box>
+    );
+  };
+
   return (
     <Box display="flexCol" gap={6}>
       {/* Controls Bar */}
       <ControlsBar
+        ref={controlsBarRef}
         search={{
           placeholder: "Search inventory...",
           value: searchTerm,
@@ -333,70 +423,17 @@ export function InventoryClient({}: InventoryClientProps) {
             variant: "ghost",
           },
         ]}
+        filterTags={renderFilterTags()}
       />
 
-      {/* Filter Tags */}
-      {(filters.types.length > 0 ||
-        filters.suppliers.length > 0 ||
-        filters.lowStock) && (
-        <Box display="flexRow" gap={2} className="flex-wrap">
-          {filters.types.map((type) => (
-            <Button
-              key={`type-${type}`}
-              variant="tag"
-              handlePress={() => {
-                const newFilters = {
-                  ...filters,
-                  types: filters.types.filter((t) => t !== type),
-                };
-                setFilters(newFilters);
-              }}
-              rightIcon="CloseBtn"
-            >
-              {INVENTORY_TYPE_LABELS[type as InventoryType]}
-            </Button>
-          ))}
-          {filters.suppliers.map((supplierId) => {
-            const supplier = suppliers.find((s) => s.id === supplierId);
-            return (
-              <Button
-                key={`supplier-${supplierId}`}
-                variant="tag"
-                handlePress={() => {
-                  const newFilters = {
-                    ...filters,
-                    suppliers: filters.suppliers.filter(
-                      (s) => s !== supplierId
-                    ),
-                  };
-                  setFilters(newFilters);
-                }}
-                rightIcon="CloseBtn"
-              >
-                {supplier?.name || "Unknown Supplier"}
-              </Button>
-            );
-          })}
-          {filters.lowStock && (
-            <Button
-              variant="tag"
-              handlePress={() => {
-                const newFilters = {
-                  ...filters,
-                  lowStock: false,
-                };
-                setFilters(newFilters);
-              }}
-              rightIcon="CloseBtn"
-            >
-              Low Stock
-            </Button>
-          )}
-        </Box>
-      )}
-
       {/* Content */}
-      <Box display="flexCol" gap={6} className="mt-39 lg:mt-48">
+      <Box
+        display="flexCol"
+        gap={6}
+        style={{
+          marginTop: `${controlsBarHeight + 16}px`, // Use the measured height + 16px spacing
+        }}
+      >
         {filteredAndGroupedInventory.length === 0 ? (
           <Box
             display="flexCol"

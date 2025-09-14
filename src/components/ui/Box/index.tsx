@@ -71,6 +71,7 @@ const boxStyles = tv(
       },
       defaultVariants: {
         position: "relative",
+        padding: "md",
       },
     },
   },
