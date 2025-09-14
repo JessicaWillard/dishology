@@ -6,9 +6,9 @@ import { SuppliersList } from "@/components/suppliers/SuppliersList";
 import { EditSupplierSection } from "@/components/suppliers/EditSupplierSection";
 import { SupplierForm } from "@/components/suppliers/SupplierForm";
 import { SidePanel } from "@/components/ui/SidePanel";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
+import { ControlsBar } from "@/components/ui/ControlsBar";
 import type { Supplier } from "@/utils/types/database";
+import { Box } from "@/components/ui/Box";
 
 interface SuppliersClientProps {
   userId: string;
@@ -41,7 +41,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
     setIsCreatePanelOpen(false);
   };
 
-  const handleCreateCancel = () => {
+  const handleCloseCreatePanel = () => {
     setIsCreatePanelOpen(false);
   };
 
@@ -53,35 +53,39 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
     }
   };
 
-  const handleEditCancel = () => {
+  const handleCloseEditPanel = () => {
     setEditingSupplier(null);
     setIsEditPanelOpen(false);
   };
 
   return (
     <>
-      <div className="flex flex-col gap-8 justify-center items-center">
-        {/* Create Supplier Button */}
-        <div className="w-full flex justify-center">
-          <Button variant="solid" iconOnly handlePress={handleCreateClick}>
-            <Icon name="Plus" />
-          </Button>
-        </div>
+      <Box display="flexCol" gap={6}>
+        {/* Controls Bar */}
+        <ControlsBar
+          primaryAction={{
+            onPress: handleCreateClick,
+            icon: "Plus",
+            label: "Add supplier",
+          }}
+        />
 
         {/* Suppliers List */}
-        <SuppliersList
-          suppliers={suppliers}
-          loading={loading}
-          error={error}
-          onEdit={handleEdit}
-          onRetry={refetch}
-        />
-      </div>
+        <Box className="mt-28 lg:mt-32">
+          <SuppliersList
+            suppliers={suppliers}
+            loading={loading}
+            error={error}
+            onEdit={handleEdit}
+            onRetry={refetch}
+          />
+        </Box>
+      </Box>
 
       {/* Create Supplier Side Panel */}
       <SidePanel
         isOpen={isCreatePanelOpen}
-        onClose={handleCreateCancel}
+        onClose={handleCloseCreatePanel}
         width="half"
         position="right"
       >
@@ -96,8 +100,6 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
             onError={(error: Error) => {
               alert(`Error creating supplier: ${error.message}`);
             }}
-            onCancel={handleCreateCancel}
-            showCancel={false}
             onCreate={create}
             isLoading={isCreating}
           />
@@ -107,7 +109,7 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
       {/* Edit Supplier Side Panel */}
       <SidePanel
         isOpen={isEditPanelOpen}
-        onClose={handleEditCancel}
+        onClose={handleCloseEditPanel}
         width="half"
         position="right"
       >
@@ -116,9 +118,9 @@ export const SuppliersClient = ({ userId }: SuppliersClientProps) => {
             editingSupplier={editingSupplier}
             onUpdate={update}
             onDelete={remove}
-            onCancel={handleEditCancel}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
+            onSuccess={handleCloseEditPanel}
           />
         )}
       </SidePanel>

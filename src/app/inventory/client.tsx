@@ -7,60 +7,25 @@ import { InventoryCard } from "@/components/inventory-components/InventoryCard";
 import { InventoryTable } from "@/components/inventory-components/InventoryTable";
 import { CreateInventorySection } from "@/components/inventory-components/CreateInventorySection";
 import { EditInventorySection } from "@/components/inventory-components/EditInventorySection";
-// import { ComboBox } from "@/components/fields/ComboBox";
-import { Input } from "@/components/fields/Input";
+import { FilterPanel } from "@/components/inventory-components/FilterPanel";
 import { Button } from "@/components/ui/Button";
 import { Box } from "@/components/ui/Box";
 import { Text } from "@/components/ui/Text";
 import { Icon } from "@/components/ui/Icon";
+import { ControlsBar } from "@/components/ui/ControlsBar";
 import type {
   InventoryWithSupplier,
   InventoryType,
   InventoryFormData,
 } from "@/utils/types/database";
+import type { FilterOptions } from "@/components/inventory-components/FilterPanel/interface";
 import { formatDateForInput } from "@/utils/date";
+import {
+  exportToCSV,
+  formatDateForCSV,
+  formatCurrencyForCSV,
+} from "@/utils/csvExport";
 import { tv } from "tailwind-variants";
-
-const inventoryPageStyles = tv({
-  base: "flex flex-col gap-6",
-});
-
-// const controlsBarStyles = tv({
-//   base: "flex items-center justify-between gap-4",
-// });
-
-const viewToggleStyles = tv({
-  base: "flex items-center gap-2",
-});
-
-// const searchSectionStyles = tv({
-//   base: "flex items-center gap-4",
-// });
-
-const contentStyles = tv({
-  base: "flex flex-col gap-6",
-});
-
-const clusterStyles = tv({
-  base: "flex flex-col gap-4",
-});
-
-// const clusterHeaderStyles = tv({
-//   base: "flex items-center justify-between p-3 rounded-lg text-white font-medium",
-//   variants: {
-//     type: {
-//       produce: "bg-green-600",
-//       dry: "bg-amber-600",
-//       meat: "bg-red-600",
-//       dairy: "bg-blue-600",
-//       beverage: "bg-purple-600",
-//       cleaning: "bg-gray-600",
-//       smallwares: "bg-orange-600",
-//       equipment: "bg-indigo-600",
-//       other: "bg-slate-600",
-//     },
-//   },
-// });
 
 const clusterContentStyles = tv({
   base: "grid gap-4",
@@ -90,14 +55,19 @@ interface InventoryClientProps {
   userId: string;
 }
 
-export function InventoryClient({ userId }: InventoryClientProps) {
+export function InventoryClient({}: InventoryClientProps) {
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState<string>("");
   const [showCreatePanel, setShowCreatePanel] = useState(false);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [editingItem, setEditingItem] = useState<InventoryWithSupplier | null>(
     null
   );
+  const [filters, setFilters] = useState<FilterOptions>({
+    types: [],
+    suppliers: [],
+    lowStock: false,
+  });
 
   const {
     inventory,
@@ -130,9 +100,31 @@ export function InventoryClient({ userId }: InventoryClientProps) {
       );
     }
 
-    // Filter by type
-    if (selectedType) {
-      filtered = filtered.filter((item) => item.type === selectedType);
+    // Filter by selected types
+    if (filters.types.length > 0) {
+      filtered = filtered.filter(
+        (item) => item.type && filters.types.includes(item.type)
+      );
+    }
+
+    // Filter by suppliers
+    if (filters.suppliers.length > 0) {
+      filtered = filtered.filter(
+        (item) =>
+          (item as InventoryWithSupplier).supplier?.id &&
+          filters.suppliers.includes(
+            (item as InventoryWithSupplier).supplier!.id
+          )
+      );
+    }
+
+    // Filter by low stock
+    if (filters.lowStock) {
+      filtered = filtered.filter((item) => {
+        const quantity = parseFloat(item.quantity);
+        const minCount = item.min_count ? parseFloat(item.min_count) : 0;
+        return quantity <= minCount;
+      });
     }
 
     // Group by type
@@ -162,9 +154,9 @@ export function InventoryClient({ userId }: InventoryClientProps) {
       .filter((type) => grouped[type]?.length > 0)
       .map((type) => ({
         type,
-        items: grouped[type],
+        items: grouped[type].sort((a, b) => a.name.localeCompare(b.name)),
       }));
-  }, [inventory, searchTerm, selectedType]);
+  }, [inventory, searchTerm, filters]);
 
   const handleViewToggle = useCallback(() => {
     setViewMode((prev) => (prev === "card" ? "table" : "card"));
@@ -176,10 +168,6 @@ export function InventoryClient({ userId }: InventoryClientProps) {
     },
     []
   );
-
-  const handleTypeChange = useCallback((key: string) => {
-    setSelectedType(key || "");
-  }, []);
 
   const handleCreate = useCallback(
     async (data: InventoryFormData) => {
@@ -229,6 +217,66 @@ export function InventoryClient({ userId }: InventoryClientProps) {
     setShowCreatePanel(true);
   }, []);
 
+  const handleOpenFilterPanel = useCallback(() => {
+    setShowFilterPanel(true);
+  }, []);
+
+  const handleCloseFilterPanel = useCallback(() => {
+    setShowFilterPanel(false);
+  }, []);
+
+  const handleFiltersChange = useCallback((newFilters: FilterOptions) => {
+    setFilters(newFilters);
+  }, []);
+
+  const handleResetFilters = useCallback(() => {
+    setFilters({
+      types: [],
+      suppliers: [],
+      lowStock: false,
+    });
+  }, []);
+
+  const handleApplyFilters = useCallback(() => {
+    setShowFilterPanel(false);
+  }, []);
+
+  const handleExportToCSV = useCallback(() => {
+    // Get all filtered items (flattened from grouped structure)
+    const allFilteredItems = filteredAndGroupedInventory.flatMap(
+      (group) => group.items
+    );
+
+    if (allFilteredItems.length === 0) {
+      return;
+    }
+
+    // Transform data for CSV export
+    const csvData = allFilteredItems.map((item) => ({
+      Name: item.name,
+      Type: INVENTORY_TYPE_LABELS[item.type as InventoryType] || "Other",
+      Description: item.description || "",
+      Quantity: item.quantity,
+      Size: item.size || "",
+      Unit: item.unit || "",
+      "Price per Unit": formatCurrencyForCSV(item.price_per_unit),
+      "Price per Pack": item.price_per_pack
+        ? formatCurrencyForCSV(item.price_per_pack)
+        : "",
+      Supplier: (item as InventoryWithSupplier).supplier?.name || "",
+      Location: item.location || "",
+      "Min Count": item.min_count || "",
+      "Count Date": formatDateForCSV(item.count_date),
+      "Created At": item.created_at ? formatDateForCSV(item.created_at) : "",
+    }));
+
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().split("T")[0];
+    const filename = `inventory-export-${timestamp}.csv`;
+
+    exportToCSV(csvData, { filename });
+  }, [filteredAndGroupedInventory]);
+
   // Prepare suppliers for ComboBox
   const supplierOptions = suppliers.map((supplier) => ({
     id: supplier.id!,
@@ -244,7 +292,7 @@ export function InventoryClient({ userId }: InventoryClientProps) {
 
   if (loading) {
     return (
-      <Box className="flex items-center justify-center p-8">
+      <Box display="flexCol" align="start" justify="start" padding="lg" gap={4}>
         <Text>Loading inventory...</Text>
       </Box>
     );
@@ -252,89 +300,132 @@ export function InventoryClient({ userId }: InventoryClientProps) {
 
   if (error) {
     return (
-      <Box className="flex flex-col items-center justify-center p-8 gap-4">
-        <Text className="text-red-600">Error loading inventory: {error}</Text>
+      <Box display="flexCol" align="start" justify="start" padding="lg" gap={4}>
+        <Text className="text-error">Error loading inventory: {error}</Text>
         <Button handlePress={() => refetch()}>Try Again</Button>
       </Box>
     );
   }
 
   return (
-    <Box className={inventoryPageStyles()}>
+    <Box display="flexCol" gap={6}>
       {/* Controls Bar */}
-      <Box
-        // className={controlsBarStyles()}
-        display="flexRow"
-        justify="between"
-        align="center"
-        gap="md"
-      >
-        <Box className={viewToggleStyles()}>
-          <Button
-            variant="ghost"
-            handlePress={handleViewToggle}
-            iconOnly
-            aria-label={`Switch to ${
-              viewMode === "card" ? "table" : "card"
-            } view`}
-          >
-            <Icon name={viewMode === "card" ? "List" : "Grid"} />
-          </Button>
-        </Box>
+      <ControlsBar
+        search={{
+          placeholder: "Search inventory...",
+          value: searchTerm,
+          onChange: handleSearchChange,
+        }}
+        viewToggle={{
+          currentView: viewMode,
+          onToggle: handleViewToggle,
+        }}
+        primaryAction={{
+          onPress: handleOpenCreatePanel,
+          icon: "Plus",
+          label: "Add inventory item",
+        }}
+        secondaryActions={[
+          {
+            onPress: handleOpenFilterPanel,
+            icon: "Filter",
+            label: "Filter inventory",
+            variant: "ghost",
+          },
+        ]}
+      />
 
-        <Button variant="solid" handlePress={handleOpenCreatePanel} iconOnly>
-          <Icon name="Plus" />
-        </Button>
-        <Button variant="ghost" iconOnly>
-          <Icon name="Filter" />
-        </Button>
-      </Box>
-      <Box
-      // className={searchSectionStyles()}
-      // display="flexRow"
-      // align="center"
-      // gap="sm"
-      >
-        {/* <ComboBox
-          items={typeOptions}
-          selectedKey={selectedType}
-          onSelectionChange={(key) => handleTypeChange(key as string)}
-          placeholder="Filter by type"
-          className="w-40"
-        /> */}
-        <Input
-          placeholder="Search inventory..."
-          value={searchTerm}
-          onChange={(value, e) => handleSearchChange(e)}
-          rightIcon="Search"
-        />
-      </Box>
+      {/* Filter Tags */}
+      {(filters.types.length > 0 ||
+        filters.suppliers.length > 0 ||
+        filters.lowStock) && (
+        <Box display="flexRow" gap={2} className="flex-wrap">
+          {filters.types.map((type) => (
+            <Button
+              key={`type-${type}`}
+              variant="tag"
+              handlePress={() => {
+                const newFilters = {
+                  ...filters,
+                  types: filters.types.filter((t) => t !== type),
+                };
+                setFilters(newFilters);
+              }}
+              rightIcon="CloseBtn"
+            >
+              {INVENTORY_TYPE_LABELS[type as InventoryType]}
+            </Button>
+          ))}
+          {filters.suppliers.map((supplierId) => {
+            const supplier = suppliers.find((s) => s.id === supplierId);
+            return (
+              <Button
+                key={`supplier-${supplierId}`}
+                variant="tag"
+                handlePress={() => {
+                  const newFilters = {
+                    ...filters,
+                    suppliers: filters.suppliers.filter(
+                      (s) => s !== supplierId
+                    ),
+                  };
+                  setFilters(newFilters);
+                }}
+                rightIcon="CloseBtn"
+              >
+                {supplier?.name || "Unknown Supplier"}
+              </Button>
+            );
+          })}
+          {filters.lowStock && (
+            <Button
+              variant="tag"
+              handlePress={() => {
+                const newFilters = {
+                  ...filters,
+                  lowStock: false,
+                };
+                setFilters(newFilters);
+              }}
+              rightIcon="CloseBtn"
+            >
+              Low Stock
+            </Button>
+          )}
+        </Box>
+      )}
 
       {/* Content */}
-      <Box className={contentStyles()}>
+      <Box display="flexCol" gap={6} className="mt-39 lg:mt-48">
         {filteredAndGroupedInventory.length === 0 ? (
-          <Box className="flex flex-col items-center justify-center p-8 gap-4">
+          <Box
+            display="flexCol"
+            align="center"
+            justify="center"
+            padding="lg"
+            gap={4}
+          >
             <Icon name="Dish" className="text-gray-400" />
             <Text className="text-gray-600">
-              {searchTerm || selectedType
+              {searchTerm ||
+              filters.types.length > 0 ||
+              filters.suppliers.length > 0 ||
+              filters.lowStock
                 ? "No inventory items match your search criteria."
                 : "No inventory items found. Add your first item to get started."}
             </Text>
-            {!searchTerm && !selectedType && (
-              <Button variant="solid" handlePress={handleOpenCreatePanel}>
-                Add First Item
-              </Button>
-            )}
+            {!searchTerm &&
+              filters.types.length === 0 &&
+              filters.suppliers.length === 0 &&
+              !filters.lowStock && (
+                <Button variant="solid" handlePress={handleOpenCreatePanel}>
+                  Add First Item
+                </Button>
+              )}
           </Box>
         ) : (
           filteredAndGroupedInventory.map(({ type, items }) => (
-            <Box key={type} className={clusterStyles()}>
-              {/* <Box className={clusterHeaderStyles({ type })}>
-                <Text variant="body" size="lg" weight="bold">
-                  {INVENTORY_TYPE_LABELS[type as InventoryType]} ({items.length}
-                  )
-                </Text>
-              </Box> */}
+            <Box key={type} display="flexCol" gap={6}>
               <Box className={clusterContentStyles({ view: viewMode })}>
                 {viewMode === "card" ? (
                   items.map((item) => (
@@ -379,6 +470,16 @@ export function InventoryClient({ userId }: InventoryClientProps) {
             </Box>
           ))
         )}
+        <Box display="flexRow" justify="center" width="full">
+          <Button
+            variant="solid"
+            handlePress={handleExportToCSV}
+            aria-label="Export to CSV"
+            rightIcon="Download"
+          >
+            Export to CSV
+          </Button>
+        </Box>
       </Box>
 
       {/* Side Panels */}
@@ -398,6 +499,17 @@ export function InventoryClient({ userId }: InventoryClientProps) {
         isDeleting={isDeleting}
         suppliers={supplierOptions}
         onClose={handleCloseEditPanel}
+      />
+
+      <FilterPanel
+        isOpen={showFilterPanel}
+        onClose={handleCloseFilterPanel}
+        filters={filters}
+        onFiltersChange={handleFiltersChange}
+        onResetFilters={handleResetFilters}
+        onApplyFilters={handleApplyFilters}
+        availableTypes={typeOptions}
+        availableSuppliers={supplierOptions}
       />
     </Box>
   );

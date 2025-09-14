@@ -1,9 +1,10 @@
 "use client";
 
 import { forwardRef } from "react";
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 import { clsx } from "clsx";
 import type { ButtonProps } from "./interface";
+import { Icon } from "../Icon";
 
 const buttonStyles = tv(
   {
@@ -17,6 +18,7 @@ const buttonStyles = tv(
           "text-primary hover:text-secondary !min-w-0 !min-h-0 !px-0 !rounded-none",
         destructive:
           "text-error hover:text-black !min-w-0 !min-h-0 !px-0 !rounded-none",
+        tag: "bg-gray-dark text-white hover:bg-gray-dark/80 !px-2 !py-1 text-xs !min-h-auto !min-w-auto !rounded-md [&_svg]:h-4 [&_svg]:w-4",
       },
       iconOnly: {
         true: "!px-0",
@@ -30,9 +32,11 @@ const buttonStyles = tv(
   { twMerge: false }
 );
 
+export type ButtonVariantProps = VariantProps<typeof buttonStyles>;
+
 export const Button = forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
-  ButtonProps
+  ButtonProps & ButtonVariantProps
 >((props, ref) => {
   const {
     className,
@@ -44,13 +48,21 @@ export const Button = forwardRef<
     iconOnly,
     handlePress,
     ...rest
-  } = props as ButtonProps;
+  } = props;
 
   const content = (
     <>
-      {leftIcon ? <span className="mr-2 inline-flex">{leftIcon}</span> : null}
+      {leftIcon ? (
+        <span className="mr-2 inline-flex">
+          <Icon name={leftIcon} />
+        </span>
+      ) : null}
       <span>{isLoading ? "Loading…" : children}</span>
-      {rightIcon ? <span className="ml-2 inline-flex">{rightIcon}</span> : null}
+      {rightIcon ? (
+        <span className="ml-2 inline-flex">
+          <Icon name={rightIcon} />
+        </span>
+      ) : null}
     </>
   );
 
@@ -62,8 +74,8 @@ export const Button = forwardRef<
       isDisabled?: boolean;
     };
     const {
-      linkBehavior: _ignoreLinkBehavior,
-      isDisabled: _ignoreIsDisabled,
+      linkBehavior: _,
+      isDisabled: __,
       ...anchorProps
     } = rest as ExtendedAnchorProps;
     return (
@@ -71,9 +83,16 @@ export const Button = forwardRef<
         ref={ref as React.Ref<HTMLAnchorElement>}
         className={classes}
         onClick={
-          handlePress as
-            | ((e: React.MouseEvent<HTMLAnchorElement>) => void)
-            | undefined
+          handlePress
+            ? (e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+                (
+                  handlePress as (
+                    e: React.MouseEvent<HTMLAnchorElement>
+                  ) => void
+                )(e);
+              }
+            : undefined
         }
         {...anchorProps}
       >
@@ -87,19 +106,15 @@ export const Button = forwardRef<
     isDisabled?: boolean;
   };
   const {
-    linkBehavior: _ignoreLinkBehavior,
-    isDisabled: _ignoreIsDisabled,
+    linkBehavior: _,
+    isDisabled: __,
     ...buttonProps
   } = rest as ExtendedButtonProps;
   return (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}
       className={classes}
-      onClick={
-        handlePress as
-          | ((e: React.MouseEvent<HTMLButtonElement>) => void)
-          | undefined
-      }
+      onClick={handlePress as React.MouseEventHandler<HTMLButtonElement>}
       disabled={
         ("disabled" in props && !!props.disabled) ||
         ("isDisabled" in props && !!props.isDisabled)

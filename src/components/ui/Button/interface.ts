@@ -1,20 +1,13 @@
 import type React from "react";
 
-// Variant types kept in sync with the implementation
-export type ButtonVariant = "solid" | "outline" | "ghost" | "destructive";
-
 export interface TBaseButtonProps {
   className?: string;
   children?: React.ReactNode;
 
-  // Style variants
-  variant?: ButtonVariant;
-  iconOnly?: boolean;
-
-  // Extras
+  // Functionality props
   isLoading?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: string;
+  rightIcon?: string;
 }
 
 export interface TButtonProps

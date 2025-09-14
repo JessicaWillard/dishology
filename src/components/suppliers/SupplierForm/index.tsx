@@ -21,35 +21,13 @@ const supplierFormStyles = tv({
   },
 });
 
-const formSectionStyles = tv({
-  base: "flex flex-col gap-4",
-});
-
-const formActionsStyles = tv({
-  base: "flex items-center gap-3 pt-2",
-  variants: {
-    alignment: {
-      left: "justify-start",
-      right: "justify-end",
-      center: "justify-center",
-      between: "justify-between",
-    },
-  },
-  defaultVariants: {
-    alignment: "right",
-  },
-});
-
 export function SupplierForm({
   mode = "create",
   initialData,
   onSuccess,
   onError,
-  onCancel,
   onDelete,
-  showCancel = true,
   submitText,
-  cancelText = "Cancel",
   className,
   isLoading = false,
   onCreate,
@@ -111,19 +89,6 @@ export function SupplierForm({
     [handleSubmit, onSubmit]
   );
 
-  // Handle cancel
-  const handleCancel = useCallback(() => {
-    if (isDirty) {
-      // Could add confirmation dialog here
-      const confirmed = window.confirm(
-        "You have unsaved changes. Are you sure you want to cancel?"
-      );
-      if (!confirmed) return;
-    }
-    resetForm();
-    onCancel?.();
-  }, [isDirty, resetForm, onCancel]);
-
   // Handle reset
   const handleReset = useCallback(() => {
     if (isDirty) {
@@ -155,153 +120,135 @@ export function SupplierForm({
       } else {
         await deleteSupplier(initialData.id);
       }
-      // Close the form after successful deletion
-      onCancel?.();
+      // Form will be closed by parent component after successful deletion
     } catch (error) {
       console.error("Delete error:", error);
       onError?.(error as Error);
     }
-  }, [initialData, onDelete, onCancel, onError]);
+  }, [initialData, onDelete, onError]);
 
   const isFormLoading = isLoading || isSubmitting;
   const defaultSubmitText = mode === "create" ? "Save" : "Save Changes";
 
   return (
-    <Box padding="lg" radius="md" shadow="md" width="full">
-      <form
-        onSubmit={handleFormSubmit}
-        className={clsx(
-          supplierFormStyles({ loading: isFormLoading }),
-          className
-        )}
-        noValidate
-      >
-        {/* Supplier Information Section */}
-        <div className={formSectionStyles()}>
-          <Input
-            name="name"
-            label="Supplier Name"
-            placeholder="Enter supplier name"
-            value={formData.name}
-            onChange={(value) => updateField("name", value)}
-            onBlur={(e) => validateFieldOnBlur("name", e.target.value)}
-            disabled={isFormLoading}
-            {...getFieldProps("name")}
-          />
+    <form
+      onSubmit={handleFormSubmit}
+      className={clsx(
+        supplierFormStyles({ loading: isFormLoading }),
+        className
+      )}
+      noValidate
+    >
+      {/* Supplier Information Section */}
+      <Box display="flexCol" gap={4}>
+        <Input
+          name="name"
+          label="Supplier Name"
+          placeholder="Enter supplier name"
+          value={formData.name}
+          onChange={(value) => updateField("name", value)}
+          onBlur={(e) => validateFieldOnBlur("name", e.target.value)}
+          disabled={isFormLoading}
+          {...getFieldProps("name")}
+        />
 
-          <TextArea
-            name="description"
-            label="Description"
-            placeholder="Enter supplier description (optional)"
-            value={formData.description}
-            onChange={(value) => updateField("description", value)}
-            onBlur={(e) => validateFieldOnBlur("description", e.target.value)}
-            disabled={isFormLoading}
-            rows={3}
-            {...getFieldProps("description")}
-          />
-        </div>
+        <TextArea
+          name="description"
+          label="Description"
+          placeholder="Enter supplier description (optional)"
+          value={formData.description}
+          onChange={(value) => updateField("description", value)}
+          onBlur={(e) => validateFieldOnBlur("description", e.target.value)}
+          disabled={isFormLoading}
+          rows={3}
+          {...getFieldProps("description")}
+        />
+      </Box>
 
-        {/* Contact Information Section */}
-        <div className={formSectionStyles()}>
-          <Input
-            name="contactName"
-            label="Contact name"
-            placeholder="Enter contact person name"
-            value={formData.contact.contactName || ""}
-            onChange={(value) => updateField("contactName", value)}
-            onBlur={(e) => validateFieldOnBlur("contactName", e.target.value)}
-            disabled={isFormLoading}
-            {...getFieldProps("contactName")}
-          />
+      {/* Contact Information Section */}
+      <Box display="flexCol" gap={4}>
+        <Input
+          name="contactName"
+          label="Contact name"
+          placeholder="Enter contact person name"
+          value={formData.contact.contactName || ""}
+          onChange={(value) => updateField("contactName", value)}
+          onBlur={(e) => validateFieldOnBlur("contactName", e.target.value)}
+          disabled={isFormLoading}
+          {...getFieldProps("contactName")}
+        />
 
-          <Input
-            name="phone"
-            label="Phone"
-            placeholder="Enter phone number"
-            value={formData.contact.phone || ""}
-            onChange={(value) => updateField("phone", value)}
-            onBlur={(e) => validateFieldOnBlur("phone", e.target.value)}
-            disabled={isFormLoading}
-            type="tel"
-            {...getFieldProps("phone")}
-          />
+        <Input
+          name="phone"
+          label="Phone"
+          placeholder="Enter phone number"
+          value={formData.contact.phone || ""}
+          onChange={(value) => updateField("phone", value)}
+          onBlur={(e) => validateFieldOnBlur("phone", e.target.value)}
+          disabled={isFormLoading}
+          type="tel"
+          {...getFieldProps("phone")}
+        />
 
-          <Input
-            name="email"
-            label="Email"
-            placeholder="Enter email address"
-            value={formData.contact.email || ""}
-            onChange={(value) => updateField("email", value)}
-            onBlur={(e) => validateFieldOnBlur("email", e.target.value)}
-            disabled={isFormLoading}
-            type="email"
-            {...getFieldProps("email")}
-          />
+        <Input
+          name="email"
+          label="Email"
+          placeholder="Enter email address"
+          value={formData.contact.email || ""}
+          onChange={(value) => updateField("email", value)}
+          onBlur={(e) => validateFieldOnBlur("email", e.target.value)}
+          disabled={isFormLoading}
+          type="email"
+          {...getFieldProps("email")}
+        />
 
-          <Input
-            name="website"
-            label="Website"
-            placeholder="Enter website URL"
-            value={formData.contact.website || ""}
-            onChange={(value) => updateField("website", value)}
-            onBlur={(e) => validateFieldOnBlur("website", e.target.value)}
-            disabled={isFormLoading}
-            type="url"
-            {...getFieldProps("website")}
-          />
-        </div>
+        <Input
+          name="website"
+          label="Website"
+          placeholder="Enter website URL"
+          value={formData.contact.website || ""}
+          onChange={(value) => updateField("website", value)}
+          onBlur={(e) => validateFieldOnBlur("website", e.target.value)}
+          disabled={isFormLoading}
+          type="url"
+          {...getFieldProps("website")}
+        />
+      </Box>
 
-        {/* Form Actions */}
-        <div
-          className={formActionsStyles({
-            alignment: "between",
-          })}
-        >
-          {mode === "create" && showCancel && (
-            <Button
-              type="button"
-              variant="outline"
-              handlePress={handleCancel}
-              disabled={isFormLoading}
-            >
-              {cancelText}
-            </Button>
-          )}
-
-          {mode === "create" && !showCancel && (
-            <Button
-              type="button"
-              variant="ghost"
-              handlePress={handleReset}
-              disabled={isFormLoading}
-            >
-              Reset
-            </Button>
-          )}
-
-          {mode === "edit" && (
-            <Button
-              type="button"
-              variant="destructive"
-              handlePress={handleDelete}
-              disabled={isFormLoading}
-            >
-              Delete
-            </Button>
-          )}
-
+      {/* Form Actions */}
+      <Box display="flexRow" justify="between" gap={3}>
+        {mode === "create" && (
           <Button
-            type="submit"
-            variant="solid"
-            isLoading={isSubmitting}
-            disabled={isFormLoading || !isDirty}
+            type="button"
+            variant="ghost"
+            handlePress={handleReset}
+            disabled={isFormLoading}
           >
-            {submitText || defaultSubmitText}
+            Reset
           </Button>
-        </div>
-      </form>
-    </Box>
+        )}
+
+        {mode === "edit" && (
+          <Button
+            type="button"
+            variant="destructive"
+            handlePress={handleDelete}
+            disabled={isFormLoading}
+          >
+            Delete
+          </Button>
+        )}
+
+        <Button
+          type="submit"
+          variant="solid"
+          isLoading={isSubmitting}
+          disabled={isFormLoading || !isDirty}
+        >
+          {submitText || defaultSubmitText}
+        </Button>
+      </Box>
+    </form>
   );
 }
 

@@ -5,7 +5,7 @@ export function EditSupplierSection({
   editingSupplier,
   onUpdate,
   onDelete,
-  onCancel,
+  onSuccess,
   isUpdating,
   isDeleting,
 }: EditSupplierSectionProps) {
@@ -14,7 +14,7 @@ export function EditSupplierSection({
   }
 
   const handleEditSuccess = () => {
-    onCancel();
+    onSuccess?.();
   };
 
   const handleEditError = (error: Error) => {
@@ -33,8 +33,6 @@ export function EditSupplierSection({
         initialData={editingSupplier}
         onSuccess={handleEditSuccess}
         onError={handleEditError}
-        onCancel={onCancel}
-        showCancel={false}
         onUpdate={onUpdate}
         onDelete={onDelete}
         isLoading={isUpdating || isDeleting}

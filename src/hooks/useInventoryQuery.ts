@@ -144,6 +144,7 @@ export function useUpdateInventory() {
       }
     },
     onSuccess: (updatedInventory) => {
+      // Update the specific item with the API response
       queryClient.setQueryData(
         inventoryKeys.lists(),
         (old: InventoryListResponse | undefined) => {
@@ -158,7 +159,9 @@ export function useUpdateInventory() {
       );
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
+      // Don't invalidate immediately to prevent race conditions
+      // The onSuccess callback already handles updating with the correct data
+      // queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
     },
   });
 }

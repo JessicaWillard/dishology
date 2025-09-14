@@ -90,7 +90,7 @@ export async function PUT(
     }
 
     if (body.size !== undefined) {
-      updateData.size = body.size?.trim() || null;
+      updateData.size = body.size ? String(body.size).trim() : undefined;
     }
 
     if (body.unit !== undefined) {
@@ -102,7 +102,9 @@ export async function PUT(
     }
 
     if (body.price_per_pack !== undefined) {
-      updateData.price_per_pack = body.price_per_pack?.trim() || null;
+      updateData.price_per_pack = body.price_per_pack
+        ? String(body.price_per_pack).trim()
+        : undefined;
     }
 
     if (body.supplier_id !== undefined) {
@@ -114,7 +116,9 @@ export async function PUT(
     }
 
     if (body.min_count !== undefined) {
-      updateData.min_count = body.min_count?.trim() || null;
+      updateData.min_count = body.min_count
+        ? String(body.min_count).trim()
+        : undefined;
     }
 
     if (body.count_date !== undefined) {

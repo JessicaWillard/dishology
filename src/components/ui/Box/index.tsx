@@ -4,8 +4,14 @@ import { clsx } from "clsx";
 
 const boxStyles = tv(
   {
-    base: "relative",
     variants: {
+      position: {
+        static: "static",
+        fixed: "fixed",
+        absolute: "absolute",
+        relative: "relative",
+        sticky: "sticky",
+      },
       padding: {
         none: "p-0",
         xs: "p-2",
@@ -22,7 +28,9 @@ const boxStyles = tv(
         xl: "gap-8",
       },
       display: {
+        none: "hidden",
         block: "block",
+        grid: "grid",
         flexCol: "flex flex-col",
         flexRow: "flex flex-row",
       },
@@ -30,6 +38,7 @@ const boxStyles = tv(
         start: "items-start",
         center: "items-center",
         right: "items-end",
+        end: "items-end",
       },
       justify: {
         start: "justify-start",
@@ -37,10 +46,12 @@ const boxStyles = tv(
         end: "justify-end",
         between: "justify-between",
       },
-      // border: {
-      //   false: "border-none",
-      //   true: "border",
-      // },
+      gridCols: {
+        none: "grid-cols-none",
+        auto: "grid-cols-auto",
+        autoFit: "grid-cols-auto-fit",
+        autoFill: "grid-cols-auto-fill",
+      },
       width: {
         full: "w-full",
         auto: "w-auto",
@@ -58,27 +69,25 @@ const boxStyles = tv(
         md: "shadow",
         lg: "shadow-lg",
       },
-    },
-    defaultVariants: {
-      tone: "default",
-      padding: "none",
-      radius: "md",
-      shadow: "none",
-      gap: "none",
-      display: "block",
-      width: "auto",
+      defaultVariants: {
+        position: "relative",
+      },
     },
   },
-  { twMerge: false }
+  { twMerge: true }
 );
 
 export type BoxProps = HTMLAttributes<HTMLDivElement> &
-  VariantProps<typeof boxStyles>;
+  Omit<VariantProps<typeof boxStyles>, "gridCols" | "gap"> & {
+    gridCols?: string | number;
+    gap?: string | number;
+  };
 
 export const Box = forwardRef<HTMLDivElement, BoxProps>(
   (
     {
       className,
+      position,
       padding,
       radius,
       shadow,
@@ -87,6 +96,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(
       align,
       justify,
       width,
+      gridCols,
       ...rest
     },
     ref
@@ -99,12 +109,27 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(
             padding,
             radius,
             shadow,
-            gap,
             display,
             align,
             justify,
             width,
+            position,
           }),
+          display === "grid" &&
+            gridCols &&
+            (typeof gridCols === "number"
+              ? `grid-cols-${gridCols}`
+              : boxStyles({
+                  gridCols: gridCols as
+                    | "none"
+                    | "auto"
+                    | "autoFit"
+                    | "autoFill",
+                })),
+          gap &&
+            (typeof gap === "number"
+              ? `gap-${gap}`
+              : boxStyles({ gap: gap as "none" | "sm" | "md" | "lg" | "xl" })),
           className
         )}
         {...rest}

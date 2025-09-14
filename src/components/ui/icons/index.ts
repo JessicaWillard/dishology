@@ -21,3 +21,4 @@ export { default as Maximize } from "./Maximize";
 export { default as Grid } from "./Grid";
 export { default as List } from "./List";
 export { default as Warning } from "./Warning";
+export { default as Reset } from "./Reset";

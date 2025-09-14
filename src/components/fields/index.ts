@@ -19,6 +19,9 @@ export type {
   CheckboxGroupItem,
 } from "./Checkbox/interface";
 
+export { Switch } from "./Switch";
+export type { SwitchProps, SwitchVariant } from "./Switch/interface";
+
 // Export centralized field theme utilities
 export {
   fieldContainerStyles,

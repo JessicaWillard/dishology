@@ -162,3 +162,79 @@ export const checkboxDescriptionStyles = tv({
     },
   },
 });
+
+// Switch specific styles
+export const switchContainerStyles = tv({
+  base: "flex items-center gap-3",
+  variants: {
+    disabled: {
+      true: "opacity-65 pointer-events-none",
+    },
+  },
+});
+
+export const switchTrackStyles = tv({
+  base: "relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-offset-2",
+  variants: {
+    variant: {
+      default: "bg-gray-medium",
+      error: "bg-error",
+    },
+    isSelected: {
+      true: "bg-primary",
+    },
+    disabled: {
+      true: "opacity-50 cursor-not-allowed",
+    },
+  },
+  compoundVariants: [
+    {
+      variant: "error",
+      isSelected: true,
+      class: "bg-error",
+    },
+  ],
+  defaultVariants: {
+    variant: "default",
+    isSelected: false,
+    disabled: false,
+  },
+});
+
+export const switchThumbStyles = tv({
+  base: "inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-200 ease-in-out",
+  variants: {
+    isSelected: {
+      true: "translate-x-6",
+      false: "translate-x-1",
+    },
+  },
+  defaultVariants: {
+    isSelected: false,
+  },
+});
+
+export const switchLabelContentStyles = tv({
+  base: "flex flex-col mb-4",
+});
+
+export const switchLabelTextStyles = tv({
+  base: "text-sm text-black",
+  variants: {
+    disabled: {
+      true: "text-gray-medium",
+    },
+    error: {
+      true: "text-error",
+    },
+  },
+});
+
+export const switchDescriptionStyles = tv({
+  base: "text-xs text-gray-dark mt-1",
+  variants: {
+    disabled: {
+      true: "text-gray-medium",
+    },
+  },
+});

@@ -31,4 +31,5 @@ export type IconName =
   | "Maximize"
   | "Grid"
   | "List"
-  | "Warning";
+  | "Warning"
+  | "Reset";

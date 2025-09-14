@@ -36,13 +36,8 @@ export const SupplierCard = (props: SupplierCardProps) => {
   };
 
   return (
-    <Box
-      className={clsx(supplierCardContainerStyles())}
-      padding="md"
-      radius="md"
-      shadow="md"
-    >
-      <Box className={clsx(supplierCardHeaderStyles())}>
+    <Box display="flexCol" gap={4} padding="md" radius="md" shadow="md">
+      <Box display="flexRow" justify="between" gap={8}>
         <Box>
           {supplierName && (
             <Text variant="body" size="lg" weight="bold">
