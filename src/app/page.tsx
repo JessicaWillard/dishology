@@ -1,90 +1,176 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Box } from "@/components/ui/Box";
+import { InventoryTable } from "@/components/inventory-components/InventoryTable";
+import { EditInventorySection } from "@/components/inventory-components/EditInventorySection";
+import { useLowStockQuery } from "@/hooks/useLowStockQuery";
+import { useInventory } from "@/hooks/useInventoryQuery";
+import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
+import {
+  exportToCSV,
+  formatDateForCSV,
+  formatCurrencyForCSV,
+} from "@/utils/csvExport";
+import { formatDateForInput } from "@/utils/date";
+import type {
+  InventoryWithSupplier,
+  InventoryFormData,
+} from "@/utils/types/database";
 
 export default function Home() {
+  const { user, isLoaded } = useUser();
+  const { lowStockItems, isLoading, error } = useLowStockQuery();
+  const { inventory, update, remove, isUpdating, isDeleting } = useInventory();
+  const { data: suppliers = [] } = useSuppliersQuery();
+  const [editingItem, setEditingItem] = useState<InventoryWithSupplier | null>(
+    null
+  );
+
+  // Transform suppliers to match the expected format
+  const supplierOptions = suppliers
+    .filter((supplier) => supplier.id)
+    .map((supplier) => ({
+      id: supplier.id!,
+      name: supplier.name,
+    }));
+
+  const handleEdit = useCallback(
+    (id: string) => {
+      const item = inventory.find((i) => i.id === id);
+      if (item) {
+        // Transform the item to have the correct date format for the form
+        const editingItem = {
+          ...item,
+          count_date: formatDateForInput(item.count_date),
+        };
+        setEditingItem(editingItem);
+      }
+    },
+    [inventory]
+  );
+
+  const handleUpdate = useCallback(
+    async (id: string, data: Partial<InventoryFormData>) => {
+      return await update(id, data);
+    },
+    [update]
+  );
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      await remove(id);
+    },
+    [remove]
+  );
+
+  const handleCloseEditPanel = useCallback(() => {
+    setEditingItem(null);
+  }, []);
+
+  const handleExportLowStock = () => {
+    const exportData = lowStockItems.map((item) => ({
+      Item: item.name,
+      Size:
+        item.size && item.unit ? `${parseFloat(item.size)} ${item.unit}` : "—",
+      Qty: parseFloat(item.quantity),
+      Date: formatDateForCSV(item.countDate),
+      Unit: item.pricePerUnit
+        ? `$${formatCurrencyForCSV(item.pricePerUnit)}`
+        : "—",
+      Total: item.pricePerUnit
+        ? `$${formatCurrencyForCSV(
+            parseFloat(item.pricePerUnit) * parseFloat(item.quantity)
+          )}`
+        : "—",
+    }));
+
+    exportToCSV(exportData, {
+      filename: `low-stock-${new Date().toISOString().split("T")[0]}.csv`,
+    });
+  };
+
   return (
-    <>
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-primary mb-4">
-          Welcome to Dishology
-        </h1>
-        <Text as="h2" size="lg" align="center">
-          Your culinary journey starts here
-        </Text>
-        <div className="mt-6 flex items-center justify-center gap-3">
-          <Button>Primary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-        </div>
-      </div>
+    <Box display="flexCol" gap={8} className="pt-12">
+      <SignedIn>
+        <Box display="flexCol" gap="md">
+          <Text as="h1" size="lg">
+            Hello,
+            <span className="font-bold">
+              {user && isLoaded
+                ? ` ${user.firstName || user.emailAddresses[0]?.emailAddress}!`
+                : ""}
+            </span>
+          </Text>
+        </Box>
+      </SignedIn>
+      <SignedIn>
+        <Box display="flexCol" gap="md">
+          <Text as="h2" size="md" weight="bold">
+            Low stock
+          </Text>
+          {isLoading ? (
+            <Text>Loading low stock items...</Text>
+          ) : error ? (
+            <Text color="error">Error loading low stock items: {error}</Text>
+          ) : lowStockItems.length === 0 ? (
+            <Text>No low stock items found.</Text>
+          ) : (
+            <>
+              <InventoryTable
+                items={lowStockItems}
+                type="mixed"
+                onRowClick={handleEdit}
+              />
+              <Box display="flexRow" justify="end" className="mt-4">
+                <Button variant="ghost" handlePress={handleExportLowStock}>
+                  Export
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
+      </SignedIn>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Get Started
-          </h2>
-          <SignedOut>
-            <p className="text-gray-600 mb-4">
-              Sign in or create an account to start exploring recipes and
-              building your culinary skills.
-            </p>
-            <div className="space-y-3">
-              <p className="text-sm text-gray-500">
-                • Access exclusive recipes
-              </p>
-              <p className="text-sm text-gray-500">
-                • Save your favorite dishes
-              </p>
-              <p className="text-sm text-gray-500">
-                • Track your cooking progress
-              </p>
-            </div>
-          </SignedOut>
-          <SignedIn>
-            <p className="text-green-600 font-medium mb-4">
-              ✅ You&apos;re signed in! Welcome back.
-            </p>
-            <div className="space-y-3">
-              <Button variant="solid" href="/suppliers">
-                Manage Suppliers
-              </Button>
-              <Button variant="solid" href="/inventory">
-                Manage Inventory
-              </Button>
-            </div>
-          </SignedIn>
-        </div>
-      </div>
-
-      <div className="mt-12 text-center">
-        <SignedIn>
-          <Box display="flexCol" gap="md">
-            <Text as="h2" size="lg" weight="bold">
-              Settings
-            </Text>
-            <Box>
-              <Button variant="solid" href="/suppliers">
-                View all suppliers
-              </Button>
-            </Box>
+      {/* <div className="mt-12 text-center"> */}
+      <SignedIn>
+        <Box display="flexCol" gap="md">
+          <Text as="h2" size="md" weight="bold">
+            Settings
+          </Text>
+          <Box>
+            <Button variant="solid" href="/suppliers" className="w-full">
+              View all suppliers
+            </Button>
           </Box>
-        </SignedIn>
-        <SignedOut>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-lg font-medium text-blue-800 mb-2">
-              Join the Community
-            </h3>
-            <p className="text-blue-700">
-              Create an account to unlock all features and start your cooking
-              journey!
-            </p>
-          </div>
-        </SignedOut>
-      </div>
-    </>
+        </Box>
+      </SignedIn>
+      <SignedOut>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="text-lg font-medium text-blue-800 mb-2">
+            Join the Community
+          </h3>
+          <p className="text-blue-700">
+            Create an account to unlock all features and start your cooking
+            journey!
+          </p>
+        </div>
+      </SignedOut>
+      {/* </div> */}
+
+      {/* Edit Inventory Side Panel */}
+      <EditInventorySection
+        editingItem={editingItem}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+        isUpdating={isUpdating}
+        isDeleting={isDeleting}
+        suppliers={supplierOptions}
+        onClose={handleCloseEditPanel}
+      />
+    </Box>
   );
 }
