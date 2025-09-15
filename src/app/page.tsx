@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { Box } from "@/components/ui/Box";
 
 export default function Home() {
   return (
@@ -58,39 +58,20 @@ export default function Home() {
             </div>
           </SignedIn>
         </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Your Profile
-          </h2>
-          <SignedIn>{/* <UserProfile /> */}</SignedIn>
-          <SignedOut>
-            <div className="text-center py-8">
-              <Image
-                src="/globe.svg"
-                alt="Profile icon"
-                width={64}
-                height={64}
-                className="mx-auto mb-4 opacity-50"
-              />
-              <p className="text-gray-500">
-                Sign in to view and manage your profile
-              </p>
-            </div>
-          </SignedOut>
-        </div>
       </div>
 
       <div className="mt-12 text-center">
         <SignedIn>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-            <h3 className="text-lg font-medium text-green-800 mb-2">
-              Ready to Cook?
-            </h3>
-            <p className="text-green-700">
-              Explore our recipe collection and start your culinary adventure!
-            </p>
-          </div>
+          <Box display="flexCol" gap="md">
+            <Text as="h2" size="lg" weight="bold">
+              Settings
+            </Text>
+            <Box>
+              <Button variant="solid" href="/suppliers">
+                View all suppliers
+              </Button>
+            </Box>
+          </Box>
         </SignedIn>
         <SignedOut>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">

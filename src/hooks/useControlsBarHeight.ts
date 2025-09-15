@@ -33,7 +33,7 @@ export function useControlsBarHeight() {
         setHeight(newHeight);
       }
     }
-  }, [height]);
+  }, []);
 
   // Initial measurement when component mounts and on navigation
   useEffect(() => {

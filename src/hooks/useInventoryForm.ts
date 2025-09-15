@@ -76,8 +76,7 @@ export function useInventoryForm(options: UseInventoryFormOptions = {}) {
       supplier_id: initialData?.supplier_id || "",
       location: initialData?.location || "",
       min_count: initialData?.min_count || "",
-      count_date:
-        initialData?.count_date || new Date().toISOString().split("T")[0],
+      count_date: initialData?.count_date || "",
     };
   };
 
@@ -138,8 +137,7 @@ export function useInventoryForm(options: UseInventoryFormOptions = {}) {
       supplier_id: initialData?.supplier_id || "",
       location: initialData?.location || "",
       min_count: initialData?.min_count || "",
-      count_date:
-        initialData?.count_date || new Date().toISOString().split("T")[0],
+      count_date: initialData?.count_date || "",
     };
 
     setFormData(resetData);

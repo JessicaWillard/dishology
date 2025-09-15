@@ -8,6 +8,7 @@ export interface TBaseButtonProps {
   isLoading?: boolean;
   leftIcon?: string;
   rightIcon?: string;
+  iconOnly?: boolean;
 }
 
 export interface TButtonProps

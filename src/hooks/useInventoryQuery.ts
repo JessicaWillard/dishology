@@ -53,7 +53,7 @@ export function useCreateInventory() {
             ...old,
             inventory: [
               {
-                id: `temp-${Date.now()}`,
+                id: `temp-${old.inventory.length}`,
                 user_id: "",
                 name: newInventory.name,
                 type: newInventory.type,

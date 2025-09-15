@@ -47,7 +47,7 @@ export const Button = forwardRef<
     leftIcon,
     rightIcon,
     children,
-    iconOnly,
+    iconOnly = false,
     handlePress,
     ...rest
   } = props;
@@ -59,9 +59,7 @@ export const Button = forwardRef<
           <Icon name={leftIcon} />
         </span>
       ) : null}
-      <span className="flex flex-col justify-center text-center items-center gap-2">
-        {isLoading ? "Loading…" : children}
-      </span>
+      <span>{isLoading ? "Loading…" : children}</span>
       {rightIcon ? (
         <span className="ml-2 inline-flex">
           <Icon name={rightIcon} />

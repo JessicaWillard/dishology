@@ -6,7 +6,6 @@ import { Switch as ReactAriaSwitch } from "react-aria-components";
 import type { SwitchProps } from "./interface";
 import {
   fieldContainerStyles,
-  fieldLabelStyles,
   fieldFeedbackStyles,
   switchContainerStyles,
   switchTrackStyles,
