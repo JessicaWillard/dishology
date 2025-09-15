@@ -67,7 +67,7 @@ export function useCreateSupplier() {
             ...old,
             suppliers: [
               {
-                id: `temp-${Date.now()}`, // Temporary ID
+                id: `temp-${old.suppliers.length}`, // Temporary ID based on array length
                 user_id: "", // Will be filled by server
                 ...newSupplier,
                 created_at: new Date().toISOString(),

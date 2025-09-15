@@ -28,6 +28,7 @@ export const InventoryRow = (props: InventoryRowProps) => {
   } = props;
 
   const lowStock = parseFloat(quantity) <= parseFloat(minCount || "0");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLow, setIsLow] = useState(lowStock);
 
   const totalPrice = pricePerUnit

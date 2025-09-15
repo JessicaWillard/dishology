@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ControlsBar } from "./index";
 
 const meta: Meta<typeof ControlsBar> = {
-  title: "UI/ControlsBar",
+  title: "Components/ControlsBar",
   component: ControlsBar,
   parameters: {
     layout: "padded",

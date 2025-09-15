@@ -6,7 +6,7 @@ import { Text } from "../Text";
 import { Box } from "../Box";
 
 const meta: Meta<typeof SidePanel> = {
-  title: "UI/SidePanel",
+  title: "Components/SidePanel",
   component: SidePanel,
   parameters: {
     layout: "fullscreen",

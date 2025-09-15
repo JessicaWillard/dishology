@@ -49,15 +49,34 @@ export const Destructive: Story = {
   },
 };
 
+export const Tag: Story = {
+  args: {
+    variant: "tag",
+  },
+};
+
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex items-center gap-3">
-      <Button {...args}>X</Button>
-      <Button {...args}>SM</Button>
-      <Button {...args}>MD</Button>
-      <Button {...args}>LG</Button>
-      <Button {...args} iconOnly={true}>
-        <Icon name="Warning" />
+      <Button {...args} variant="nav">
+        <Icon name="Dashboard" />
+        Dashboard
+      </Button>
+      <Button {...args} variant="nav">
+        <Icon name="Ingredient" />
+        Inventory
+      </Button>
+      <Button {...args} variant="nav">
+        <Icon name="Recipe" />
+        Recipes
+      </Button>
+      <Button {...args} variant="nav">
+        <Icon name="Dish" />
+        Dishes
+      </Button>
+      <Button {...args} variant="nav">
+        <Icon name="Calendar" />
+        Planning
       </Button>
     </div>
   ),
