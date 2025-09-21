@@ -1,0 +1,93 @@
+import type { RecipeIngredientsTableProps } from "./interface";
+import type { InventoryType } from "@/utils/types/database";
+import { Text } from "../../ui/Text";
+import {
+  recipeIngredientsTableStyles,
+  recipeIngredientsTableHeaderStyles,
+  recipeIngredientsTableRowStyles,
+  recipeIngredientsTableCellStyles,
+} from "../theme";
+import { clsx } from "clsx";
+
+export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
+  const { ingredients, showHeader = true } = props;
+
+  if (ingredients.length === 0) {
+    return (
+      <Text size="sm" className="text-gray-500 italic">
+        No ingredients added yet.
+      </Text>
+    );
+  }
+
+  return (
+    <table className={clsx(recipeIngredientsTableStyles())}>
+      {showHeader && (
+        <thead>
+          <tr>
+            <th className={clsx(recipeIngredientsTableHeaderStyles())}>Item</th>
+            <th className={clsx(recipeIngredientsTableHeaderStyles())}>Qty</th>
+            <th className={clsx(recipeIngredientsTableHeaderStyles())}>
+              Total
+            </th>
+          </tr>
+        </thead>
+      )}
+      <tbody>
+        {ingredients.map((ingredient) => {
+          const totalCost =
+            ingredient.quantity *
+            parseFloat(ingredient.inventory.price_per_unit);
+
+          return (
+            <tr
+              key={ingredient.id}
+              className={clsx(
+                recipeIngredientsTableRowStyles({
+                  variant:
+                    (ingredient.inventory.type as InventoryType) || "default",
+                })
+              )}
+            >
+              <td
+                className={clsx(
+                  recipeIngredientsTableCellStyles({ width: "name" })
+                )}
+              >
+                <div>
+                  <Text size="sm" weight="medium">
+                    {ingredient.inventory.name}
+                  </Text>
+                </div>
+              </td>
+              <td
+                className={clsx(
+                  recipeIngredientsTableCellStyles({ width: "quantity" })
+                )}
+              >
+                <Text size="sm">
+                  {ingredient.quantity}
+                  {ingredient.unit || ingredient.inventory.unit || ""}
+                </Text>
+              </td>
+              <td
+                className={clsx(
+                  recipeIngredientsTableCellStyles({
+                    width: "total",
+                    align: "right",
+                  })
+                )}
+              >
+                <Text size="sm" weight="medium">
+                  ${totalCost.toFixed(2)}
+                </Text>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+};
+
+RecipeIngredientsTable.displayName = "RecipeIngredientsTable";
