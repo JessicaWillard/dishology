@@ -23,6 +23,7 @@ export const RecipeCard = (props: RecipeCardProps) => {
     description,
     batchSize,
     batchUnit,
+    units,
     prepTime,
     instructions,
     ingredients = [],
@@ -40,9 +41,7 @@ export const RecipeCard = (props: RecipeCardProps) => {
 
   // Calculate recipe metrics
   const totalCost = calculateRecipeCost(ingredients);
-  const units =
-    batchSize && batchUnit ? calculateUnits(batchSize, 1) : batchSize || 0; // Assuming 1 unit = 1 batch unit for simplicity
-  const costPerUnit = calculateCostPerUnit(totalCost, units);
+  const costPerUnit = calculateCostPerUnit(totalCost, units || 0);
 
   // Parse instructions - preserve empty lines as breaks, filter only completely empty content
   const instructionsList = instructions
@@ -95,7 +94,7 @@ export const RecipeCard = (props: RecipeCardProps) => {
             </Box>
           )}
 
-          {units > 0 && (
+          {units && units > 0 && (
             <Box className={clsx(recipeCardMetricStyles())}>
               <Text size="xs" className="text-gray-dark">
                 Units

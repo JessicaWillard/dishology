@@ -10,6 +10,7 @@ export interface RecipeProps {
   description?: Nullable<string>;
   batchSize?: Nullable<number>;
   batchUnit?: Nullable<string>;
+  units?: Nullable<number>; // Number of individual servings/units in the batch
   prepTime?: Nullable<string>;
   instructions?: Nullable<string>;
   ingredients?: RecipeIngredientWithInventory[];

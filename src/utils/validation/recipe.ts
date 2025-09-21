@@ -30,6 +30,12 @@ export function validateRecipe(data: RecipeFormData): ValidationErrors {
     errors.batch_unit = "Batch unit must be less than 50 characters";
   }
 
+  if (data.units !== undefined && data.units !== null) {
+    if (data.units <= 0) {
+      errors.units = "Units must be greater than 0";
+    }
+  }
+
   if (data.prep_time && data.prep_time.length > 50) {
     errors.prep_time = "Prep time must be less than 50 characters";
   }

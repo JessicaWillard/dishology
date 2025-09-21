@@ -21,42 +21,66 @@ export async function GET(
 
     const { data: recipe, error } = await supabase
       .from("recipes")
-      .select(
-        `
-        *,
-        recipe_ingredients (
-          id,
-          quantity,
-          unit,
-          inventory (
-            id,
-            name,
-            price_per_unit,
-            type,
-            unit
-          )
-        )
-      `
-      )
+      .select("*")
       .eq("id", id)
       .eq("user_id", userId)
       .single();
 
     if (error) {
-      if (error.code === "PGRST116") {
-        return NextResponse.json(
-          { error: "Recipe not found" },
-          { status: 404 }
-        );
-      }
       console.error("Error fetching recipe:", error);
+      return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
+    }
+
+    // Get ingredients for this recipe
+    const { data: ingredients, error: ingredientsError } = await supabase
+      .from("recipe_ingredients")
+      .select("id, recipe_id, inventory_id, quantity, unit")
+      .eq("recipe_id", id);
+
+    if (ingredientsError) {
+      console.error("Error fetching recipe ingredients:", ingredientsError);
       return NextResponse.json(
-        { error: "Failed to fetch recipe" },
+        { error: "Failed to fetch recipe ingredients" },
         { status: 500 }
       );
     }
 
-    return NextResponse.json(recipe);
+    // Get inventory data for ingredients
+    const inventoryIds =
+      ingredients?.map((ing) => ing.inventory_id).filter(Boolean) || [];
+    let inventoryData: any[] = [];
+
+    if (inventoryIds.length > 0) {
+      const { data: inventory, error: inventoryError } = await supabase
+        .from("inventory")
+        .select("id, name, price_per_unit, type, unit")
+        .in("id", inventoryIds);
+
+      if (inventoryError) {
+        console.error("Error fetching inventory data:", inventoryError);
+      } else {
+        inventoryData = inventory || [];
+      }
+    }
+
+    const recipeWithIngredients = {
+      ...recipe,
+      ingredients: (ingredients || []).map((ing) => {
+        const inventory = inventoryData.find(
+          (inv) => inv.id === ing.inventory_id
+        );
+        return {
+          id: ing.id,
+          recipe_id: ing.recipe_id,
+          inventory_id: ing.inventory_id,
+          quantity: ing.quantity,
+          unit: ing.unit,
+          inventory: inventory || null,
+        };
+      }),
+    };
+
+    return NextResponse.json(recipeWithIngredients);
   } catch (error) {
     console.error("GET /api/recipes/[id] error:", error);
     return NextResponse.json(
@@ -106,6 +130,10 @@ export async function PUT(
       updateData.batch_unit = body.batch_unit?.trim() || null;
     }
 
+    if (body.units !== undefined) {
+      updateData.units = body.units || null;
+    }
+
     if (body.prep_time !== undefined) {
       updateData.prep_time = body.prep_time?.trim() || null;
     }
@@ -122,6 +150,11 @@ export async function PUT(
       .eq("user_id", userId)
       .select()
       .single();
+
+    if (recipeError) {
+      console.error("API PUT - Database update error:", recipeError);
+    } else {
+    }
 
     if (recipeError) {
       if (recipeError.code === "PGRST116") {
@@ -179,25 +212,9 @@ export async function PUT(
     }
 
     // Fetch the complete updated recipe with ingredients
-    const { data: completeRecipe, error: fetchError } = await supabase
+    const { data: updatedRecipe, error: fetchError } = await supabase
       .from("recipes")
-      .select(
-        `
-        *,
-        recipe_ingredients (
-          id,
-          quantity,
-          unit,
-          inventory (
-            id,
-            name,
-            price_per_unit,
-            type,
-            unit
-          )
-        )
-      `
-      )
+      .select("*")
       .eq("id", id)
       .single();
 
@@ -205,6 +222,53 @@ export async function PUT(
       console.error("Error fetching updated recipe:", fetchError);
       return NextResponse.json(recipe);
     }
+
+    // Get ingredients for the updated recipe
+    const { data: ingredients, error: ingredientsError } = await supabase
+      .from("recipe_ingredients")
+      .select("id, recipe_id, inventory_id, quantity, unit")
+      .eq("recipe_id", id);
+
+    if (ingredientsError) {
+      console.error("Error fetching recipe ingredients:", ingredientsError);
+      return NextResponse.json(updatedRecipe);
+    }
+
+    // Get inventory data for ingredients
+    const inventoryIds =
+      ingredients?.map((ing) => ing.inventory_id).filter(Boolean) || [];
+    let inventoryData: any[] = [];
+
+    if (inventoryIds.length > 0) {
+      const { data: inventory, error: inventoryError } = await supabase
+        .from("inventory")
+        .select("id, name, price_per_unit, type, unit")
+        .in("id", inventoryIds);
+
+      if (inventoryError) {
+        console.error("Error fetching inventory data:", inventoryError);
+      } else {
+        inventoryData = inventory || [];
+      }
+    }
+
+    // Combine updated recipe with ingredients
+    const completeRecipe = {
+      ...updatedRecipe,
+      ingredients: (ingredients || []).map((ing) => {
+        const inventory = inventoryData.find(
+          (inv) => inv.id === ing.inventory_id
+        );
+        return {
+          id: ing.id,
+          recipe_id: ing.recipe_id,
+          inventory_id: ing.inventory_id,
+          quantity: ing.quantity,
+          unit: ing.unit,
+          inventory: inventory || null,
+        };
+      }),
+    };
 
     return NextResponse.json(completeRecipe);
   } catch (error) {

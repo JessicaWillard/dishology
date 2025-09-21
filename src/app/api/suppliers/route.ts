@@ -9,15 +9,11 @@ import type { CreateSupplierRequest } from "@/utils/types/database";
  */
 export async function GET() {
   try {
-    console.log("GET /api/suppliers - Starting request");
     const { userId } = await auth();
 
     if (!userId) {
-      console.log("GET /api/suppliers - No userId");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    console.log("GET /api/suppliers - User ID:", userId);
 
     const supabase = await createServiceRoleClient();
 

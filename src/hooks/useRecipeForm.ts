@@ -89,6 +89,7 @@ export function useRecipeForm(options: UseRecipeFormOptions = {}) {
         description: initialData?.description || "",
         batch_size: initialData?.batch_size || null,
         batch_unit: initialData?.batch_unit || "",
+        units: initialData?.units || null,
         prep_time: initialData?.prep_time || "",
         instructions: initialData?.instructions || "",
       },
@@ -117,10 +118,13 @@ export function useRecipeForm(options: UseRecipeFormOptions = {}) {
     (fieldName: string, value: string | number | null) => {
       setIsDirty(true);
 
-      setFormData((prev) => ({
-        ...prev,
-        [fieldName]: value,
-      }));
+      setFormData((prev) => {
+        const newData = {
+          ...prev,
+          [fieldName]: value,
+        };
+        return newData;
+      });
 
       if (errors[fieldName]) {
         setErrors((prev) => ({

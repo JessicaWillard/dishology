@@ -101,14 +101,31 @@ export function calculateRecipeCost(
   }>
 ): number {
   return ingredients.reduce((total, ingredient) => {
+    if (!ingredient.inventory?.price_per_unit) {
+      return total;
+    }
     const inventoryPrice = parseFloat(ingredient.inventory.price_per_unit);
     const quantity = ingredient.quantity;
+    if (isNaN(inventoryPrice) || isNaN(quantity)) {
+      return total;
+    }
     return total + inventoryPrice * quantity;
   }, 0);
 }
 
 export function calculateCostPerUnit(totalCost: number, units: number): number {
   return units > 0 ? totalCost / units : 0;
+}
+
+export function calculateCostPerServing(
+  totalCost: number,
+  batchSize: number,
+  units: number
+): number {
+  if (units > 0 && batchSize > 0) {
+    return totalCost / units;
+  }
+  return 0;
 }
 
 export function calculateUnits(batchSize: number, unitSize: number): number {

@@ -51,6 +51,7 @@ export const Collapsed: Story = {
     description: "Description of the item",
     batchSize: 5,
     batchUnit: "L",
+    units: 30,
     prepTime: "30m",
     ingredients: mockIngredients,
     isExpanded: false,
@@ -64,6 +65,7 @@ export const Expanded: Story = {
     description: "Description of the item",
     batchSize: 5,
     batchUnit: "L",
+    units: 30,
     prepTime: "30m",
     instructions:
       "1. Preheat your oven to 375°F (190°C).\n\n2. In a large bowl, mix together the flour, sugar, and baking powder until well combined.\n\n3. Gradually add in the milk and melted butter, stirring until the batter is smooth.",
@@ -78,6 +80,7 @@ export const NoDescription: Story = {
     name: "Simple Recipe",
     batchSize: 1,
     batchUnit: "kg",
+    units: 30,
     prepTime: "1h",
     ingredients: [],
     isExpanded: false,
@@ -91,6 +94,7 @@ export const NoIngredients: Story = {
     description: "A recipe with no ingredients yet",
     batchSize: 2.5,
     batchUnit: "lbs",
+    units: 30,
     prepTime: "45m",
     ingredients: [],
     isExpanded: true,
@@ -104,6 +108,7 @@ export const LongInstructions: Story = {
     description: "A recipe with detailed instructions",
     batchSize: 3,
     batchUnit: "portions",
+    units: 30,
     prepTime: "2h 30m",
     instructions:
       "1. Prepare all ingredients by washing and chopping vegetables into uniform pieces.\n\n2. Heat a large skillet over medium-high heat and add olive oil.\n\n3. Sauté onions until translucent, about 5 minutes.\n4. Add garlic and cook for another minute until fragrant.\n\n5. Add remaining vegetables and cook until tender.\n6. Season with salt, pepper, and herbs to taste.\n\n7. Simmer for 20-30 minutes until flavors meld together.\n8. Serve hot and enjoy!",
@@ -144,6 +149,7 @@ export const Interactive: Story = {
     description: "Click the expand button to see more details",
     batchSize: 1.5,
     batchUnit: "kg",
+    units: 30,
     prepTime: "1h 15m",
     instructions:
       "1. Mix all ingredients together.\n2. Let rest for 30 minutes.\n3. Cook until done.",

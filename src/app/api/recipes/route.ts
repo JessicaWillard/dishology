@@ -17,39 +17,92 @@ export async function GET() {
     const supabase = await createServiceRoleClient();
 
     // Get all recipes with their ingredients and inventory data
-    const { data: recipes, error } = await supabase
+    // First get recipes
+    const { data: recipes, error: recipesError } = await supabase
       .from("recipes")
-      .select(
-        `
-        *,
-        recipe_ingredients (
-          id,
-          quantity,
-          unit,
-          inventory (
-            id,
-            name,
-            price_per_unit,
-            type,
-            unit
-          )
-        )
-      `
-      )
+      .select("*")
       .eq("user_id", userId)
-      .order("name", { ascending: true }); // Alphabetical sorting
+      .order("name", { ascending: true });
 
-    if (error) {
-      console.error("Error fetching recipes:", error);
+    if (recipesError) {
+      console.error("Error fetching recipes:", recipesError);
       return NextResponse.json(
         { error: "Failed to fetch recipes" },
         { status: 500 }
       );
     }
 
+    // If no recipes, return empty array
+    if (!recipes || recipes.length === 0) {
+      return NextResponse.json({
+        recipes: [],
+        total: 0,
+      } as RecipeListResponse);
+    }
+
+    // Get ingredients for all recipes
+    const { data: ingredients, error: ingredientsError } = await supabase
+      .from("recipe_ingredients")
+      .select("id, recipe_id, inventory_id, quantity, unit")
+      .in(
+        "recipe_id",
+        recipes.map((r) => r.id)
+      );
+
+    if (ingredientsError) {
+      console.error("Error fetching recipe ingredients:", ingredientsError);
+      // Return recipes without ingredients rather than failing completely
+      const recipesWithoutIngredients = recipes.map((recipe) => ({
+        ...recipe,
+        ingredients: [],
+      }));
+
+      return NextResponse.json({
+        recipes: recipesWithoutIngredients,
+        total: recipesWithoutIngredients.length,
+      } as RecipeListResponse);
+    }
+
+    // Get inventory data for all ingredients
+    const inventoryIds =
+      ingredients?.map((ing) => ing.inventory_id).filter(Boolean) || [];
+    let inventoryData: any[] = [];
+
+    if (inventoryIds.length > 0) {
+      const { data: inventory, error: inventoryError } = await supabase
+        .from("inventory")
+        .select("id, name, price_per_unit, type, unit")
+        .in("id", inventoryIds);
+
+      if (inventoryError) {
+        console.error("Error fetching inventory data:", inventoryError);
+      } else {
+        inventoryData = inventory || [];
+      }
+    }
+
+    const recipesWithIngredients = recipes.map((recipe) => ({
+      ...recipe,
+      ingredients: (ingredients || [])
+        .filter((ing) => ing.recipe_id === recipe.id)
+        .map((ing) => {
+          const inventory = inventoryData.find(
+            (inv) => inv.id === ing.inventory_id
+          );
+          return {
+            id: ing.id,
+            recipe_id: ing.recipe_id,
+            inventory_id: ing.inventory_id,
+            quantity: ing.quantity,
+            unit: ing.unit,
+            inventory: inventory || null,
+          };
+        }),
+    }));
+
     return NextResponse.json({
-      recipes: recipes || [],
-      total: recipes?.length || 0,
+      recipes: recipesWithIngredients || [],
+      total: recipesWithIngredients?.length || 0,
     } as RecipeListResponse);
   } catch (error) {
     console.error("GET /api/recipes error:", error);
@@ -88,6 +141,7 @@ export async function POST(request: NextRequest) {
         description: body.description?.trim() || null,
         batch_size: body.batch_size || null,
         batch_unit: body.batch_unit?.trim() || null,
+        units: body.units || null,
         prep_time: body.prep_time?.trim() || null,
         instructions: body.instructions?.trim() || null,
       })
