@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Box } from ".";
 
 const meta: Meta<typeof Box> = {
-  title: "Components/Box",
+  title: "UI/Box",
   component: Box,
   parameters: { layout: "centered" },
   args: { children: "Content" },

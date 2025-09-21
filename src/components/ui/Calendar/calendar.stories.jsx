@@ -5,7 +5,7 @@ const CalendarTemplate = (args) => <Calendar {...args} />;
 const RangeCalendarTemplate = (args) => <RangeCalendar {...args} />;
 
 export default {
-  title: "Components/Calendar",
+  title: "UI/Calendar",
   component: Calendar,
   parameters: {
     layout: "centered",

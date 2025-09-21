@@ -5,7 +5,7 @@ import { Button } from "../Button";
 import { PopoverPlacement, PopoverProps } from "./interface";
 
 const meta: Meta<typeof Popover> = {
-  title: "Components/Popover",
+  title: "UI/Popover",
   component: Popover,
   parameters: {
     layout: "centered",
