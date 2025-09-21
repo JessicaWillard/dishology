@@ -201,7 +201,7 @@ export interface DishIngredientFormData {
 
 // API response types
 export interface InventoryListResponse {
-  inventory: Inventory[];
+  inventory: InventoryWithSupplier[];
   total: number;
 }
 

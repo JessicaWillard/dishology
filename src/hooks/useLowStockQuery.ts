@@ -24,7 +24,7 @@ export function useLowStockQuery() {
           unit: item.unit,
           pricePerUnit: item.price_per_unit,
           pricePerPack: item.price_per_pack,
-          supplier: item.supplier_id,
+          supplier: item.supplier,
           location: item.location,
           minCount: item.min_count,
           countDate: item.count_date,
