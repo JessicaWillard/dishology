@@ -1,7 +1,7 @@
 import { useRecipeForm } from "@/hooks/useRecipeForm";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { InventoryType } from "../../inventory-components/interface";
-import type { RecipeFormProps, RecipeIngredientRowProps } from "./interface";
+import type { RecipeFormProps, RecipeIngredientRowProps } from "../interface";
 import { Box } from "../../ui/Box";
 import { Button } from "../../ui/Button";
 import { Text } from "../../ui/Text";

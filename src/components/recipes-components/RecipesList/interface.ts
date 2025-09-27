@@ -37,6 +37,11 @@ export interface RecipesListProps {
   onAddNew?: () => void;
 
   /**
+   * Callback when an ingredient is clicked to edit its inventory
+   */
+  onIngredientClick?: (inventoryId: string) => void;
+
+  /**
    * Additional CSS classes
    */
   className?: string;

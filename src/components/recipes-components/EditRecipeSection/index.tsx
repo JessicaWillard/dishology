@@ -56,9 +56,8 @@ export function EditRecipeSection({
             })) || [],
         };
 
-        const result = await onUpdate(editingRecipe.id, recipeFormData);
+        await onUpdate(editingRecipe.id, recipeFormData);
         onClose?.();
-        return result;
       } finally {
         setIsSubmitting(false);
       }
@@ -146,8 +145,8 @@ export function EditRecipeSection({
               Delete Recipe
             </h3>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete "{editingRecipe?.name}"? This
-              action cannot be undone.
+              Are you sure you want to delete &quot;{editingRecipe?.name}?&quot;
+              This action cannot be undone.
             </p>
             <div className="flex gap-3 justify-end">
               <Button

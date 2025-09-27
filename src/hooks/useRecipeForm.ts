@@ -87,9 +87,9 @@ export function useRecipeForm(options: UseRecipeFormOptions = {}) {
       recipe: {
         name: initialData?.name || "",
         description: initialData?.description || "",
-        batch_size: initialData?.batch_size || null,
+        batch_size: initialData?.batch_size || undefined,
         batch_unit: initialData?.batch_unit || "",
-        units: initialData?.units || null,
+        units: initialData?.units || undefined,
         prep_time: initialData?.prep_time || "",
         instructions: initialData?.instructions || "",
       },
@@ -207,7 +207,7 @@ export function useRecipeForm(options: UseRecipeFormOptions = {}) {
     const resetData = {
       name: initialData?.name || "",
       description: initialData?.description || "",
-      batch_size: initialData?.batch_size || null,
+      batch_size: initialData?.batch_size || undefined,
       batch_unit: initialData?.batch_unit || "",
       prep_time: initialData?.prep_time || "",
       instructions: initialData?.instructions || "",

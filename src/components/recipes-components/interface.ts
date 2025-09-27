@@ -33,11 +33,13 @@ export interface RecipeIngredientWithInventory {
 export interface RecipeCardProps extends RecipeProps {
   isExpanded?: boolean;
   onToggleExpanded?: (expanded: boolean) => void;
+  onIngredientClick?: (inventoryId: string) => void;
 }
 
 export interface RecipeIngredientsTableProps {
   ingredients: RecipeIngredientWithInventory[];
   showHeader?: boolean;
+  onRowClick?: (inventoryId: string) => void;
 }
 
 export interface RecipeFormProps {

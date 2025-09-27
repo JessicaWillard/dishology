@@ -40,9 +40,14 @@ export const recipeIngredientsTableRowStyles = tv({
       equipment: "bg-equipment-light text-equipment border-equipment",
       other: "bg-other-light text-other border-other",
     },
+    clickable: {
+      true: "cursor-pointer",
+      false: "",
+    },
   },
   defaultVariants: {
     variant: "default",
+    clickable: false,
   },
 });
 

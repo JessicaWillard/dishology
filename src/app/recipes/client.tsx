@@ -3,12 +3,14 @@
 import { useState, useMemo, useCallback } from "react";
 import { useRecipes } from "@/hooks/useRecipesQuery";
 import { useInventory } from "@/hooks/useInventoryQuery";
+import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
 import { useControlsBarHeight } from "@/hooks/useControlsBarHeight";
 import {
   RecipesList,
   CreateRecipeSection,
   EditRecipeSection,
 } from "@/components/recipes-components";
+import { EditInventorySection } from "@/components/inventory-components/EditInventorySection";
 import { Button } from "@/components/ui/Button";
 import { Box } from "@/components/ui/Box";
 import { Text } from "@/components/ui/Text";
@@ -16,12 +18,11 @@ import { ControlsBar } from "@/components/ui/ControlsBar";
 import type {
   RecipeWithIngredients,
   RecipeFormData,
+  InventoryWithSupplier,
+  InventoryFormData,
 } from "@/utils/types/database";
 import type { InventoryOption } from "@/components/recipes-components/interface";
-import {
-  calculateRecipeCost,
-  calculateCostPerUnit,
-} from "@/components/recipes-components/theme";
+import { formatDateForInput } from "@/utils/date";
 
 interface RecipeClientProps {
   userId: string;
@@ -42,6 +43,8 @@ export function RecipeClient({}: RecipeClientProps) {
   const [showCreatePanel, setShowCreatePanel] = useState(false);
   const [editingRecipe, setEditingRecipe] =
     useState<RecipeWithIngredients | null>(null);
+  const [editingInventoryItem, setEditingInventoryItem] =
+    useState<InventoryWithSupplier | null>(null);
 
   // Get dynamic height for ControlsBar
   const {
@@ -63,7 +66,15 @@ export function RecipeClient({}: RecipeClientProps) {
     isDeleting,
   } = useRecipes();
 
-  const { inventory } = useInventory();
+  const {
+    inventory,
+    update: updateInventory,
+    remove: removeInventory,
+    isUpdating: isUpdatingInventory,
+    isDeleting: isDeletingInventory,
+  } = useInventory();
+
+  const { data: suppliers = [] } = useSuppliersQuery();
 
   // Filter inventory for recipe ingredients
   const availableInventory: InventoryOption[] = useMemo(() => {
@@ -124,6 +135,39 @@ export function RecipeClient({}: RecipeClientProps) {
     setShowCreatePanel(true);
   }, []);
 
+  const handleIngredientClick = useCallback(
+    (inventoryId: string) => {
+      const item = inventory?.find((i) => i.id === inventoryId);
+      if (item) {
+        // Transform the item to have the correct date format for the form
+        const editingItem = {
+          ...item,
+          count_date: formatDateForInput(item.count_date),
+        };
+        setEditingInventoryItem(editingItem);
+      }
+    },
+    [inventory]
+  );
+
+  const handleUpdateInventory = useCallback(
+    async (id: string, data: Partial<InventoryFormData>) => {
+      return await updateInventory(id, data);
+    },
+    [updateInventory]
+  );
+
+  const handleDeleteInventory = useCallback(
+    async (id: string) => {
+      await removeInventory(id);
+    },
+    [removeInventory]
+  );
+
+  const handleCloseInventoryPanel = useCallback(() => {
+    setEditingInventoryItem(null);
+  }, []);
+
   if (loading) {
     return (
       <Box display="flexCol" align="start" justify="start" padding="lg" gap={4}>
@@ -174,6 +218,7 @@ export function RecipeClient({}: RecipeClientProps) {
           onEdit={handleEdit}
           onRetry={refetch}
           onAddNew={handleOpenCreatePanel}
+          onIngredientClick={handleIngredientClick}
         />
       </Box>
 
@@ -194,6 +239,18 @@ export function RecipeClient({}: RecipeClientProps) {
         isDeleting={isDeleting}
         availableInventory={availableInventory}
         onClose={handleCloseEditPanel}
+      />
+
+      <EditInventorySection
+        editingItem={editingInventoryItem}
+        onUpdate={handleUpdateInventory}
+        onDelete={handleDeleteInventory}
+        isUpdating={isUpdatingInventory}
+        isDeleting={isDeletingInventory}
+        suppliers={suppliers
+          .filter((s) => s.id)
+          .map((s) => ({ id: s.id!, name: s.name }))}
+        onClose={handleCloseInventoryPanel}
       />
     </Box>
   );

@@ -1,4 +1,4 @@
-import type { RecipeIngredientsTableProps } from "./interface";
+import type { RecipeIngredientsTableProps } from "../interface";
 import type { InventoryType } from "@/utils/types/database";
 import { Text } from "../../ui/Text";
 import {
@@ -10,7 +10,7 @@ import {
 import { clsx } from "clsx";
 
 export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
-  const { ingredients, showHeader = true } = props;
+  const { ingredients, showHeader = true, onRowClick } = props;
 
   if (ingredients.length === 0) {
     return (
@@ -39,6 +39,12 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
             ingredient.quantity *
             parseFloat(ingredient.inventory.price_per_unit);
 
+          const handleRowClick = () => {
+            if (onRowClick) {
+              onRowClick(ingredient.inventory.id);
+            }
+          };
+
           return (
             <tr
               key={ingredient.id}
@@ -46,8 +52,10 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
                 recipeIngredientsTableRowStyles({
                   variant:
                     (ingredient.inventory.type as InventoryType) || "default",
+                  clickable: !!onRowClick,
                 })
               )}
+              onClick={handleRowClick}
             >
               <td
                 className={clsx(

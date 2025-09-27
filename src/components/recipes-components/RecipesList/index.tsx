@@ -25,6 +25,7 @@ export function RecipesList({
   onEdit,
   onRetry,
   onAddNew,
+  onIngredientClick,
   className,
 }: RecipesListProps) {
   // Filter and sort recipes alphabetically
@@ -117,6 +118,7 @@ export function RecipesList({
           instructions={recipe.instructions}
           ingredients={recipe.ingredients}
           onEdit={handleEdit}
+          onIngredientClick={onIngredientClick}
         />
       ))}
     </Box>

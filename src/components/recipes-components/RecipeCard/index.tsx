@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { RecipeCardProps } from "./interface";
+import type { RecipeCardProps } from "../interface";
 import { Box } from "../../ui/Box";
 import { Button } from "../../ui/Button";
 import { Text } from "../../ui/Text";
@@ -28,6 +28,7 @@ export const RecipeCard = (props: RecipeCardProps) => {
     instructions,
     ingredients = [],
     onEdit,
+    onIngredientClick,
   } = props;
 
   // Use controlled or internal state for expanded
@@ -149,7 +150,10 @@ export const RecipeCard = (props: RecipeCardProps) => {
                 <Text size="md" weight="bold">
                   Ingredients
                 </Text>
-                <RecipeIngredientsTable ingredients={ingredients} />
+                <RecipeIngredientsTable
+                  ingredients={ingredients}
+                  onRowClick={onIngredientClick}
+                />
               </Box>
             )}
 
