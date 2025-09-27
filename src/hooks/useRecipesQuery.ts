@@ -106,6 +106,8 @@ export function useUpdateRecipe() {
       await queryClient.cancelQueries({ queryKey: recipeKeys.lists() });
       const previousRecipes = queryClient.getQueryData(recipeKeys.lists());
 
+      // Only perform optimistic update for basic recipe fields, not ingredients
+      // to avoid corrupting the ingredient-inventory relationship
       queryClient.setQueryData(
         recipeKeys.lists(),
         (old: RecipeListResponse | undefined) => {
@@ -113,9 +115,15 @@ export function useUpdateRecipe() {
           return {
             ...old,
             recipes: old.recipes
-              .map((recipe) =>
-                recipe.id === id ? { ...recipe, ...data } : recipe
-              )
+              .map((recipe) => {
+                if (recipe.id === id) {
+                  // Only update basic recipe fields, preserve existing ingredients structure
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  const { ingredients, ...recipeFields } = data;
+                  return { ...recipe, ...recipeFields };
+                }
+                return recipe;
+              })
               .sort((a, b) => a.name.localeCompare(b.name)), // Maintain alphabetical order
           };
         }

@@ -35,15 +35,32 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
       )}
       <tbody>
         {ingredients.map((ingredient) => {
-          // Calculate total cost using price_per_unit directly (price per individual unit)
-          const pricePerUnit = parseFloat(ingredient.inventory.price_per_unit);
-          const totalCost =
-            !isNaN(pricePerUnit) && pricePerUnit > 0
-              ? ingredient.quantity * pricePerUnit
-              : 0;
+          // Safety check: ensure inventory data exists
+          if (!ingredient.inventory) {
+            console.warn("Ingredient missing inventory data:", ingredient);
+            return null;
+          }
+
+          // Calculate total cost: price_per_unit is for the entire inventory.size quantity
+          const pricePerUnit = parseFloat(
+            ingredient.inventory.price_per_unit || "0"
+          );
+          const inventorySize = parseFloat(ingredient.inventory.size || "1");
+
+          let totalCost = 0;
+          if (
+            !isNaN(pricePerUnit) &&
+            !isNaN(inventorySize) &&
+            pricePerUnit > 0 &&
+            inventorySize > 0
+          ) {
+            // Calculate cost per smallest unit (e.g., per ml, per gram)
+            const costPerSmallestUnit = pricePerUnit / inventorySize;
+            totalCost = ingredient.quantity * costPerSmallestUnit;
+          }
 
           const handleRowClick = () => {
-            if (onRowClick) {
+            if (onRowClick && ingredient.inventory?.id) {
               onRowClick(ingredient.inventory.id);
             }
           };
@@ -54,7 +71,7 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
               className={clsx(
                 recipeIngredientsTableRowStyles({
                   variant:
-                    (ingredient.inventory.type as InventoryType) || "default",
+                    (ingredient.inventory?.type as InventoryType) || "default",
                   clickable: !!onRowClick,
                 })
               )}
@@ -67,7 +84,7 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
               >
                 <div>
                   <Text size="sm" weight="medium">
-                    {ingredient.inventory.name}
+                    {ingredient.inventory?.name || "Unknown Item"}
                   </Text>
                 </div>
               </td>
@@ -78,7 +95,7 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
               >
                 <Text size="sm">
                   {ingredient.quantity}
-                  {ingredient.unit || ingredient.inventory.unit || ""}
+                  {ingredient.unit || ingredient.inventory?.unit || ""}
                 </Text>
               </td>
               <td

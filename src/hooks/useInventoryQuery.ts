@@ -10,6 +10,7 @@ import {
   updateInventoryItem,
   deleteInventoryItem,
 } from "@/utils/api/inventory";
+import { recipeKeys } from "./useRecipesQuery";
 
 export const inventoryKeys = {
   all: ["inventory"] as const,
@@ -98,6 +99,10 @@ export function useCreateInventory() {
           };
         }
       );
+
+      // Invalidate recipe queries since recipes may reference new inventory
+      queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: recipeKeys.details() });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
@@ -157,9 +162,14 @@ export function useUpdateInventory() {
           };
         }
       );
+
+      // Invalidate recipe queries since recipes contain inventory data
+      // This ensures recipe ingredient tables show updated inventory information
+      queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: recipeKeys.details() });
     },
     onSettled: () => {
-      // Don't invalidate immediately to prevent race conditions
+      // Don't invalidate inventory immediately to prevent race conditions
       // The onSuccess callback already handles updating with the correct data
       // queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
     },
@@ -198,6 +208,10 @@ export function useDeleteInventory() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
+
+      // Invalidate recipe queries since deleted inventory affects recipe calculations
+      queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: recipeKeys.details() });
     },
   });
 }

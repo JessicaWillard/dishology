@@ -7,20 +7,34 @@ export const calculateRecipeCost = (
   ingredients: RecipeIngredientWithInventory[]
 ): number => {
   return ingredients.reduce((total, ingredient) => {
-    if (!ingredient.inventory?.price_per_unit) {
+    // Safety check: ensure inventory data exists
+    if (!ingredient.inventory) {
+      console.warn("Ingredient missing inventory data:", ingredient);
+      return total;
+    }
+
+    if (!ingredient.inventory.price_per_unit) {
       return total;
     }
 
     const pricePerUnit = parseFloat(ingredient.inventory.price_per_unit);
+    const inventorySize = parseFloat(ingredient.inventory.size || "1");
     const quantity = ingredient.quantity;
 
-    // Skip invalid prices or quantities
-    if (isNaN(pricePerUnit) || isNaN(quantity) || pricePerUnit <= 0) {
+    // Skip invalid prices, sizes, or quantities
+    if (
+      isNaN(pricePerUnit) ||
+      isNaN(inventorySize) ||
+      isNaN(quantity) ||
+      pricePerUnit <= 0 ||
+      inventorySize <= 0
+    ) {
       return total;
     }
 
-    // Use price_per_unit directly (price per individual unit)
-    return total + pricePerUnit * quantity;
+    // Calculate cost per smallest unit: price_per_unit is for the entire inventory.size
+    const costPerSmallestUnit = pricePerUnit / inventorySize;
+    return total + costPerSmallestUnit * quantity;
   }, 0);
 };
 

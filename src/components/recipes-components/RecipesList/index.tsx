@@ -40,7 +40,7 @@ export function RecipesList({
           recipe.name.toLowerCase().includes(searchLower) ||
           recipe.description?.toLowerCase().includes(searchLower) ||
           recipe.ingredients?.some((ingredient) =>
-            ingredient.inventory.name.toLowerCase().includes(searchLower)
+            ingredient.inventory?.name?.toLowerCase().includes(searchLower)
           )
       );
     }
