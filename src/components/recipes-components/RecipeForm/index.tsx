@@ -103,9 +103,12 @@ export const RecipeForm = (props: RecipeFormProps) => {
     initialData,
     onSubmit,
     onCancel,
+    onDelete,
     isSubmitting = false,
     submitLabel = "Save Recipe",
     availableInventory = [],
+    mode = "create",
+    showCancel = false,
   } = props;
 
   // Get inventory for ingredient selection
@@ -147,8 +150,8 @@ export const RecipeForm = (props: RecipeFormProps) => {
     removeIngredient,
     validateFieldOnBlur,
     handleSubmit,
+    resetForm,
     getFieldProps,
-    getIngredientFieldProps,
   } = useRecipeForm({
     initialData: initialData
       ? {
@@ -172,7 +175,7 @@ export const RecipeForm = (props: RecipeFormProps) => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const success = await handleSubmit(async (data) => {
+    await handleSubmit(async (data) => {
       // Transform the data to match RecipeWithIngredients
       const transformedData = {
         ...data,
@@ -385,8 +388,19 @@ export const RecipeForm = (props: RecipeFormProps) => {
       </Box>
 
       {/* Form Actions */}
-      <Box display="flexRow" gap="md" justify="end">
-        {onCancel && (
+      <Box display="flexRow" justify="between" gap={3}>
+        {mode === "edit" && onDelete && (
+          <Button
+            type="button"
+            variant="destructive"
+            handlePress={onDelete}
+            disabled={submitting}
+          >
+            Delete
+          </Button>
+        )}
+
+        {showCancel && mode === "create" && onCancel && (
           <Button
             type="button"
             variant="ghost"
@@ -396,6 +410,18 @@ export const RecipeForm = (props: RecipeFormProps) => {
             Cancel
           </Button>
         )}
+
+        {mode === "create" && (
+          <Button
+            type="button"
+            variant="ghost"
+            handlePress={resetForm}
+            disabled={submitting}
+          >
+            Reset
+          </Button>
+        )}
+
         <Button
           type="submit"
           variant="solid"

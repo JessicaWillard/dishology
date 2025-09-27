@@ -47,9 +47,12 @@ export interface RecipeFormProps {
   initialData?: Partial<RecipeWithIngredients>;
   onSubmit: (data: RecipeWithIngredients) => Promise<void>;
   onCancel?: () => void;
+  onDelete?: () => Promise<void>;
   isSubmitting?: boolean;
   submitLabel?: string;
   availableInventory?: InventoryOption[];
+  mode?: "create" | "edit";
+  showCancel?: boolean;
 }
 
 export interface InventoryOption {

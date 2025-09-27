@@ -24,6 +24,7 @@ export function CreateRecipeSection({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormSubmit = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async (data: any) => {
       setIsSubmitting(true);
       try {
@@ -37,6 +38,7 @@ export function CreateRecipeSection({
           prep_time: data.prep_time,
           instructions: data.instructions,
           ingredients:
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data.ingredients?.map((ing: any) => ({
               inventory_id: ing.inventory_id,
               quantity: ing.quantity,
@@ -44,23 +46,14 @@ export function CreateRecipeSection({
             })) || [],
         };
 
-        const result = await onCreate(recipeFormData);
+        await onCreate(recipeFormData);
         onClose?.();
-        return result;
       } finally {
         setIsSubmitting(false);
       }
     },
     [onCreate, onClose]
   );
-
-  const handleSuccess = useCallback(() => {
-    onClose?.();
-  }, [onClose]);
-
-  const handleCancel = useCallback(() => {
-    onClose?.();
-  }, [onClose]);
 
   return (
     <SidePanel
@@ -80,11 +73,12 @@ export function CreateRecipeSection({
         </Box>
 
         <RecipeForm
+          mode="create"
           onSubmit={handleFormSubmit}
-          onCancel={handleCancel}
           isSubmitting={isCreating || isSubmitting}
           submitLabel="Add Recipe"
           availableInventory={availableInventory}
+          showCancel={false}
         />
       </Box>
     </SidePanel>
