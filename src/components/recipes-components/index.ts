@@ -23,9 +23,9 @@ export type { CreateRecipeSectionProps } from "./CreateRecipeSection/interface";
 export type { EditRecipeSectionProps } from "./EditRecipeSection/interface";
 export type { RecipesListProps } from "./RecipesList/interface";
 
-// Theme utilities
+// Recipe calculation utilities
 export {
   calculateRecipeCost,
   calculateCostPerUnit,
   calculateUnits,
-} from "./theme";
+} from "@/utils/recipeCalculations";

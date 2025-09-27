@@ -10,10 +10,11 @@ import {
   recipeCardHeaderStyles,
   recipeCardMetricStyles,
   recipeCardTotalStyles,
+} from "../theme";
+import {
   calculateRecipeCost,
   calculateCostPerUnit,
-  calculateUnits,
-} from "../theme";
+} from "@/utils/recipeCalculations";
 import { clsx } from "clsx";
 
 export const RecipeCard = (props: RecipeCardProps) => {

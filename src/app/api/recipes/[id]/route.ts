@@ -54,7 +54,7 @@ export async function GET(
     if (inventoryIds.length > 0) {
       const { data: inventory, error: inventoryError } = await supabase
         .from("inventory")
-        .select("id, name, price_per_unit, type, unit")
+        .select("id, name, price_per_unit, type, unit, size")
         .in("id", inventoryIds);
 
       if (inventoryError) {
@@ -244,7 +244,7 @@ export async function PUT(
     if (inventoryIds.length > 0) {
       const { data: inventory, error: inventoryError } = await supabase
         .from("inventory")
-        .select("id, name, price_per_unit, type, unit")
+        .select("id, name, price_per_unit, type, unit, size")
         .in("id", inventoryIds);
 
       if (inventoryError) {

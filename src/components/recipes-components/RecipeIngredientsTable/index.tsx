@@ -35,9 +35,11 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
       )}
       <tbody>
         {ingredients.map((ingredient) => {
-          const totalCost =
-            ingredient.quantity *
-            parseFloat(ingredient.inventory.price_per_unit);
+          // Calculate cost per unit based on inventory size
+          const pricePerUnit = parseFloat(ingredient.inventory.price_per_unit);
+          const inventorySize = parseFloat(ingredient.inventory.size || "1");
+          const costPerUnit = pricePerUnit / inventorySize;
+          const totalCost = ingredient.quantity * costPerUnit;
 
           const handleRowClick = () => {
             if (onRowClick) {

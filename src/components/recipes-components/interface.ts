@@ -27,6 +27,7 @@ export interface RecipeIngredientWithInventory {
     price_per_unit: string;
     type: Nullable<string>;
     unit?: Nullable<string>;
+    size?: Nullable<string>;
   };
 }
 
