@@ -12,17 +12,15 @@ export const calculateRecipeCost = (
     }
 
     const pricePerUnit = parseFloat(ingredient.inventory.price_per_unit);
-    const inventorySize = parseFloat(ingredient.inventory.size || "1");
     const quantity = ingredient.quantity;
 
-    // Skip invalid prices, sizes, or quantities
-    if (isNaN(pricePerUnit) || isNaN(inventorySize) || isNaN(quantity)) {
+    // Skip invalid prices or quantities
+    if (isNaN(pricePerUnit) || isNaN(quantity) || pricePerUnit <= 0) {
       return total;
     }
 
-    // Calculate cost per unit based on inventory size
-    const costPerUnit = pricePerUnit / inventorySize;
-    return total + costPerUnit * quantity;
+    // Use price_per_unit directly (price per individual unit)
+    return total + pricePerUnit * quantity;
   }, 0);
 };
 

@@ -35,11 +35,12 @@ export const RecipeIngredientsTable = (props: RecipeIngredientsTableProps) => {
       )}
       <tbody>
         {ingredients.map((ingredient) => {
-          // Calculate cost per unit based on inventory size
+          // Calculate total cost using price_per_unit directly (price per individual unit)
           const pricePerUnit = parseFloat(ingredient.inventory.price_per_unit);
-          const inventorySize = parseFloat(ingredient.inventory.size || "1");
-          const costPerUnit = pricePerUnit / inventorySize;
-          const totalCost = ingredient.quantity * costPerUnit;
+          const totalCost =
+            !isNaN(pricePerUnit) && pricePerUnit > 0
+              ? ingredient.quantity * pricePerUnit
+              : 0;
 
           const handleRowClick = () => {
             if (onRowClick) {
