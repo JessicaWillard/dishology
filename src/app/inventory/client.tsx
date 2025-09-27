@@ -477,7 +477,7 @@ export function InventoryClient({}: InventoryClientProps) {
                       unit={item.unit}
                       pricePerUnit={item.price_per_unit}
                       pricePerPack={item.price_per_pack}
-                      supplier={item.supplier?.name}
+                      supplier={item.supplier}
                       countDate={item.count_date}
                       minCount={item.min_count}
                       onEdit={handleEdit}
@@ -495,7 +495,7 @@ export function InventoryClient({}: InventoryClientProps) {
                       unit: item.unit,
                       pricePerUnit: item.price_per_unit,
                       pricePerPack: item.price_per_pack,
-                      supplier: (item as InventoryWithSupplier).supplier?.name,
+                      supplier: (item as InventoryWithSupplier).supplier,
                       countDate: item.count_date,
                       minCount: item.min_count,
                     }))}

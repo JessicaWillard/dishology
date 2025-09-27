@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createServiceRoleClient } from "@/utils/supabase/server";
 import type {
-  RecipeFormData,
+  // RecipeFormData,
   RecipeIngredientFormData,
   RecipeListResponse,
 } from "@/utils/types/database";

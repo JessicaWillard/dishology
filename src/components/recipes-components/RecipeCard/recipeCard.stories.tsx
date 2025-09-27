@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { RecipeCard } from "./index";
-import type { RecipeCardProps } from "../interface";
+// import type { RecipeCardProps } from "../interface";
 
 const meta: Meta<typeof RecipeCard> = {
   title: "Components/Recipes/RecipeCard",
