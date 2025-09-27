@@ -20,6 +20,7 @@ const navItems = [
     id: "recipes",
     label: "Recipes",
     icon: "Recipe",
+    href: "/recipes",
   },
   {
     id: "dishes",

@@ -66,6 +66,7 @@ export async function GET() {
     // Get inventory data for all ingredients
     const inventoryIds =
       ingredients?.map((ing) => ing.inventory_id).filter(Boolean) || [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let inventoryData: any[] = [];
 
     if (inventoryIds.length > 0) {
