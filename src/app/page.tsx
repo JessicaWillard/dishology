@@ -10,11 +10,7 @@ import { EditInventorySection } from "@/components/inventory-components/EditInve
 import { useLowStockQuery } from "@/hooks/useLowStockQuery";
 import { useInventory } from "@/hooks/useInventoryQuery";
 import { useSuppliersQuery } from "@/hooks/useSuppliersQuery";
-import {
-  exportToCSV,
-  formatDateForCSV,
-  formatCurrencyForCSV,
-} from "@/utils/csvExport";
+import { exportToCSV } from "@/utils/csvExport";
 import { formatDateForInput } from "@/utils/date";
 import type {
   InventoryWithSupplier,
@@ -74,18 +70,9 @@ export default function Home() {
   const handleExportLowStock = () => {
     const exportData = lowStockItems.map((item) => ({
       Item: item.name,
-      Size:
-        item.size && item.unit ? `${parseFloat(item.size)} ${item.unit}` : "—",
-      Qty: parseFloat(item.quantity),
-      Date: formatDateForCSV(item.countDate),
-      Unit: item.pricePerUnit
-        ? `$${formatCurrencyForCSV(item.pricePerUnit)}`
-        : "—",
-      Total: item.pricePerUnit
-        ? `$${formatCurrencyForCSV(
-            parseFloat(item.pricePerUnit) * parseFloat(item.quantity)
-          )}`
-        : "—",
+      Supplier: item.supplier?.name || "No Supplier",
+      "On Hand": parseFloat(item.quantity),
+      "To Order": parseFloat(item.minCount || "0") - parseFloat(item.quantity),
     }));
 
     exportToCSV(exportData, {

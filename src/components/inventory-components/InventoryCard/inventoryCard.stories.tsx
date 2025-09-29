@@ -76,7 +76,16 @@ const meta: Meta<typeof InventoryCard> = {
   args: {
     name: "Inventory Name",
     description: "Description of the inventory item",
-    supplier: "Supplier Name",
+    supplier: {
+      id: "1",
+      name: "Supplier Name",
+      contact: {
+        contactName: "Contact Name",
+        email: "contact@example.com",
+        phone: "123-456-7890",
+        website: "example.com",
+      },
+    },
     quantity: "10",
     size: "10",
     unit: "kg",

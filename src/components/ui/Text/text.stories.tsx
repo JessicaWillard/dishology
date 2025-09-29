@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Text } from ".";
 
 const meta: Meta<typeof Text> = {
-  title: "Components/Text",
+  title: "UI/Text",
   component: Text,
   parameters: { layout: "centered" },
   args: { children: "The quick brown fox jumps over the lazy dog." },

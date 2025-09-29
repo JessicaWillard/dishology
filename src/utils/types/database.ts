@@ -91,6 +91,7 @@ export interface Recipe {
   description?: Nullable<string>;
   batch_size?: Nullable<number>;
   batch_unit?: Nullable<string>;
+  units?: Nullable<number>; // Number of individual servings/units in the batch
   prep_time?: Nullable<string>; // e.g., "30m"
   instructions?: Nullable<string>;
   created_at?: string; // timestamptz
@@ -174,8 +175,10 @@ export interface RecipeFormData {
   description?: string;
   batch_size?: number;
   batch_unit?: string;
+  units?: number; // Number of individual servings/units in the batch
   prep_time?: string;
   instructions?: string;
+  ingredients?: RecipeIngredientFormData[];
 }
 
 export interface DishFormData {
@@ -201,12 +204,12 @@ export interface DishIngredientFormData {
 
 // API response types
 export interface InventoryListResponse {
-  inventory: Inventory[];
+  inventory: InventoryWithSupplier[];
   total: number;
 }
 
 export interface RecipeListResponse {
-  recipes: Recipe[];
+  recipes: RecipeWithIngredients[];
   total: number;
 }
 

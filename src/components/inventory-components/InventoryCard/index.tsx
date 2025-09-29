@@ -80,7 +80,7 @@ export const InventoryCard = (props: InventoryProps) => {
       <Box className={inventoryCardWrapperStyles()}>
         {supplier && (
           <Text size="sm" weight="bold">
-            {supplier}
+            {supplier.name}
           </Text>
         )}
         <Text size="xs" weight="bold">

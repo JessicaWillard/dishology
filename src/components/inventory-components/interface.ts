@@ -1,4 +1,5 @@
 import type { Nullable } from "../../utils/types/components";
+import type { SupplierContact } from "../../utils/types/database";
 
 export type InventoryType =
   | "produce"
@@ -21,7 +22,11 @@ export interface InventoryProps {
   unit?: Nullable<string>;
   pricePerUnit: string;
   pricePerPack?: Nullable<string>;
-  supplier?: Nullable<string>;
+  supplier?: {
+    id: string;
+    name: string;
+    contact: SupplierContact;
+  } | null;
   location?: Nullable<string>;
   minCount?: Nullable<string>;
   countDate: string;

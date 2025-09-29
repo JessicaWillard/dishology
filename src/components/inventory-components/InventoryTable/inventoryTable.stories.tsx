@@ -47,7 +47,16 @@ const sampleItems = [
     unit: "kg",
     pricePerUnit: "1.50",
     pricePerPack: "15.00",
-    supplier: "Fresh Farms",
+    supplier: {
+      id: "supplier-1",
+      name: "Fresh Farms",
+      contact: {
+        contactName: "John Doe",
+        phone: "555-0123",
+        email: "john@freshfarms.com",
+        website: "freshfarms.com",
+      },
+    },
     location: "Cooler A",
     minCount: "10",
     countDate: sampleDate,
