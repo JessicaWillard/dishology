@@ -413,6 +413,96 @@ src/
 - [ ] Performance is optimized
 - [ ] All edge cases are handled
 
+## Lessons Learned & Critical Patterns
+
+### Form Persistence with localStorage (CRITICAL)
+
+**Issue Discovered**: Form data persistence can cause cross-contamination between Create and Edit modes if not properly isolated.
+
+#### The Problem
+
+When implementing form hooks with localStorage persistence, using a single `formId` (or the default value) for both Create and Edit modes causes:
+
+1. Abandoned create form data to persist in localStorage
+2. Edit forms loading the wrong data from localStorage
+3. User confusion when editing existing items shows values from abandoned create attempts
+
+#### The Solution Pattern
+
+**ALWAYS** use unique `formId` values for Create vs Edit modes:
+
+```typescript
+// ✅ CORRECT - Unique formIds for each mode
+const { formData, ...formMethods } = useFormHook({
+  initialData,
+  formId:
+    mode === "edit" && initialData?.id ? `edit-${initialData.id}` : "create",
+});
+```
+
+```typescript
+// ❌ INCORRECT - Uses default formId for both modes
+const { formData, ...formMethods } = useFormHook({
+  initialData,
+  // No formId specified - both modes share the same localStorage key
+});
+```
+
+#### Implementation Details
+
+**In Form Components** (`RecipeForm`, `InventoryForm`, etc.):
+
+```typescript
+// Example from RecipeForm/index.tsx (lines 173-174)
+useRecipeForm({
+  initialData: initialData
+    ? {
+        /* ... */
+      }
+    : undefined,
+  initialIngredients: initialData?.ingredients || [],
+  formId:
+    mode === "edit" && initialData?.id ? `edit-${initialData.id}` : "create",
+});
+```
+
+**localStorage Keys Generated**:
+
+- Create mode: `recipe_form_create` (shared across all new recipes)
+- Edit mode: `recipe_form_edit-abc123` (unique per recipe ID)
+
+#### Reference Implementation
+
+See working example in:
+
+- `src/components/inventory-components/InventoryForm/index.tsx` (lines 89-90)
+- `src/components/recipes-components/RecipeForm/index.tsx` (lines 173-174)
+
+#### When to Apply This Pattern
+
+Apply this pattern to **ALL** form hooks that:
+
+1. Use localStorage for persistence (`enablePersistence = true`)
+2. Support both Create and Edit modes
+3. Accept an optional `formId` parameter
+
+This includes:
+
+- `useRecipeForm`
+- `useInventoryForm`
+- `useSupplierForm`
+- Any future form hooks following this pattern
+
+#### Testing Checklist
+
+When implementing a new form with persistence:
+
+- [ ] Start creating a new item
+- [ ] Fill in some fields but don't save
+- [ ] Close the create panel
+- [ ] Open an existing item for editing
+- [ ] Verify the edit form shows the CORRECT item data, not the abandoned create data
+
 ## Next Steps
 
 1. **Review this plan** and provide feedback on the questions above

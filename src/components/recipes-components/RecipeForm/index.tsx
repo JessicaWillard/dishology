@@ -170,6 +170,8 @@ export const RecipeForm = (props: RecipeFormProps) => {
         quantity: ing.quantity,
         unit: ing.unit || "",
       })) || [],
+    formId:
+      mode === "edit" && initialData?.id ? `edit-${initialData.id}` : "create",
   });
 
   const handleFormSubmit = async (e: React.FormEvent) => {
