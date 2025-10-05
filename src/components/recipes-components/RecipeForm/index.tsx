@@ -222,6 +222,13 @@ export const RecipeForm = (props: RecipeFormProps) => {
 
   const submitting = isSubmitting || formSubmitting;
 
+  const UNITS = [
+    { id: "kg", name: "kg" },
+    { id: "g", name: "g" },
+    { id: "l", name: "l" },
+    { id: "ml", name: "ml" },
+  ];
+
   return (
     <form onSubmit={handleFormSubmit} className={clsx(recipeFormStyles())}>
       {/* Basic Recipe Information */}
@@ -276,13 +283,15 @@ export const RecipeForm = (props: RecipeFormProps) => {
             {...getFieldProps("batch_size")}
           />
 
-          <Input
+          <ComboBox
             id="recipe-batch-unit"
             label="Batch Unit"
-            value={formData.batch_unit || ""}
-            onChange={(value, e) => updateField("batch_unit", e.target.value)}
-            onBlur={(e) => validateFieldOnBlur("batch_unit", e.target.value)}
-            placeholder="kg, L, portions..."
+            items={UNITS}
+            selectedKey={formData.batch_unit || null}
+            onSelectionChange={(key) =>
+              updateField("batch_unit", (key as string) || "")
+            }
+            placeholder="Select unit..."
             {...getFieldProps("batch_unit")}
           />
 
@@ -378,7 +387,6 @@ export const RecipeForm = (props: RecipeFormProps) => {
           value={formData.instructions || ""}
           onChange={(value, e) => updateField("instructions", e.target.value)}
           onBlur={(e) => validateFieldOnBlur("instructions", e.target.value)}
-          placeholder="1. Preheat oven to 375°F&#10;2. Mix together flour, sugar, and baking powder&#10;3. Gradually add in the milk and melted butter..."
           rows={8}
           {...getFieldProps("instructions")}
         />

@@ -35,11 +35,9 @@ const INVENTORY_TYPES = [
 ];
 
 const UNITS = [
-  { id: "kg", name: "Kg" },
+  { id: "kg", name: "kg" },
   { id: "g", name: "g" },
-  { id: "lb", name: "lb" },
-  { id: "oz", name: "oz" },
-  { id: "l", name: "L" },
+  { id: "l", name: "l" },
   { id: "ml", name: "ml" },
 ];
 
