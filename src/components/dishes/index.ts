@@ -2,6 +2,9 @@
 export { DishCard } from "./DishCard";
 export { DishIngredientsTable } from "./DishIngredientsTable";
 export { DishForm } from "./DishForm";
+export { DishesList } from "./DishesList";
+export { CreateDishSection } from "./CreateDishSection";
+export { EditDishSection } from "./EditDishSection";
 
 // Re-export types
 export type {

@@ -86,8 +86,8 @@ export interface DishFormProps {
   onDelete?: () => Promise<void>;
   isSubmitting?: boolean;
   submitLabel?: string;
-  availableInventory?: InventoryOption[];
-  availableRecipes?: RecipeOption[];
+  availableInventory?: Inventory[];
+  availableRecipes?: RecipeWithIngredients[];
   mode?: "create" | "edit";
   showCancel?: boolean;
 }

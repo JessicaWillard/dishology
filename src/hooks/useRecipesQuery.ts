@@ -12,6 +12,7 @@ import {
   // type CreateRecipeData,
   type UpdateRecipeData,
 } from "@/utils/api/recipes";
+import { dishKeys } from "./useDishesQuery";
 
 export const recipeKeys = {
   all: ["recipes"] as const,
@@ -92,6 +93,9 @@ export function useCreateRecipe() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
+      // Invalidate dish queries since dishes may use this recipe
+      queryClient.invalidateQueries({ queryKey: dishKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.details() });
     },
   });
 }
@@ -160,6 +164,9 @@ export function useUpdateRecipe() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
+      // Invalidate dish queries since dishes may use this recipe
+      queryClient.invalidateQueries({ queryKey: dishKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.details() });
     },
   });
 }
@@ -197,6 +204,9 @@ export function useDeleteRecipe() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
+      // Invalidate dish queries since dishes may use this recipe
+      queryClient.invalidateQueries({ queryKey: dishKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.details() });
     },
   });
 }

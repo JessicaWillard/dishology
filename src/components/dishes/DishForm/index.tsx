@@ -15,8 +15,8 @@ import { ComboBox } from "../../fields/ComboBox";
 import {
   costAnalysisStyles,
   costAnalysisRowStyles,
-  profitStyles,
-  marginBadgeStyles,
+  // profitStyles,
+  // marginBadgeStyles,
   ingredientRowStyles,
 } from "../theme";
 import { clsx } from "clsx";
@@ -193,6 +193,7 @@ export const DishForm = (props: DishFormProps) => {
       })) || [],
     formId:
       mode === "edit" && initialData?.id ? `edit-${initialData.id}` : "create",
+    enablePersistence: mode === "create", // Only persist drafts for new dishes
     availableInventory,
     availableRecipes,
   });
@@ -299,19 +300,15 @@ export const DishForm = (props: DishFormProps) => {
             <Text size="md" weight="bold">
               Ingredients
             </Text>
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              handlePress={addIngredient}
-            >
+            <Button type="button" variant="outline" handlePress={addIngredient}>
               + Add Ingredient
             </Button>
           </Box>
 
           {ingredients.length === 0 ? (
             <Text size="sm" className="text-gray-500 italic">
-              No ingredients added yet. Click "Add Ingredient" to start.
+              No ingredients added yet. Click &quot;Add Ingredient&quot; to
+              start.
             </Text>
           ) : (
             <Box display="flexCol" gap="sm">
@@ -367,7 +364,7 @@ export const DishForm = (props: DishFormProps) => {
               <Text
                 size="md"
                 weight="bold"
-                className={clsx(profitStyles({ variant: profitVariant }))}
+                // className={clsx(profitStyles({ variant: profitVariant }))}
               >
                 ${dishMetrics.profit.toFixed(2)}
               </Text>
@@ -380,7 +377,7 @@ export const DishForm = (props: DishFormProps) => {
                 Profit Margin
               </Text>
               <span
-                className={clsx(marginBadgeStyles({ variant: profitVariant }))}
+              // className={clsx(marginBadgeStyles({ variant: profitVariant }))}
               >
                 {dishMetrics.margin.toFixed(2)}%
               </span>
@@ -393,7 +390,7 @@ export const DishForm = (props: DishFormProps) => {
           <Box display="flexRow" gap="md">
             <Button
               type="submit"
-              variant="primary"
+              variant="solid"
               isDisabled={isSubmitting || formSubmitting}
             >
               {isSubmitting || formSubmitting ? "Saving..." : submitLabel}

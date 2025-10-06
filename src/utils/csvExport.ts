@@ -140,3 +140,44 @@ export function formatCurrencyForCSV(value: string | number): string {
   const numValue = typeof value === "string" ? parseFloat(value) : value;
   return isNaN(numValue) ? "0.00" : numValue.toFixed(2);
 }
+
+/**
+ * Formats a percentage value for CSV export
+ * @param value Percentage value
+ * @returns Formatted percentage string
+ */
+export function formatPercentageForCSV(value: number): string {
+  if (isNaN(value)) return "0.00%";
+  return `${value.toFixed(2)}%`;
+}
+
+/**
+ * Export dishes with profit analysis to CSV
+ * Includes: Name, Description, Cost, Sell Price, Profit, Margin
+ */
+export interface DishExportData {
+  name: string;
+  description?: string | null;
+  cost: number;
+  sell_price: number;
+  profit: number;
+  margin: number;
+  ingredient_count: number;
+}
+
+export function exportDishesToCSV(
+  dishes: DishExportData[],
+  filename = "dishes-export.csv"
+): void {
+  const formattedData = dishes.map((dish) => ({
+    Name: dish.name,
+    Description: dish.description || "",
+    Cost: formatCurrencyForCSV(dish.cost),
+    "Sell Price": formatCurrencyForCSV(dish.sell_price),
+    Profit: formatCurrencyForCSV(dish.profit),
+    "Profit Margin": formatPercentageForCSV(dish.margin),
+    "Ingredient Count": dish.ingredient_count,
+  }));
+
+  exportToCSV(formattedData, { filename });
+}
