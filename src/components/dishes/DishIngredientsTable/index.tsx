@@ -29,7 +29,6 @@ export const DishIngredientsTable = (props: DishIngredientsTableProps) => {
         <thead>
           <tr className="bg-gray-dark">
             <th className={clsx(dishTableHeaderStyles())}>Item</th>
-            {/* <th className={clsx(dishTableHeaderStyles())}>Type</th> */}
             <th className={clsx(dishTableHeaderStyles())}>Qty</th>
             <th className={clsx(dishTableHeaderStyles(), "text-right")}>
               Total Cost
@@ -84,7 +83,7 @@ export const DishIngredientsTable = (props: DishIngredientsTableProps) => {
             );
             totalCost = ingredient.quantity * recipeCostPerUnit;
 
-            unit = unit || "units";
+            unit = unit || "U/M";
           }
 
           const handleRowClick = () => {
@@ -117,17 +116,6 @@ export const DishIngredientsTable = (props: DishIngredientsTableProps) => {
                   {itemName}
                 </Text>
               </td>
-              {/* <td className={clsx(dishTableCellStyles({ align: "left" }))}>
-                <span
-                  className={clsx(
-                    typeBadgeStyles({
-                      type: itemType as InventoryType | "recipe" | "default",
-                    })
-                  )}
-                >
-                  {itemType === "recipe" ? "Recipe" : itemType}
-                </span>
-              </td> */}
               <td className={clsx(dishTableCellStyles({ align: "left" }))}>
                 <Text size="sm">
                   {quantity}

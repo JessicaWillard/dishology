@@ -16,6 +16,7 @@ import {
   recipeIngredientRowStyles,
 } from "../theme";
 import { clsx } from "clsx";
+import Icon from "@/components/ui/Icon";
 
 const RecipeIngredientRow = (props: RecipeIngredientRowProps) => {
   const {
@@ -52,6 +53,7 @@ const RecipeIngredientRow = (props: RecipeIngredientRowProps) => {
         error={!!errors.inventory_id}
         errorMessage={errors.inventory_id}
         required
+        className="w-full"
       />
 
       <Input
@@ -67,31 +69,20 @@ const RecipeIngredientRow = (props: RecipeIngredientRowProps) => {
         error={!!errors.quantity}
         errorMessage={errors.quantity}
         required
+        className="w-[100px]"
       />
 
-      <Input
-        id={`ingredient-${index}-unit`}
-        label="Unit"
-        value={ingredient.unit || ""}
-        onChange={(value, e) => onUpdate(index, "unit", e.target.value)}
-        placeholder={
-          ingredient.inventory_id
-            ? "Auto-filled from inventory"
-            : "Select ingredient first"
-        }
-        error={!!errors.unit}
-        errorMessage={errors.unit}
-        disabled
-        className="bg-gray-50"
-      />
+      <Text size="sm" weight="medium" className="text-gray-dark">
+        {ingredient.unit || (ingredient.inventory_id ? "—" : "—")}
+      </Text>
 
       <Box display="flexCol" justify="end">
         <Button
-          variant="ghost"
+          variant="destructive"
+          iconOnly
           handlePress={() => onRemove(index)}
-          className="text-red-600 hover:text-red-700 w-full"
         >
-          Remove
+          <Icon name="CloseBtn" />
         </Button>
       </Box>
     </Box>
@@ -342,12 +333,12 @@ export const RecipeForm = (props: RecipeFormProps) => {
           </Text>
           <Button
             type="button"
-            variant="ghost"
+            variant="solid"
+            iconOnly
             handlePress={addIngredient}
-            leftIcon="Plus"
             disabled={submitting}
           >
-            Add Ingredient
+            <Icon name="Plus" />
           </Button>
         </Box>
 
@@ -406,7 +397,7 @@ export const RecipeForm = (props: RecipeFormProps) => {
             handlePress={onDelete}
             disabled={submitting}
           >
-            Delete
+            Delete recipe
           </Button>
         )}
 

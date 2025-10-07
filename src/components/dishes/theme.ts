@@ -16,7 +16,7 @@ export const dishCardStyles = tv({
 
 // Cost analysis section styles
 export const costAnalysisStyles = tv({
-  base: "bg-gray-50 p-4 rounded-lg border border-gray-light",
+  base: "p-4 rounded-lg border border-gray-light",
 });
 
 export const costAnalysisRowStyles = tv({
@@ -31,35 +31,6 @@ export const costAnalysisRowStyles = tv({
     variant: "default",
   },
 });
-
-// Profit/margin display styles
-// export const profitStyles = tv({
-//   base: "font-bold text-lg",
-//   variants: {
-//     variant: {
-//       positive: "text-green-600",
-//       negative: "text-red-600",
-//       neutral: "text-gray-600",
-//     },
-//   },
-//   defaultVariants: {
-//     variant: "neutral",
-//   },
-// });
-
-// export const marginBadgeStyles = tv({
-//   base: "px-3 py-1 rounded-md font-bold text-sm",
-//   variants: {
-//     variant: {
-//       positive: "bg-green-100 text-green-700",
-//       negative: "bg-red-100 text-red-700",
-//       neutral: "bg-gray-100 text-gray-700",
-//     },
-//   },
-//   defaultVariants: {
-//     variant: "neutral",
-//   },
-// });
 
 export const metricItemStyles = tv({
   base: "flex flex-col gap-1",
@@ -149,7 +120,7 @@ export const dishTableCellStyles = tv({
 
 // Form ingredient row styles
 export const ingredientRowStyles = tv({
-  base: "flex gap-2 items-start p-3 border rounded-lg",
+  base: "flex gap-2 items-end justify-between p-3 border rounded-lg",
   variants: {
     type: {
       produce: "bg-produce-light border-produce",

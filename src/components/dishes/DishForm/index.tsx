@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useDishForm } from "@/hooks/useDishForm";
@@ -15,12 +16,11 @@ import { ComboBox } from "../../fields/ComboBox";
 import {
   costAnalysisStyles,
   costAnalysisRowStyles,
-  // profitStyles,
-  // marginBadgeStyles,
   ingredientRowStyles,
 } from "../theme";
 import { clsx } from "clsx";
 import { calculateRecipeCostPerUnit } from "@/utils/dishCalculations";
+import Icon from "@/components/ui/Icon";
 
 const DishIngredientRow = (props: DishIngredientRowProps) => {
   const {
@@ -63,7 +63,7 @@ const DishIngredientRow = (props: DishIngredientRowProps) => {
             } else {
               onUpdate(index, "recipe_id", key as string);
               onUpdate(index, "inventory_id", ""); // Clear inventory_id
-              onUpdate(index, "unit", "units");
+              onUpdate(index, "unit", "U/M");
             }
           }
         }}
@@ -72,11 +72,12 @@ const DishIngredientRow = (props: DishIngredientRowProps) => {
         error={!!errors.inventory_id || !!errors.recipe_id}
         errorMessage={errors.inventory_id || errors.recipe_id}
         required
+        className="w-full"
       />
 
       <Input
         id={`ingredient-${index}-quantity`}
-        label="Quantity"
+        label="Qty"
         type="number"
         step="0.01"
         min="0"
@@ -87,27 +88,20 @@ const DishIngredientRow = (props: DishIngredientRowProps) => {
         error={!!errors.quantity}
         errorMessage={errors.quantity}
         required
+        className="w-[100px]"
       />
 
-      <Input
-        id={`ingredient-${index}-unit`}
-        label="Unit"
-        value={ingredient.unit || ""}
-        onChange={(value, e) => onUpdate(index, "unit", e.target.value)}
-        placeholder={selectedId ? "Auto-filled" : "Select item first"}
-        error={!!errors.unit}
-        errorMessage={errors.unit}
-        disabled
-        className="bg-gray-50"
-      />
+      <Text size="sm" weight="medium" className="text-gray-dark">
+        {ingredient.unit || (selectedId ? "—" : "—")}
+      </Text>
 
       <Box display="flexCol" justify="end">
         <Button
-          variant="ghost"
+          variant="destructive"
+          iconOnly
           handlePress={() => onRemove(index)}
-          className="text-red-600 hover:text-red-700 w-full"
         >
-          Remove
+          <Icon name="CloseBtn" />
         </Button>
       </Box>
     </Box>
@@ -155,7 +149,7 @@ export const DishForm = (props: DishFormProps) => {
       id: recipe.id,
       name: `${recipe.name} (recipe)`,
       type: "recipe",
-      unit: "units",
+      unit: "U/M",
       source: "recipe" as const,
       cost_per_unit: calculateRecipeCostPerUnit(recipe),
     })),
@@ -215,13 +209,6 @@ export const DishForm = (props: DishFormProps) => {
       return transformedData as any;
     });
   };
-
-  const profitVariant =
-    dishMetrics.profit > 0
-      ? "positive"
-      : dishMetrics.profit < 0
-      ? "negative"
-      : "neutral";
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -300,13 +287,18 @@ export const DishForm = (props: DishFormProps) => {
             <Text size="md" weight="bold">
               Ingredients
             </Text>
-            <Button type="button" variant="outline" handlePress={addIngredient}>
-              + Add Ingredient
+            <Button
+              type="button"
+              variant="solid"
+              iconOnly
+              handlePress={addIngredient}
+            >
+              <Icon name="Plus" />
             </Button>
           </Box>
 
           {ingredients.length === 0 ? (
-            <Text size="sm" className="text-gray-500 italic">
+            <Text size="sm" className="text-gray-dark italic">
               No ingredients added yet. Click &quot;Add Ingredient&quot; to
               start.
             </Text>
@@ -328,6 +320,64 @@ export const DishForm = (props: DishFormProps) => {
                   }}
                 />
               ))}
+            </Box>
+          )}
+
+          {/* Ingredient Cost Breakdown */}
+          {ingredients.length > 0 && (
+            <Box className="p-4 rounded-lg border border-gray-light bg-gray-50">
+              <Text size="sm" weight="bold" className="mb-3">
+                Cost Breakdown
+              </Text>
+              <Box display="flexCol" gap="xs">
+                {ingredients.map((ingredient, index) => {
+                  const selectedId =
+                    ingredient.inventory_id || ingredient.recipe_id || "";
+                  const selectedOption = ingredientOptions.find(
+                    (opt) => opt.id === selectedId
+                  );
+
+                  // Calculate cost for this ingredient
+                  let cost = 0;
+                  if (selectedOption && ingredient.quantity) {
+                    if (
+                      selectedOption.source === "inventory" &&
+                      selectedOption.price_per_unit
+                    ) {
+                      cost =
+                        parseFloat(selectedOption.price_per_unit) *
+                        ingredient.quantity;
+                    } else if (
+                      selectedOption.source === "recipe" &&
+                      selectedOption.cost_per_unit
+                    ) {
+                      cost = selectedOption.cost_per_unit * ingredient.quantity;
+                    }
+                  }
+
+                  return (
+                    <Box
+                      key={index}
+                      display="flexRow"
+                      justify="between"
+                      align="center"
+                      className="py-2 border-b border-gray-light last:border-b-0"
+                    >
+                      <Box display="flexCol" gap="xs">
+                        <Text size="sm" weight="medium">
+                          {selectedOption?.name || "Not selected"}
+                        </Text>
+                        <Text size="xs" className="text-gray-dark">
+                          {ingredient.quantity || 0} {ingredient.unit || ""}
+                        </Text>
+                      </Box>
+                      <Text size="sm" weight="medium" className="text-right">
+                        ${cost.toFixed(2)}
+                      </Text>
+                    </Box>
+                  );
+                })}
+              </Box>
             </Box>
           )}
         </Box>
@@ -387,26 +437,16 @@ export const DishForm = (props: DishFormProps) => {
 
         {/* Form Actions */}
         <Box display="flexRow" gap="md" justify="between">
-          <Box display="flexRow" gap="md">
+          {showCancel && onCancel && (
             <Button
-              type="submit"
-              variant="solid"
+              type="button"
+              variant="outline"
+              handlePress={onCancel}
               isDisabled={isSubmitting || formSubmitting}
             >
-              {isSubmitting || formSubmitting ? "Saving..." : submitLabel}
+              Cancel
             </Button>
-
-            {showCancel && onCancel && (
-              <Button
-                type="button"
-                variant="outline"
-                handlePress={onCancel}
-                isDisabled={isSubmitting || formSubmitting}
-              >
-                Cancel
-              </Button>
-            )}
-          </Box>
+          )}
 
           {mode === "edit" && onDelete && (
             <Button
@@ -419,6 +459,14 @@ export const DishForm = (props: DishFormProps) => {
               Delete Dish
             </Button>
           )}
+
+          <Button
+            type="submit"
+            variant="solid"
+            isDisabled={isSubmitting || formSubmitting}
+          >
+            {isSubmitting || formSubmitting ? "Saving..." : submitLabel}
+          </Button>
         </Box>
       </Box>
     </form>
