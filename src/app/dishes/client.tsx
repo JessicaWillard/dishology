@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useDishes } from "@/hooks/useDishesQuery";
 import { useInventory } from "@/hooks/useInventoryQuery";
-import { useRecipesQuery } from "@/hooks/useRecipesQuery";
+import { useRecipesQuery, useRecipes } from "@/hooks/useRecipesQuery";
 import { useControlsBarHeight } from "@/hooks/useControlsBarHeight";
 import { DishesList } from "@/components/dishes/DishesList";
 import { CreateDishSection } from "@/components/dishes/CreateDishSection";
@@ -15,7 +15,6 @@ import { Box } from "@/components/ui/Box";
 import { Text } from "@/components/ui/Text";
 import { ControlsBar } from "@/components/ui/ControlsBar";
 import type {
-  DishFormData,
   InventoryWithSupplier,
   InventoryFormData,
   RecipeWithIngredients,
@@ -59,18 +58,7 @@ export function DishClient({}: DishClientProps) {
     forceUpdateHeight,
   } = useControlsBarHeight();
 
-  const {
-    dishes,
-    loading,
-    error,
-    refetch,
-    create,
-    update,
-    remove,
-    isCreating,
-    isUpdating,
-    isDeleting,
-  } = useDishes();
+  const { dishes, loading, error, refetch } = useDishes();
 
   const {
     inventory,
@@ -80,13 +68,14 @@ export function DishClient({}: DishClientProps) {
     isDeleting: isDeletingInventory,
   } = useInventory();
 
+  const { data: recipes = [] } = useRecipesQuery();
+
   const {
-    data: recipes = [],
     update: updateRecipe,
     remove: removeRecipe,
     isUpdating: isUpdatingRecipe,
     isDeleting: isDeletingRecipe,
-  } = useRecipesQuery();
+  } = useRecipes();
 
   const { data: suppliers = [] } = useSuppliersQuery();
 
@@ -124,33 +113,9 @@ export function DishClient({}: DishClientProps) {
     [forceUpdateHeight]
   );
 
-  const handleCreate = useCallback(
-    async (data: DishFormData & { ingredients?: any[] }) => {
-      return await create(data);
-    },
-    [create]
-  );
-
   const handleEdit = useCallback((dishId: string) => {
     setEditingDishId(dishId);
   }, []);
-
-  const handleUpdate = useCallback(
-    async (
-      id: string,
-      data: Partial<DishFormData> & { ingredients?: any[] }
-    ) => {
-      return await update(id, data);
-    },
-    [update]
-  );
-
-  const handleDelete = useCallback(
-    async (id: string) => {
-      await remove(id);
-    },
-    [remove]
-  );
 
   const handleCloseCreatePanel = useCallback(() => {
     setShowCreatePanel(false);

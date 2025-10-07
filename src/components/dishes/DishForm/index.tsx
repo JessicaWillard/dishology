@@ -19,7 +19,6 @@ import {
   ingredientRowStyles,
 } from "../theme";
 import { clsx } from "clsx";
-import { calculateRecipeCostPerUnit } from "@/utils/dishCalculations";
 import Icon from "@/components/ui/Icon";
 
 const DishIngredientRow = (props: DishIngredientRowProps) => {
@@ -151,7 +150,7 @@ export const DishForm = (props: DishFormProps) => {
       type: "recipe",
       unit: "U/M",
       source: "recipe" as const,
-      cost_per_unit: calculateRecipeCostPerUnit(recipe),
+      cost_per_unit: recipe.cost_per_unit,
     })),
   ].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -188,8 +187,8 @@ export const DishForm = (props: DishFormProps) => {
     formId:
       mode === "edit" && initialData?.id ? `edit-${initialData.id}` : "create",
     enablePersistence: mode === "create", // Only persist drafts for new dishes
-    availableInventory,
-    availableRecipes,
+    availableInventory: availableInventory as any,
+    availableRecipes: availableRecipes as any,
   });
 
   const handleFormSubmit = async (e: React.FormEvent) => {

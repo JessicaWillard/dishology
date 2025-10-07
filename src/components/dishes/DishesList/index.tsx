@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { tv } from "tailwind-variants";
-import type { DishesListProps } from "../interface";
+import type { DishesListProps, DishIngredientWithDetails } from "../interface";
 import { DishCard } from "../DishCard";
 import { Box } from "../../ui/Box";
 import { Text } from "../../ui/Text";
@@ -111,7 +111,7 @@ export function DishesList({
           instructions={dish.instructions}
           prepTime={dish.prep_time}
           sellPrice={dish.sell_price}
-          ingredients={dish.ingredients}
+          ingredients={dish.ingredients as DishIngredientWithDetails[]}
           onEdit={handleEdit}
           onIngredientClick={onIngredientClick}
         />

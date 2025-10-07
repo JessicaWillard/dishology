@@ -3,7 +3,7 @@ import type {
   DishWithIngredients,
   DishIngredientFormData,
   RecipeWithIngredients,
-  Inventory,
+  // Inventory,
 } from "../../utils/types/database";
 
 // Base dish properties
@@ -86,8 +86,8 @@ export interface DishFormProps {
   onDelete?: () => Promise<void>;
   isSubmitting?: boolean;
   submitLabel?: string;
-  availableInventory?: Inventory[];
-  availableRecipes?: RecipeWithIngredients[];
+  availableInventory?: InventoryOption[];
+  availableRecipes?: RecipeOption[];
   mode?: "create" | "edit";
   showCancel?: boolean;
 }
@@ -150,8 +150,8 @@ export interface DishesListProps {
 export interface CreateDishSectionProps {
   isOpen: boolean;
   onClose: () => void;
-  availableInventory?: Inventory[];
-  availableRecipes?: RecipeWithIngredients[];
+  availableInventory?: InventoryOption[];
+  availableRecipes?: RecipeOption[];
 }
 
 // Edit section props
@@ -159,6 +159,6 @@ export interface EditDishSectionProps {
   isOpen: boolean;
   onClose: () => void;
   dishId: string;
-  availableInventory?: Inventory[];
-  availableRecipes?: RecipeWithIngredients[];
+  availableInventory?: InventoryOption[];
+  availableRecipes?: RecipeOption[];
 }
