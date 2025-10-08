@@ -40,9 +40,12 @@ const DishIngredientRow = (props: DishIngredientRowProps) => {
   // Determine current selection (either inventory or recipe)
   const selectedId = ingredient.inventory_id || ingredient.recipe_id || "";
 
-  // Find selected option for type detection
+  // Find selected option for type detection and current data
   const selectedOption = availableOptions.find((opt) => opt.id === selectedId);
   const ingredientType = selectedOption?.type || "default";
+
+  // Always use the current unit from the selected option, not the stored unit
+  const currentUnit = selectedOption?.unit || ingredient.unit || "";
 
   return (
     <Box className={clsx(ingredientRowStyles({ type: ingredientType as any }))}>
@@ -91,7 +94,7 @@ const DishIngredientRow = (props: DishIngredientRowProps) => {
       />
 
       <Text size="sm" weight="medium" className="text-gray-dark">
-        {ingredient.unit || (selectedId ? "—" : "—")}
+        {currentUnit || (selectedId ? "—" : "—")}
       </Text>
 
       <Box display="flexCol" justify="end">
@@ -142,6 +145,7 @@ export const DishForm = (props: DishFormProps) => {
         unit: item.unit || undefined,
         source: "inventory" as const,
         price_per_unit: item.price_per_unit,
+        size: item.size || undefined,
       })),
     // Recipe items
     ...availableRecipes.map((recipe) => ({
@@ -336,6 +340,10 @@ export const DishForm = (props: DishFormProps) => {
                     (opt) => opt.id === selectedId
                   );
 
+                  // Always use the current unit from the selected option
+                  const currentUnit =
+                    selectedOption?.unit || ingredient.unit || "";
+
                   // Calculate cost for this ingredient
                   let cost = 0;
                   if (selectedOption && ingredient.quantity) {
@@ -343,8 +351,11 @@ export const DishForm = (props: DishFormProps) => {
                       selectedOption.source === "inventory" &&
                       selectedOption.price_per_unit
                     ) {
+                      const size = selectedOption.size
+                        ? parseFloat(selectedOption.size)
+                        : 1;
                       cost =
-                        parseFloat(selectedOption.price_per_unit) *
+                        (parseFloat(selectedOption.price_per_unit) / size) *
                         ingredient.quantity;
                     } else if (
                       selectedOption.source === "recipe" &&
@@ -367,7 +378,7 @@ export const DishForm = (props: DishFormProps) => {
                           {selectedOption?.name || "Not selected"}
                         </Text>
                         <Text size="xs" className="text-gray-dark">
-                          {ingredient.quantity || 0} {ingredient.unit || ""}
+                          {ingredient.quantity || 0} {currentUnit}
                         </Text>
                       </Box>
                       <Text size="sm" weight="medium" className="text-right">

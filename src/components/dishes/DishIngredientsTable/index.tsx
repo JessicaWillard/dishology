@@ -47,7 +47,7 @@ export const DishIngredientsTable = (props: DishIngredientsTableProps) => {
           let itemType: string = "default";
           let totalCost = 0;
           const quantity = ingredient.quantity;
-          let unit = ingredient.unit || "";
+          let unit = "";
 
           // Handle inventory item
           if (isInventoryItem && ingredient.inventory) {
@@ -70,7 +70,8 @@ export const DishIngredientsTable = (props: DishIngredientsTableProps) => {
               totalCost = ingredient.quantity * costPerSmallestUnit;
             }
 
-            unit = unit || ingredient.inventory.unit || "";
+            // Use current inventory unit, fall back to stored unit
+            unit = ingredient.inventory.unit || ingredient.unit || "";
           }
           // Handle recipe item
           else if (isRecipeItem && ingredient.recipe) {
@@ -83,7 +84,11 @@ export const DishIngredientsTable = (props: DishIngredientsTableProps) => {
             );
             totalCost = ingredient.quantity * recipeCostPerUnit;
 
-            unit = unit || "U/M";
+            // Use "U/M" for recipes, fall back to stored unit
+            unit = "U/M";
+          } else {
+            // Fallback for items without inventory or recipe data
+            unit = ingredient.unit || "";
           }
 
           const handleRowClick = () => {

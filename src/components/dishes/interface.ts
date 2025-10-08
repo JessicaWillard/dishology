@@ -100,6 +100,7 @@ export interface IngredientOption {
   unit?: string;
   source: "inventory" | "recipe";
   price_per_unit?: string; // For inventory
+  size?: string; // For inventory - used in cost calculations
   cost_per_unit?: number; // For recipes
 }
 
