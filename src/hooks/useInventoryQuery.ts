@@ -11,6 +11,7 @@ import {
   deleteInventoryItem,
 } from "@/utils/api/inventory";
 import { recipeKeys } from "./useRecipesQuery";
+import { dishKeys } from "./useDishesQuery";
 
 export const inventoryKeys = {
   all: ["inventory"] as const,
@@ -100,9 +101,11 @@ export function useCreateInventory() {
         }
       );
 
-      // Invalidate recipe queries since recipes may reference new inventory
+      // Invalidate recipe and dish queries since they may reference new inventory
       queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: recipeKeys.details() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.details() });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
@@ -163,10 +166,12 @@ export function useUpdateInventory() {
         }
       );
 
-      // Invalidate recipe queries since recipes contain inventory data
-      // This ensures recipe ingredient tables show updated inventory information
+      // Invalidate recipe and dish queries since they contain inventory data
+      // This ensures ingredient tables and cost calculations show updated information
       queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: recipeKeys.details() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.details() });
     },
     onSettled: () => {
       // Don't invalidate inventory immediately to prevent race conditions
@@ -209,9 +214,11 @@ export function useDeleteInventory() {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: inventoryKeys.lists() });
 
-      // Invalidate recipe queries since deleted inventory affects recipe calculations
+      // Invalidate recipe and dish queries since deleted inventory affects calculations
       queryClient.invalidateQueries({ queryKey: recipeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: recipeKeys.details() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dishKeys.details() });
     },
   });
 }

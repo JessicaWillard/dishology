@@ -95,5 +95,5 @@ export const recipeIngredientsFormStyles = tv({
 });
 
 export const recipeIngredientRowStyles = tv({
-  base: "grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border border-gray-light rounded-lg bg-white",
+  base: "flex gap-2 items-end justify-between p-3 border rounded-lg",
 });

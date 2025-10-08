@@ -27,11 +27,13 @@ const defaultNavItems = [
     id: "recipes",
     label: "Recipes",
     icon: "Recipe",
+    href: "/recipes",
   },
   {
     id: "dishes",
     label: "Dishes",
     icon: "Dish",
+    href: "/dishes",
   },
   {
     id: "planning",

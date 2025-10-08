@@ -26,6 +26,7 @@ const navItems = [
     id: "dishes",
     label: "Dishes",
     icon: "Dish",
+    href: "/dishes",
   },
   {
     id: "planning",

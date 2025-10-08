@@ -16,6 +16,7 @@ import {
   recipeIngredientRowStyles,
 } from "../theme";
 import { clsx } from "clsx";
+import Icon from "@/components/ui/Icon";
 
 const RecipeIngredientRow = (props: RecipeIngredientRowProps) => {
   const {
@@ -52,6 +53,7 @@ const RecipeIngredientRow = (props: RecipeIngredientRowProps) => {
         error={!!errors.inventory_id}
         errorMessage={errors.inventory_id}
         required
+        className="w-full"
       />
 
       <Input
@@ -67,31 +69,20 @@ const RecipeIngredientRow = (props: RecipeIngredientRowProps) => {
         error={!!errors.quantity}
         errorMessage={errors.quantity}
         required
+        className="w-[100px]"
       />
 
-      <Input
-        id={`ingredient-${index}-unit`}
-        label="Unit"
-        value={ingredient.unit || ""}
-        onChange={(value, e) => onUpdate(index, "unit", e.target.value)}
-        placeholder={
-          ingredient.inventory_id
-            ? "Auto-filled from inventory"
-            : "Select ingredient first"
-        }
-        error={!!errors.unit}
-        errorMessage={errors.unit}
-        disabled
-        className="bg-gray-50"
-      />
+      <Text size="sm" weight="medium" className="text-gray-dark">
+        {ingredient.unit || (ingredient.inventory_id ? "—" : "—")}
+      </Text>
 
       <Box display="flexCol" justify="end">
         <Button
-          variant="ghost"
+          variant="destructive"
+          iconOnly
           handlePress={() => onRemove(index)}
-          className="text-red-600 hover:text-red-700 w-full"
         >
-          Remove
+          <Icon name="CloseBtn" />
         </Button>
       </Box>
     </Box>
@@ -170,6 +161,8 @@ export const RecipeForm = (props: RecipeFormProps) => {
         quantity: ing.quantity,
         unit: ing.unit || "",
       })) || [],
+    formId:
+      mode === "edit" && initialData?.id ? `edit-${initialData.id}` : "create",
   });
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -221,6 +214,13 @@ export const RecipeForm = (props: RecipeFormProps) => {
   };
 
   const submitting = isSubmitting || formSubmitting;
+
+  const UNITS = [
+    { id: "kg", name: "kg" },
+    { id: "g", name: "g" },
+    { id: "l", name: "l" },
+    { id: "ml", name: "ml" },
+  ];
 
   return (
     <form onSubmit={handleFormSubmit} className={clsx(recipeFormStyles())}>
@@ -276,13 +276,15 @@ export const RecipeForm = (props: RecipeFormProps) => {
             {...getFieldProps("batch_size")}
           />
 
-          <Input
+          <ComboBox
             id="recipe-batch-unit"
             label="Batch Unit"
-            value={formData.batch_unit || ""}
-            onChange={(value, e) => updateField("batch_unit", e.target.value)}
-            onBlur={(e) => validateFieldOnBlur("batch_unit", e.target.value)}
-            placeholder="kg, L, portions..."
+            items={UNITS}
+            selectedKey={formData.batch_unit || null}
+            onSelectionChange={(key) =>
+              updateField("batch_unit", (key as string) || "")
+            }
+            placeholder="Select unit..."
             {...getFieldProps("batch_unit")}
           />
 
@@ -331,12 +333,12 @@ export const RecipeForm = (props: RecipeFormProps) => {
           </Text>
           <Button
             type="button"
-            variant="ghost"
+            variant="solid"
+            iconOnly
             handlePress={addIngredient}
-            leftIcon="Plus"
             disabled={submitting}
           >
-            Add Ingredient
+            <Icon name="Plus" />
           </Button>
         </Box>
 
@@ -378,7 +380,6 @@ export const RecipeForm = (props: RecipeFormProps) => {
           value={formData.instructions || ""}
           onChange={(value, e) => updateField("instructions", e.target.value)}
           onBlur={(e) => validateFieldOnBlur("instructions", e.target.value)}
-          placeholder="1. Preheat oven to 375°F&#10;2. Mix together flour, sugar, and baking powder&#10;3. Gradually add in the milk and melted butter..."
           rows={8}
           {...getFieldProps("instructions")}
         />
@@ -396,7 +397,7 @@ export const RecipeForm = (props: RecipeFormProps) => {
             handlePress={onDelete}
             disabled={submitting}
           >
-            Delete
+            Delete recipe
           </Button>
         )}
 
